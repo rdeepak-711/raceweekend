@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as schema from './schema';
+import { env } from '@/lib/env';
 
 /**
  * APEX Singleton Database Connection
@@ -11,26 +12,19 @@ const globalForDb = global as unknown as {
   pool: mysql.Pool | undefined;
 };
 
-const isProd = process.env.NODE_ENV === 'production';
-
-// Fail early if no DB config is present in production
-if (isProd && !process.env.DATABASE_URL && !process.env.DATABASE_HOST) {
-  throw new Error('[db] Missing database connection details (DATABASE_URL or DATABASE_HOST)');
-}
-
-const poolConfig: mysql.PoolOptions = process.env.DATABASE_URL 
-  ? { uri: process.env.DATABASE_URL }
+const poolConfig: mysql.PoolOptions = env.DATABASE_URL 
+  ? { uri: env.DATABASE_URL }
   : {
-      host: process.env.DATABASE_HOST || (isProd ? '' : 'localhost'),
-      port: Number(process.env.DATABASE_PORT) || 3306,
-      user: process.env.DATABASE_USER || (isProd ? '' : 'root'),
-      password: process.env.DATABASE_PASSWORD ?? '',
-      database: process.env.DATABASE_NAME || 'raceweekend',
+      host: env.DATABASE_HOST,
+      port: env.DATABASE_PORT,
+      user: env.DATABASE_USER,
+      password: env.DATABASE_PASSWORD,
+      database: env.DATABASE_NAME,
       waitForConnections: true,
       connectionLimit: 10,
       enableKeepAlive: true,
       keepAliveInitialDelay: 10000,
-      ssl: process.env.DATABASE_HOST && process.env.DATABASE_HOST !== 'localhost'
+      ssl: env.DATABASE_HOST && env.DATABASE_HOST !== 'localhost'
         ? { rejectUnauthorized: false, minVersion: 'TLSv1.2' }
         : undefined,
     };

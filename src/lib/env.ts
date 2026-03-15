@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const envSchema = z.object({
   // DATABASE
   DATABASE_URL: z.string().optional(),
-  DATABASE_HOST: z.string().default('localhost'),
+  DATABASE_HOST: z.string().default(isProd ? '' : 'localhost'),
   DATABASE_PORT: z.coerce.number().default(3306),
-  DATABASE_USER: z.string().default('root'),
+  DATABASE_USER: z.string().default(isProd ? '' : 'root'),
   DATABASE_PASSWORD: z.string().default(''),
   DATABASE_NAME: z.string().default('raceweekend'),
 
@@ -23,6 +25,14 @@ const envSchema = z.object({
   // NEXT.JS
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
+}).refine((data) => {
+  if (process.env.NODE_ENV === 'production') {
+    return !!(data.DATABASE_URL || (data.DATABASE_HOST && data.DATABASE_USER));
+  }
+  return true;
+}, {
+  message: "In production, either DATABASE_URL or (DATABASE_HOST and DATABASE_USER) must be provided",
+  path: ["DATABASE_HOST"],
 });
 
 export const env = envSchema.parse(process.env);
