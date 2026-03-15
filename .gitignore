@@ -1,0 +1,48 @@
+# dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# environment variables
+.env
+.env.local
+.env.*.local
+
+# build output
+dist/
+
+# database
+*.sqlite
+*.db
+
+# drizzle
+drizzle/meta/
+
+# pipeline output
+pipeline/output/
+pipeline/__pycache__/
+pipeline/**/__pycache__/
+pipeline/**/*.pyc
+
+# logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# misc
+.vercel
+node_modules

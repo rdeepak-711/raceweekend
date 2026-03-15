@@ -1,0 +1,203 @@
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, foreignKey, primaryKey, bigint, int, varchar, mysqlEnum, timestamp, unique, time, decimal, text, json, longtext, year, char, date } from "drizzle-orm/mysql-core"
+import { sql } from "drizzle-orm"
+
+export const affiliateClicks = mysqlTable("affiliate_clicks", {
+	id: bigint({ mode: "number" }).autoincrement().notNull(),
+	experienceId: int("experience_id").references(() => experiences.id),
+	itineraryId: varchar("itinerary_id", { length: 12 }),
+	source: mysqlEnum(['feed','itinerary','featured','map','guide']),
+	sessionId: varchar("session_id", { length: 64 }),
+	userAgent: varchar("user_agent", { length: 500 }),
+	referer: varchar({ length: 1000 }),
+	clickedAt: timestamp("clicked_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "affiliate_clicks_id"}),
+]);
+
+export const experienceWindows = mysqlTable("experience_windows", {
+	id: int().autoincrement().notNull(),
+	raceId: int("race_id").references(() => races.id),
+	slug: varchar({ length: 50 }),
+	label: varchar({ length: 100 }),
+	dayOfWeek: mysqlEnum("day_of_week", ['Thursday','Friday','Saturday','Sunday']),
+	startTime: time("start_time"),
+	endTime: time("end_time"),
+	maxDurationHours: decimal("max_duration_hours", { precision: 3, scale: 1 }),
+	description: text(),
+	sortOrder: int("sort_order"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "experience_windows_id"}),
+	unique("ux_window_race_slug").on(table.raceId, table.slug),
+]);
+
+export const experienceWindowsMap = mysqlTable("experience_windows_map", {
+	experienceId: int("experience_id").notNull().references(() => experiences.id),
+	windowId: int("window_id").notNull().references(() => experienceWindows.id),
+},
+(table) => [
+	primaryKey({ columns: [table.experienceId, table.windowId], name: "experience_windows_map_experience_id_window_id"}),
+]);
+
+export const experiences = mysqlTable("experiences", {
+	id: int().autoincrement().notNull(),
+	raceId: int("race_id").references(() => races.id),
+	title: varchar({ length: 255 }),
+	slug: varchar({ length: 255 }),
+	category: mysqlEnum(['food','culture','adventure','daytrip','nightlife']),
+	description: text(),
+	shortDescription: varchar("short_description", { length: 500 }),
+	abstract: text(),
+	priceAmount: decimal("price_amount", { precision: 10, scale: 2 }),
+	priceCurrency: varchar("price_currency", { length: 3 }),
+	priceLabel: varchar("price_label", { length: 50 }),
+	durationHours: decimal("duration_hours", { precision: 3, scale: 1 }),
+	durationLabel: varchar("duration_label", { length: 50 }),
+	rating: decimal({ precision: 3, scale: 1 }),
+	reviewCount: int("review_count"),
+	imageUrl: varchar("image_url", { length: 500 }),
+	imageEmoji: varchar("image_emoji", { length: 10 }),
+	photos: json(),
+	affiliateUrl: varchar("affiliate_url", { length: 1000 }),
+	affiliateProductId: varchar("affiliate_product_id", { length: 100 }),
+	highlights: json(),
+	includes: json(),
+	excludes: json(),
+	importantInfo: text("important_info"),
+	reviewsSnapshot: json("reviews_snapshot"),
+	f1Context: text("f1_context"),
+	guideArticle: longtext("guide_article"),
+	faqItems: json("faq_items"),
+	meetingPoint: text("meeting_point"),
+	bestseller: tinyint(),
+	originalPrice: decimal("original_price", { precision: 10, scale: 2 }),
+	discountPct: int("discount_pct"),
+	hasPickUp: tinyint("has_pick_up"),
+	mobileVoucher: tinyint("mobile_voucher"),
+	instantConfirmation: tinyint("instant_confirmation"),
+	skipTheLine: tinyint("skip_the_line"),
+	optionsSnapshot: json("options_snapshot"),
+	seoKeywords: json("seo_keywords"),
+	lat: decimal({ precision: 10, scale: 7 }),
+	lng: decimal({ precision: 10, scale: 7 }),
+	languages: json(),
+	distanceKm: decimal("distance_km", { precision: 5, scale: 1 }),
+	neighborhood: varchar({ length: 100 }),
+	travelMins: int("travel_mins"),
+	sortOrder: int("sort_order"),
+	isFeatured: tinyint("is_featured").default(0),
+	f1WindowsLabel: varchar("f1_windows_label", { length: 255 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`(now())`),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).default(sql`(now())`).onUpdateNow(),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "experiences_id"}),
+	unique("ux_exp_race_product").on(table.raceId, table.affiliateProductId),
+]);
+
+export const itineraries = mysqlTable("itineraries", {
+	id: varchar({ length: 12 }).notNull(),
+	raceId: int("race_id").references(() => races.id),
+	sessionsSelected: json("sessions_selected"),
+	experiencesSelected: json("experiences_selected"),
+	itineraryJson: longtext("itinerary_json"),
+	groupSize: int("group_size").default(1),
+	notes: text(),
+	viewCount: int("view_count").default(0),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "itineraries_id"}),
+]);
+
+export const raceContent = mysqlTable("race_content", {
+	id: int().autoincrement().notNull(),
+	raceId: int("race_id").notNull(),
+	pageTitle: varchar("page_title", { length: 255 }),
+	pageDescription: text("page_description"),
+	pageKeywords: json("page_keywords"),
+	guideIntro: text("guide_intro"),
+	tipsContent: text("tips_content"),
+	faqItems: json("faq_items"),
+	faqLd: json("faq_ld"),
+	circuitFacts: json("circuit_facts"),
+	gettingThere: text("getting_there"),
+	whereToStay: text("where_to_stay"),
+	heroTitle: varchar("hero_title", { length: 255 }),
+	heroSubtitle: text("hero_subtitle"),
+	whyCityText: text("why_city_text"),
+	highlightsList: json("highlights_list"),
+	gettingThereIntro: text("getting_there_intro"),
+	transportOptions: json("transport_options"),
+	travelTips: json("travel_tips"),
+	cityGuide: longtext("city_guide"),
+	currency: varchar({ length: 3 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "race_content_id"}),
+	unique("race_content_race_id_unique").on(table.raceId),
+]);
+
+export const races = mysqlTable("races", {
+	id: int().autoincrement().notNull(),
+	series: mysqlEnum(['f1','motogp']).default('f1').notNull(),
+	slug: varchar({ length: 100 }),
+	name: varchar({ length: 255 }),
+	season: year(),
+	round: int(),
+	circuitName: varchar("circuit_name", { length: 255 }),
+	city: varchar({ length: 100 }),
+	country: varchar({ length: 100 }),
+	countryCode: char("country_code", { length: 2 }),
+	circuitLat: decimal("circuit_lat", { precision: 10, scale: 6 }),
+	circuitLng: decimal("circuit_lng", { precision: 10, scale: 6 }),
+	timezone: varchar({ length: 50 }),
+	// you can use { mode: 'date' }, if you want to have Date as type for this column
+	raceDate: date("race_date", { mode: 'string' }),
+	flagEmoji: varchar("flag_emoji", { length: 10 }),
+	isActive: tinyint("is_active").default(1),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "races_id"}),
+	unique("races_slug_unique").on(table.slug),
+]);
+
+export const sessions = mysqlTable("sessions", {
+	id: int().autoincrement().notNull(),
+	raceId: int("race_id").references(() => races.id),
+	name: varchar({ length: 100 }),
+	shortName: varchar("short_name", { length: 20 }),
+	sessionType: mysqlEnum("session_type", ['fp1','fp2','fp3','qualifying','sprint','race','warmup','practice','support','event']),
+	dayOfWeek: mysqlEnum("day_of_week", ['Thursday','Friday','Saturday','Sunday']),
+	startTime: time("start_time"),
+	endTime: time("end_time"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "sessions_id"}),
+	unique("ux_session_race_name").on(table.raceId, table.shortName),
+]);
+
+export const tickets = mysqlTable("tickets", {
+	id: bigint({ mode: "number" }).autoincrement().notNull(),
+	raceId: int("race_id").references(() => races.id),
+	stubhubEventId: varchar("stubhub_event_id", { length: 50 }),
+	title: varchar({ length: 255 }),
+	category: varchar({ length: 100 }),
+	priceMin: decimal("price_min", { precision: 10, scale: 2 }),
+	priceMax: decimal("price_max", { precision: 10, scale: 2 }),
+	currency: varchar({ length: 3 }),
+	quantityAvailable: int("quantity_available"),
+	ticketUrl: varchar("ticket_url", { length: 1000 }),
+	section: varchar({ length: 100 }),
+	row: varchar({ length: 20 }),
+	zone: varchar({ length: 100 }),
+	lastSyncedAt: timestamp("last_synced_at", { mode: 'string' }).default(sql`(now())`),
+},
+(table) => [
+	primaryKey({ columns: [table.id], name: "tickets_id"}),
+]);

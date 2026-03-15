@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* ============================================
+   APEX DESIGN TOKENS — Hyper-Industrial
+   ============================================ */
+
+@theme inline {
+  /* Backgrounds */
+  --color-rw-bg: #06060A;
+  --color-rw-bg-secondary: #0D0D15;
+  --color-rw-bg-tertiary: #141420;
+  --color-rw-bg-surface: #1A1A28;
+  --color-bg-apex: #06060A;
+
+  /* F1 Red */
+  --color-rw-f1: #E10600;
+  --color-rw-f1-hover: #FF1801;
+  --color-rw-f1-muted: rgba(225, 6, 0, 0.1);
+
+  /* MotoGP Orange */
+  --color-rw-motogp: #FF6B00;
+  --color-rw-motogp-hover: #FF8533;
+  --color-rw-motogp-muted: rgba(255, 107, 0, 0.1);
+
+  /* Teal / Data */
+  --color-rw-teal: #00D2BE;
+  --color-rw-teal-hover: #00E8D1;
+  --color-rw-teal-muted: rgba(0, 210, 190, 0.1);
+  --color-data-green: #00FF88;
+
+  /* Text */
+  --color-rw-text: #FFFFFF;
+  --color-rw-text-secondary: #B8B8CC;
+  --color-rw-text-tertiary: #8E8E9C;
+  --color-rw-text-muted: #5A5A6E;
+
+  /* Borders */
+  --color-rw-border: #2A2A3C;
+  --color-rw-border-medium: #3F3F5A;
+  --color-electric-white: rgba(255, 255, 255, 0.2);
+
+  /* Fonts */
+  --font-display: var(--font-titillium-web), sans-serif;
+  --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "Fira Code", monospace;
+
+  /* Animations */
+  --animate-float: float 4s ease-in-out infinite alternate;
+  --animate-lean: lean 3s ease-in-out infinite alternate;
+  --animate-drs: drs-sweep 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ============================================
+   KEYFRAMES
+   ============================================ */
+
+@keyframes float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+
+@keyframes lean {
+  from { transform: rotate(-60deg); }
+  to { transform: rotate(-64deg); }
+}
+
+@keyframes drs-sweep {
+  from { transform: scaleX(0); transform-origin: left; }
+  to { transform: scaleX(1); transform-origin: left; }
+}
+
+@keyframes typewriter {
+  from { border-right-color: var(--accent-teal); }
+  to { border-right-color: transparent; }
+}
+
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
+
+:root {
+  --bg-primary: #06060A;
+  --bg-secondary: #0D0D15;
+  --bg-tertiary: #141420;
+  --bg-surface: #1A1A28;
+
+  --accent-f1: #E10600;
+  --accent-f1-hover: #FF1801;
+  --accent-f1-muted: rgba(225, 6, 0, 0.1);
+  --accent-motogp: #FF6B00;
+  --accent-motogp-hover: #FF8533;
+  --accent-motogp-muted: rgba(255, 107, 0, 0.1);
+  --accent-teal: #00D2BE;
+  --accent-teal-hover: #00E8D1;
+  --accent-teal-muted: rgba(0, 210, 190, 0.1);
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #B8B8CC;
+  --text-tertiary: #8E8E9C;
+  --text-muted: #5A5A6E;
+
+  --border-subtle: #2A2A3C;
+  --border-medium: #3F3F5A;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  cursor: none; /* Handled by CustomCursor.tsx in RootLayout */
+  overflow-x: hidden;
+}
+
+/* Hex Mesh Pattern */
+.bg-apex-mesh {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L37.32 10V30L20 40L2.68 30V10L20 0Z' fill='none' stroke='white' stroke-opacity='0.03' stroke-width='0.5'/%3E%3C/svg%3E");
+}
+
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Typewriter Cursor */
+.typewriter-cursor::after {
+  content: '|';
+  animation: typewriter 0.8s infinite;
+  margin-left: 2px;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Reduced motion guard */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

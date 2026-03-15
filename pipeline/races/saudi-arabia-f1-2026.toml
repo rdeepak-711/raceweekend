@@ -1,0 +1,33 @@
+[race]
+slug = "saudi-arabia-f1-2026"
+series = "f1"
+name = "Saudi Arabian Grand Prix 2026"
+season = 2026
+round = 5
+circuit_name = "Jeddah Corniche Circuit"
+city = "Jeddah"
+country = "Saudi Arabia"
+country_code = "SA"
+circuit_lat = 21.6319
+circuit_lng = 39.1044
+timezone = "Asia/Riyadh"
+race_date = "2026-04-19"
+flag_emoji = "🇸🇦"
+track_image_path = "/tracks/Saudi_Arabia_Circuit.avif"
+
+[gyg]
+search_query = "Jeddah Saudi Arabia things to do"
+location_slug = "jeddah-l1547"
+pages = 3
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 40
+
+[schedule]
+string = """
+Friday 17 Apr: FP1 16:30-17:30, FP2 20:00-21:00
+Saturday 18 Apr: FP3 16:30-17:30, Qualifying 20:00-21:00
+Sunday 19 Apr: Race 20:00-22:00
+"""

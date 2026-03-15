@@ -1,0 +1,10 @@
+{
+  "nodes": [
+    {
+      "id": "document",
+      "type": "frame",
+      "name": "Document",
+      "children": []
+    }
+  ]
+}

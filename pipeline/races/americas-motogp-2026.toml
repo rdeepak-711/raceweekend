@@ -1,0 +1,33 @@
+[race]
+slug = "americas-motogp-2026"
+series = "motogp"
+name = "Americas Grand Prix 2026"
+season = 2026
+round = 3
+circuit_name = "Circuit of the Americas"
+city = "Austin"
+country = "USA"
+country_code = "US"
+circuit_lat = 30.1328
+circuit_lng = -97.6411
+timezone = "America/Chicago"
+race_date = "2026-03-29"
+flag_emoji = "🇺🇸"
+track_image_path = "/tracks/Americas_Circuit.avif"
+
+[gyg]
+search_query = "Austin Texas things to do"
+location_slug = "austin-l211"
+pages = 3
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 45
+
+[schedule]
+string = """
+Friday 27 Mar: Free Practice 1 10:45-11:30, Practice 15:00-16:00
+Saturday 28 Mar: Free Practice 2 10:10-10:40, Qualifying 10:50-11:30, Sprint 15:00-15:45
+Sunday 29 Mar: Warmup 09:40-10:00, Race 14:00-15:00
+"""

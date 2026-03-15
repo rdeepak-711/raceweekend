@@ -1,0 +1,33 @@
+[race]
+slug = "netherlands-f1-2026"
+series = "f1"
+name = "Dutch Grand Prix 2026"
+season = 2026
+round = 14
+circuit_name = "Circuit Zandvoort"
+city = "Zandvoort"
+country = "Netherlands"
+country_code = "NL"
+circuit_lat = 52.3888
+circuit_lng = 4.5409
+timezone = "Europe/Amsterdam"
+race_date = "2026-08-23"
+flag_emoji = "🇳🇱"
+track_image_path = "/tracks/Netherlands_Circuit.avif"
+
+[gyg]
+search_query = "Zandvoort Amsterdam things to do"
+location_slug = "amsterdam-l36"
+pages = 3
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 45
+
+[schedule]
+string = """
+Friday 21 Aug: FP1 12:30-13:30, FP2 16:00-17:00
+Saturday 22 Aug: FP3 11:30-12:30, Qualifying 15:00-16:00
+Sunday 23 Aug: Race 15:00-17:00
+"""

@@ -1,0 +1,33 @@
+[race]
+slug = "canada-f1-2026"
+series = "f1"
+name = "Canadian Grand Prix 2026"
+season = 2026
+round = 7
+circuit_name = "Circuit Gilles Villeneuve"
+city = "Montreal"
+country = "Canada"
+country_code = "CA"
+circuit_lat = 45.5000
+circuit_lng = -73.5228
+timezone = "America/Toronto"
+race_date = "2026-05-25"
+flag_emoji = "🇨🇦"
+track_image_path = "/tracks/Canada_Circuit.avif"
+
+[gyg]
+search_query = "Montreal things to do"
+location_slug = "montreal-l189"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 45
+
+[schedule]
+string = """
+Friday 23 May: FP1 13:30-14:30, Sprint Qualifying 17:30-18:14
+Saturday 24 May: Sprint 12:00-13:00, Qualifying 16:00-17:00
+Sunday 25 May: Race 14:00-16:00
+"""

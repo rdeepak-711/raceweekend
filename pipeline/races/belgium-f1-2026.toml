@@ -1,0 +1,33 @@
+[race]
+slug = "belgium-f1-2026"
+series = "f1"
+name = "Belgian Grand Prix 2026"
+season = 2026
+round = 12
+circuit_name = "Circuit de Spa-Francorchamps"
+city = "Spa"
+country = "Belgium"
+country_code = "BE"
+circuit_lat = 50.4372
+circuit_lng = 5.9714
+timezone = "Europe/Brussels"
+race_date = "2026-07-19"
+flag_emoji = "🇧🇪"
+track_image_path = "/tracks/Belgium_Circuit.avif"
+
+[gyg]
+search_query = "Spa Liege Belgium things to do"
+location_slug = "liege-l1121"
+pages = 2
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 40
+
+[schedule]
+string = """
+Friday 17 Jul: FP1 13:30-14:30, FP2 17:00-18:00
+Saturday 18 Jul: FP3 12:30-13:30, Qualifying 16:00-17:00
+Sunday 19 Jul: Race 15:00-17:00
+"""

@@ -1,0 +1,33 @@
+[race]
+slug = "france-motogp-2026"
+series = "motogp"
+name = "French Grand Prix 2026"
+season = 2026
+round = 6
+circuit_name = "Bugatti Circuit"
+city = "Le Mans"
+country = "France"
+country_code = "FR"
+circuit_lat = 47.9567
+circuit_lng = 0.2071
+timezone = "Europe/Paris"
+race_date = "2026-05-10"
+flag_emoji = "🇫🇷"
+track_image_path = "/tracks/France_Circuit.avif"
+
+[gyg]
+search_query = "Le Mans France things to do"
+location_slug = "le-mans-l55"
+pages = 2
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 40
+
+[schedule]
+string = """
+Friday 8 May: Free Practice 1 10:45-11:30, Practice 15:00-16:00
+Saturday 9 May: Free Practice 2 10:10-10:40, Qualifying 10:50-11:30, Sprint 15:00-15:45
+Sunday 10 May: Warmup 09:40-10:00, Race 14:00-15:00
+"""

@@ -1,0 +1,33 @@
+[race]
+slug = "thailand-motogp-2026"
+series = "motogp"
+name = "Thailand Grand Prix 2026"
+season = 2026
+round = 1
+circuit_name = "Chang International Circuit"
+city = "Buriram"
+country = "Thailand"
+country_code = "TH"
+circuit_lat = 14.9658
+circuit_lng = 103.0881
+timezone = "Asia/Bangkok"
+race_date = "2026-03-01"
+flag_emoji = "🇹🇭"
+track_image_path = "/tracks/Thailand_Circuit.avif"
+
+[gyg]
+search_query = "Buriram things to do"
+location_slug = "buriram-l1681"
+pages = 2
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 40
+
+[schedule]
+string = """
+Friday 27 Feb: Free Practice 1 10:45-11:30, Practice 15:00-16:00
+Saturday 28 Feb: Free Practice 2 10:10-10:40, Qualifying 10:50-11:30, Sprint 15:00-15:45
+Sunday 1 Mar: Warmup 09:40-10:00, Race 15:00-16:00
+"""

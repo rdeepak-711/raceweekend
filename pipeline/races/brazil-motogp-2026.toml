@@ -1,0 +1,33 @@
+[race]
+slug = "brazil-motogp-2026"
+series = "motogp"
+name = "Brazil MotoGP Grand Prix 2026"
+season = 2026
+round = 2
+circuit_name = "Autódromo Internacional Ayrton Senna"
+city = "São Paulo"
+country = "Brazil"
+country_code = "BR"
+circuit_lat = -23.7015
+circuit_lng = -46.6978
+timezone = "America/Sao_Paulo"
+race_date = "2026-03-22"
+flag_emoji = "🇧🇷"
+track_image_path = "/tracks/Brazil_Circuit.avif"
+
+[gyg]
+search_query = "São Paulo things to do"
+location_slug = "sao-paulo-l2959"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 45
+
+[schedule]
+string = """
+Friday 20 Mar: Practice 1 09:00-09:45, Qualifying 13:50-14:30
+Saturday 21 Mar: Sprint 15:00-15:25
+Sunday 22 Mar: Warmup 09:40-10:00, Race 15:00-16:00
+"""

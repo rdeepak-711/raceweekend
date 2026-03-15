@@ -1,0 +1,46 @@
+{
+  "hero_title": "Belgian Grand Prix 2026: The Ardennes Adventure",
+  "hero_subtitle": "Conquer the legendary Spa-Francorchamps, where history meets high speed.",
+  "guide_intro": "Experience the thrill of Formula 1 at its most spectacular as the grid descends upon the legendary Circuit de Spa-Francorchamps for the 2026 Belgian Grand Prix. Nestled in the heart of the rolling Ardennes forest, this historic venue offers a unique blend of high-speed technicality and unpredictable nature. It remains a firm favorite for both drivers and fans, promising an unforgettable weekend of racing action.",
+  "why_city_text": "Visiting the Ardennes region for the Belgian Grand Prix is a pilgrimage every F1 fan should make. Unlike city-based races, Spa offers a raw, natural setting where the track winds through dense forests and over significant elevation changes. The town of Spa itself is world-renowned for its thermal springs and historic architecture, providing a charming contrast to the roaring engines. The atmosphere is electric, with fans from across Europe creating a vibrant, multi-cultural festival. Whether you're witnessing the cars fly through Eau Rouge or enjoying authentic Belgian waffles and frites, the combination of world-class motorsport and the scenic beauty of Wallonia creates a racing experience that is truly one of a kind. The unpredictable weather only adds to the drama, ensuring that every session is a potential classic. The sheer scale of the 7km circuit means there are endless vantage points, making it one of the most rewarding tracks for those who enjoy exploring on foot.",
+  "highlights_list": [
+    "Witness the breathtaking speed as cars tackle the iconic Eau Rouge and Raidillon complex.",
+    "Explore the F1 Fan Zone near Eau Rouge for driver appearances and live DJ sets.",
+    "Hike the track perimeter for incredible views from Pouhon and the Bus Stop chicane.",
+    "Visit the historic Stavelot Abbey and its motorsport museum dedicated to the circuit.",
+    "Enjoy the local village atmosphere in Francorchamps, just a short walk from the Ster entrance.",
+    "Indulge in authentic Belgian frites and world-class local beers between racing sessions."
+  ],
+  "circuit_facts": {
+    "Lap Record": "1:44.701 (Sergio Perez, 2024)",
+    "Circuit Length": "7.004 km",
+    "Turns": "19",
+    "DRS Zones": "2 (Kemmel Straight and Start-Finish Straight)"
+  },
+  "faq_items": [
+    {
+      "question": "How to get to the circuit?",
+      "answer": "Take a train to Verviers-Central, then use the dedicated shuttle buses (Lines 294/395). Alternatively, pre-book a City Shuttle from major cities like Brussels, Liège, or Aachen for direct access."
+    },
+    {
+      "question": "When to arrive at the track?",
+      "answer": "Aim to arrive by 07:00–08:00 AM, especially on race day. Traffic is notoriously heavy in the narrow Ardennes roads, and prime General Admission (Bronze) spots fill up very early."
+    },
+    {
+      "question": "What to do between sessions?",
+      "answer": "Explore the expansive Fan Zone near Eau Rouge, walk the 7km track perimeter for unique photo opportunities, or visit the village of Francorchamps for a local brasserie experience."
+    },
+    {
+      "question": "Where to eat near the circuit?",
+      "answer": "In Francorchamps, try Le Roannay for fine dining. Within the circuit, don't miss the Belgian specialty stalls serving authentic waffles, 'frites' with various sauces, and local Belgian beers."
+    },
+    {
+      "question": "What is the expected weather?",
+      "answer": "Highly unpredictable. Even in mid-July, the 'Spa Microclimate' can bring heavy rain to one part of the track while another stays dry. Pack a poncho, sunscreen, and sturdy waterproof boots."
+    },
+    {
+      "question": "Any booking tips?",
+      "answer": "Book through the official Spa Grand Prix website to avoid reseller markups. For accommodation, hotels in Spa sell out early; consider staying in Liège or Verviers and using the efficient shuttle services."
+    }
+  ]
+}

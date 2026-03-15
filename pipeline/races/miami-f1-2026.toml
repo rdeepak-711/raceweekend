@@ -1,0 +1,33 @@
+[race]
+slug = "miami-f1-2026"
+series = "f1"
+name = "Miami Grand Prix 2026"
+season = 2026
+round = 6
+circuit_name = "Miami International Autodrome"
+city = "Miami"
+country = "USA"
+country_code = "US"
+circuit_lat = 25.9581
+circuit_lng = -80.2389
+timezone = "America/New_York"
+race_date = "2026-05-04"
+flag_emoji = "🇺🇸"
+track_image_path = "/tracks/Miami_Circuit.avif"
+
+[gyg]
+search_query = "Miami things to do"
+location_slug = "miami-l2115"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 47
+
+[schedule]
+string = """
+Friday 2 May: FP1 12:30-13:30, Sprint Qualifying 16:30-17:14
+Saturday 3 May: Sprint 12:00-13:00, Qualifying 16:00-17:00
+Sunday 4 May: Race 16:00-18:00
+"""

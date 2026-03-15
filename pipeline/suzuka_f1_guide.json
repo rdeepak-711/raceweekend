@@ -1,0 +1,46 @@
+{
+  "hero_title": "Japanese Grand Prix 2026: The Ultimate Suzuka Fan Guide",
+  "hero_subtitle": "Experience F1 in the Heart of Japan’s Motorsport Heritage",
+  "guide_intro": "The Japanese Grand Prix returns to the legendary Suzuka International Racing Course for Round 3 of the 2026 season. Known for its unique figure-of-eight layout and incredibly passionate fans, Suzuka offers one of the most technical and thrilling challenges on the F1 calendar.",
+  "why_city_text": "Visiting Suzuka for the Japanese Grand Prix is a bucket-list experience for any true motorsport fan. The atmosphere is unlike anywhere else in the world, driven by the most dedicated and polite fans in F1 history. Beyond the track, the region serves as a gateway to authentic Japanese culture. Located just a short train ride from the vibrant city of Nagoya and the historical depths of Osaka, Suzuka allows you to blend high-octane racing with world-class gastronomy and tradition. Late March is a particularly magical time to visit, as it coincides with the beginning of the world-famous cherry blossom (Sakura) season, turning the local parks and temple grounds into a sea of pink and white. Whether you're navigating the amusement park attached to the circuit, riding the iconic Ferris wheel for a bird's-eye view of the Esses, or enjoying local delicacies like Miso Katsu in Nagoya, the trip offers a perfect balance of adrenaline and serenity.",
+  "highlights_list": [
+    "Witness the high-speed 130R corner and the technical 'S' Curves in person.",
+    "Ride the iconic Ferris wheel for a panoramic view of the entire circuit.",
+    "Explore the Suzuka Circuit Park, an on-site amusement park perfect for all ages.",
+    "Experience the unique 'Sakura' season as cherry blossoms begin to bloom in late March.",
+    "Join the sea of fans in the grandstands with their creative and elaborate F1-themed outfits.",
+    "Savor local Mie Prefecture delicacies like Matsusaka beef and Ise-Udon."
+  ],
+  "circuit_facts": {
+    "Lap Record": "1:30.983 (Lewis Hamilton, 2019)",
+    "Circuit Length": "5.807 km",
+    "Turns": "18",
+    "DRS Zones": "1 (Main Straight)"
+  },
+  "faq_items": [
+    {
+      "question": "How to get to the circuit?",
+      "answer": "The most efficient way is by train from Nagoya or Osaka. Take the Kintetsu Railway to Shiroko Station, then use the dedicated shuttle bus service to the circuit. Alternatively, the JR Kansai Main Line to Suzuka Circuit Ino Station is a short walk from the track."
+    },
+    {
+      "question": "When to arrive at the track?",
+      "answer": "Arrive at least 2 hours before the first session each day. Japanese fans are very punctual, and the circuit's amusement park and fan zones are busy from early morning. For Sunday's race, getting to your seat early is essential to soak in the pre-race atmosphere."
+    },
+    {
+      "question": "What to do between sessions?",
+      "answer": "Visit the GP Square for official team merchandise and interactive exhibits. Don't miss the Suzuka Circuit Park (Motopia), where you can enjoy various rides, or take a walk to the Ferris wheel for the best photography spot on the track."
+    },
+    {
+      "question": "Where to eat near the circuit?",
+      "answer": "The circuit has excellent food stalls offering Japanese favorites like Takoyaki, Yakisoba, and Karaage. For a more formal meal, head into Suzuka City or back to Nagoya for its famous 'Nagoya Meshi' including Hitsumabushi (eel) and Miso Katsu."
+    },
+    {
+      "question": "What is the expected weather?",
+      "answer": "In late March, expect cool temperatures ranging from 8°C to 16°C. While it is often sunny, spring in Japan can be unpredictable with occasional light rain. Dress in layers and bring a waterproof jacket just in case."
+    },
+    {
+      "question": "Any booking tips?",
+      "answer": "Book your accommodation in Nagoya as early as possible, as hotels in Suzuka itself are very limited. Purchase a Kintetsu Rail Pass or a JR Pass in advance to save on travel costs between major cities and the circuit."
+    }
+  ]
+}

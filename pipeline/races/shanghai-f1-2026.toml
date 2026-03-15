@@ -1,0 +1,33 @@
+[race]
+slug = "shanghai-f1-2026"
+series = "f1"
+name = "Chinese Grand Prix 2026"
+season = 2026
+round = 2
+circuit_name = "Shanghai International Circuit"
+city = "Shanghai"
+country = "China"
+country_code = "CN"
+circuit_lat = 31.3385
+circuit_lng = 121.220
+timezone = "Asia/Shanghai"
+race_date = "2026-03-15"
+flag_emoji = "🇨🇳"
+track_image_path = "/tracks/Shanghai_Circuit.avif"
+
+[gyg]
+search_query = "Shanghai things to do"
+location_slug = "shanghai-l162"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 47
+
+[schedule]
+string = """
+Friday 13 Mar: FP1 11:30-12:30, Sprint Qualifying 15:30-16:14
+Saturday 14 Mar: Sprint 11:00-12:00, Qualifying 15:00-16:00
+Sunday 15 Mar: Race 15:00-17:00
+"""

@@ -1,0 +1,33 @@
+[race]
+slug = "bahrain-f1-2026"
+series = "f1"
+name = "Bahrain Grand Prix 2026"
+season = 2026
+round = 4
+circuit_name = "Bahrain International Circuit"
+city = "Sakhir"
+country = "Bahrain"
+country_code = "BH"
+circuit_lat = 26.0325
+circuit_lng = 50.5106
+timezone = "Asia/Bahrain"
+race_date = "2026-04-12"
+flag_emoji = "🇧🇭"
+track_image_path = "/tracks/Bahrain_Circuit.avif"
+
+[gyg]
+search_query = "Bahrain Manama things to do"
+location_slug = "manama-l3600"
+pages = 3
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 40
+
+[schedule]
+string = """
+Friday 10 Apr: FP1 14:00-15:00, FP2 18:00-19:00
+Saturday 11 Apr: FP3 14:00-15:00, Qualifying 18:00-19:00
+Sunday 12 Apr: Race 18:00-20:00
+"""

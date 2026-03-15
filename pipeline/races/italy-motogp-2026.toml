@@ -1,0 +1,33 @@
+[race]
+slug = "italy-motogp-2026"
+series = "motogp"
+name = "Italian Grand Prix 2026"
+season = 2026
+round = 8
+circuit_name = "Autodromo Internazionale del Mugello"
+city = "Mugello"
+country = "Italy"
+country_code = "IT"
+circuit_lat = 43.9975
+circuit_lng = 11.3719
+timezone = "Europe/Rome"
+race_date = "2026-05-31"
+flag_emoji = "🇮🇹"
+track_image_path = "/tracks/Mugello_Circuit.avif"
+
+[gyg]
+search_query = "Florence Tuscany things to do"
+location_slug = "florence-l94"
+pages = 3
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 40
+
+[schedule]
+string = """
+Friday 29 May: Free Practice 1 10:45-11:30, Practice 15:00-16:00
+Saturday 30 May: Free Practice 2 10:10-10:40, Qualifying 10:50-11:30, Sprint 15:00-15:45
+Sunday 31 May: Warmup 09:40-10:00, Race 14:00-15:00
+"""

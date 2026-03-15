@@ -1,0 +1,33 @@
+[race]
+slug = "australia-f1-2026"
+series = "f1"
+name = "Australian Grand Prix 2026"
+season = 2026
+round = 1
+circuit_name = "Albert Park Circuit"
+city = "Melbourne"
+country = "Australia"
+country_code = "AU"
+circuit_lat = -37.8497
+circuit_lng = 144.9680
+timezone = "Australia/Melbourne"
+race_date = "2026-03-08"
+flag_emoji = "🇦🇺"
+track_image_path = "/tracks/Australia_Circuit.avif"
+
+[gyg]
+search_query = "Melbourne things to do"
+location_slug = "melbourne-l55"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 47
+
+[schedule]
+string = """
+Friday 6 Mar: FP1 12:30-13:30, FP2 16:00-17:00
+Saturday 7 Mar: FP3 12:30-13:30, Qualifying 16:00-17:00
+Sunday 8 Mar: Race 15:00-17:00
+"""

@@ -1,0 +1,33 @@
+[race]
+slug = "city-series-year"
+series = "f1"              # "f1" or "motogp"
+name = "Race Name Year"
+season = 2026
+round = 0
+circuit_name = "Circuit Name"
+city = "City"
+country = "Country"
+country_code = "XX"        # ISO 3166-1 alpha-2
+circuit_lat = 0.0000
+circuit_lng = 0.0000
+timezone = "Region/City"
+race_date = "2026-MM-DD"   # Sunday race day
+flag_emoji = "🏁"
+track_image_path = "/tracks/City_Circuit.avif"
+
+[gyg]
+search_query = "City things to do"
+location_slug = "city-lXXXX"
+pages = 3
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 45
+
+[schedule]
+string = """
+Friday DD Mon: FP1 HH:MM-HH:MM, FP2 HH:MM-HH:MM
+Saturday DD Mon: FP3 HH:MM-HH:MM, Qualifying HH:MM-HH:MM
+Sunday DD Mon: Race HH:MM-HH:MM
+"""

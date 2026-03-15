@@ -1,0 +1,33 @@
+[race]
+slug = "suzuka-f1-2026"
+series = "f1"
+name = "Japanese Grand Prix 2026"
+season = 2026
+round = 3
+circuit_name = "Suzuka International Racing Course"
+city = "Suzuka"
+country = "Japan"
+country_code = "JP"
+circuit_lat = 34.8431
+circuit_lng = 136.541
+timezone = "Asia/Tokyo"
+race_date = "2026-03-29"
+flag_emoji = "🇯🇵"
+track_image_path = "/tracks/Japan_Circuit.avif"
+
+[gyg]
+search_query = "Suzuka Nagoya things to do"
+location_slug = "nagoya-l101"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 47
+
+[schedule]
+string = """
+Friday 27 Mar: FP1 11:30-12:30, FP2 15:00-16:00
+Saturday 28 Mar: FP3 11:30-12:30, Qualifying 15:00-16:00
+Sunday 29 Mar: Race 14:00-16:00
+"""
