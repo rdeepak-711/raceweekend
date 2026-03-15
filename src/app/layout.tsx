@@ -118,15 +118,15 @@ export default function RootLayout({
         className={`${titilliumWeb.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <CustomCursor />
-        <Suspense>
-          <NavWrapper />
-          <SeriesProvider>
-            <CurrencyProvider>
+        <SeriesProvider>
+          <CurrencyProvider>
+            <Suspense>
+              <NavWrapper />
               <main>{children}</main>
               <Footer />
-            </CurrencyProvider>
-          </SeriesProvider>
-        </Suspense>
+            </Suspense>
+          </CurrencyProvider>
+        </SeriesProvider>
       </body>
     </html>
   );
