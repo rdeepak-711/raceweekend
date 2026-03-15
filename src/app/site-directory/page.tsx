@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import { getRacesBySeries } from '@/services/race.service';
 
@@ -21,6 +22,7 @@ const RACE_SECTIONS = [
 ];
 
 export default async function SitemapPage() {
+  await headers();
   const [f1Races, motogpRaces] = await Promise.all([
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),

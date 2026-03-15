@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
+import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import { getFeaturedExperiences } from '@/services/experience.service';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import ExperienceCard from '@/components/experiences/ExperienceCard';

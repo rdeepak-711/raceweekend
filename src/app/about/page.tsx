@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  await headers();
   return (
     <div className="min-h-screen pt-20 pb-24 px-4 bg-[var(--bg-primary)]">
       <div className="max-w-3xl mx-auto">

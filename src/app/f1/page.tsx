@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { getRacesBySeries } from '@/services/race.service';
 import SeriesLandingClient from '@/components/race/SeriesLandingClient';
 
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function F1LandingPage() {
+  await headers();
   const races = await getRacesBySeries('f1');
 
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import { getRacesBySeries, getActiveRaceBySeries } from '@/services/race.service';
 import LiveStatusBar from '@/components/race/LiveStatusBar';
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
+  await headers();
   // Fetch F1 and MotoGP races in parallel
   const [f1Races, motogpRaces, nextF1, nextMotogp] = await Promise.all([
     getRacesBySeries('f1'),

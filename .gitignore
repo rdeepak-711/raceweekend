@@ -9,6 +9,7 @@ out/
 .env
 .env.local
 .env.*.local
+.env.tidb
 
 # build output
 dist/
