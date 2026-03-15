@@ -12,8 +12,22 @@ const globalForDb = global as unknown as {
   pool: mysql.Pool | undefined;
 };
 
-const poolConfig: mysql.PoolOptions = env.DATABASE_URL 
-  ? { uri: env.DATABASE_URL }
+const isProd = process.env.NODE_ENV === 'production';
+
+// Sanitize DATABASE_URL (remove single quotes if they exist)
+const rawUrl = env.DATABASE_URL?.replace(/^'|'$/g, '');
+
+const host = env.DATABASE_HOST;
+const isLocal = host === 'localhost' || host === '127.0.0.1' || !host;
+
+if (isProd && !rawUrl && isLocal) {
+  throw new Error(`[db] STOPSHIP: Production build is attempting to connect to local database (${host || 'empty host'}). Please verify DATABASE_URL or DATABASE_HOST in Vercel settings.`);
+}
+
+console.log(`[db] Initializing connection pool to: ${rawUrl ? 'EXTERNAL_URL' : host}`);
+
+const poolConfig: mysql.PoolOptions = rawUrl 
+  ? { uri: rawUrl }
   : {
       host: env.DATABASE_HOST,
       port: env.DATABASE_PORT,
