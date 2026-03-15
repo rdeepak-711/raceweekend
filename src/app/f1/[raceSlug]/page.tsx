@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -12,14 +13,9 @@ import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import { getF1Meetings, getF1Sessions } from '@/lib/api/openf1';
 import LiveTacticalHub from '@/components/race/LiveTacticalHub';
 import RelatedRaces from '@/components/race/RelatedRaces';
-import { getRaceStaticParams } from '@/lib/staticParams';
 import { isSoon, getUrgencyMessage } from '@/lib/utils';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
-
-export async function generateStaticParams() {
-  return getRaceStaticParams('f1');
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
@@ -48,6 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function F1RacePage({ params }: Props) {
+  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();

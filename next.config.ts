@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  ppr: 'incremental',
-reactCompiler: true,
+  reactCompiler: true,
+  cacheComponents: true,
   compress: true,
   images: {
     qualities: [75, 80, 90],

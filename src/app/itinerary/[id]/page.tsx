@@ -8,6 +8,7 @@ import { races } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import ItineraryView from '@/components/itinerary/ItineraryView';
 import { getRaceById } from '@/services/race.service';
+import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ id: string }>; }
 
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ItineraryViewPage({ params }: Props) {
+  await headers();
   const { id } = await params;
   const itinerary = await getItinerary(id);
   if (!itinerary) notFound();

@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getF1Meetings, getF1Sessions } from '@/lib/api/openf1';
 
-export const revalidate = 60;
-
 export interface LiveSessionData {
   status: 'live' | 'upcoming' | 'none';
   sessionName?: string;

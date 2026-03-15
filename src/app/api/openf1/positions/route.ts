@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionPositions, getSessionDrivers } from '@/lib/api/openf1';
 
-export const revalidate = 30;
-
 export interface PositionEntry {
   position: number;
   driverNumber: number;

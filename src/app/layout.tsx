@@ -8,6 +8,7 @@ import CustomCursor from "@/components/layout/CustomCursor";
 import Script from "next/script";
 import { SeriesProvider } from "@/context/SeriesContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import { Suspense } from "react";
 
 const titilliumWeb = Titillium_Web({
   variable: "--font-titillium-web",
@@ -115,13 +116,15 @@ export default function RootLayout({
         className={`${titilliumWeb.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <CustomCursor />
-        <SeriesProvider>
-          <CurrencyProvider>
-            <NavWrapper />
-            <main>{children}</main>
-            <Footer />
-          </CurrencyProvider>
-        </SeriesProvider>
+        <Suspense>
+          <SeriesProvider>
+            <CurrencyProvider>
+              <NavWrapper />
+              <main>{children}</main>
+              <Footer />
+            </CurrencyProvider>
+          </SeriesProvider>
+        </Suspense>
       </body>
     </html>
   );

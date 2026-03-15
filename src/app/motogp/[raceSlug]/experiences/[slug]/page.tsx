@@ -9,13 +9,9 @@ import ExperienceSuggestions from '@/components/experiences/ExperienceSuggestion
 import PhotoSlider from '@/components/experiences/PhotoSlider';
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants/categories';
 import GuideAccordion from '@/components/race/GuideAccordion';
-import { getExperienceStaticParams } from '@/lib/staticParams';
+import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string; slug: string }>; }
-
-export async function generateStaticParams() {
-  return getExperienceStaticParams('motogp');
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug, slug } = await params;
@@ -38,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MotoGPExperienceDetailPage({ params }: Props) {
+  await headers();
   const { raceSlug, slug } = await params;
   const [race, experience] = await Promise.all([
     getRaceBySlug(raceSlug, 'motogp'),

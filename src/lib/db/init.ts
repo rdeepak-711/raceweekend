@@ -1,5 +1,4 @@
 import mysql from 'mysql2/promise';
-import { execSync } from 'child_process';
 
 let initialized = false;
 
@@ -61,13 +60,6 @@ export async function initDatabase(): Promise<void> {
     }
 
     await conn.end();
-
-    console.log('[db] Syncing tables from schema.ts...');
-    execSync('npx drizzle-kit push --force', {
-      stdio: 'pipe',
-      cwd: process.cwd(),
-    });
-    console.log('[db] All tables synced from schema.ts');
 
     initialized = true;
   } catch (error) {

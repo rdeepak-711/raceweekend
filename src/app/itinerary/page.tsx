@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { getRacesBySeries } from '@/services/race.service';
 import { getExperiencesByRace, getExperiencesByIds } from '@/services/experience.service';
 import { getSessionsByRace } from '@/services/race.service';
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ItineraryPage() {
+  await headers();
   // Fetch upcoming races for both series
   const [f1Races, motoGPRaces] = await Promise.all([
     getRacesBySeries('f1'),

@@ -12,13 +12,9 @@ import { marked } from 'marked';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getSectionIcon, SECTION_ICONS_MOTOGP } from '@/lib/constants/icons';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { getRaceStaticParams } from '@/lib/staticParams';
+import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
-
-export async function generateStaticParams() {
-  return getRaceStaticParams('motogp');
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
@@ -59,6 +55,7 @@ const SUB_PAGES = [
 ];
 
 export default async function MotoGPGuidePage({ params }: Props) {
+  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();

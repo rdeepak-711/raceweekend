@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
@@ -9,13 +10,8 @@ import { getF1Meetings, getF1Sessions } from '@/lib/api/openf1';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
-import { getRaceStaticParams } from '@/lib/staticParams';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
-
-export async function generateStaticParams() {
-  return getRaceStaticParams('f1');
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
@@ -38,8 +34,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
-
-export const revalidate = 3600;
 
 async function findLiveSessionKey(cityName: string): Promise<number | null> {
   try {
@@ -64,6 +58,7 @@ async function findLiveSessionKey(cityName: string): Promise<number | null> {
 }
 
 export default async function F1SchedulePage({ params }: Props) {
+  await headers();
   const { raceSlug } = await params;
   const result = await getRaceWithSessions(raceSlug);
   if (!result) notFound();

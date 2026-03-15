@@ -87,12 +87,10 @@ export const getRaceWithSessions = cache(async (slug: string): Promise<{ race: R
 });
 
 export const getActiveRaceBySeries = cache(async (series: RaceSeries): Promise<Race | null> => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
   const [row] = await db
     .select()
     .from(races)
-    .where(and(eq(races.series, series), gte(races.race_date, today)))
+    .where(and(eq(races.series, series), gte(races.race_date, sql`CURDATE()`)))
     .orderBy(asc(races.race_date))
     .limit(1);
   return row ? mapRace(row) : null;

@@ -27,8 +27,6 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 3600;
-
 export default async function HomePage() {
   // Fetch F1 and MotoGP races in parallel
   const [f1Races, motogpRaces, nextF1, nextMotogp] = await Promise.all([
