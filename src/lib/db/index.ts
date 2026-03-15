@@ -11,14 +11,21 @@ const globalForDb = global as unknown as {
   pool: mysql.Pool | undefined;
 };
 
+const isProd = process.env.NODE_ENV === 'production';
+
+// Fail early if no DB config is present in production
+if (isProd && !process.env.DATABASE_URL && !process.env.DATABASE_HOST) {
+  throw new Error('[db] Missing database connection details (DATABASE_URL or DATABASE_HOST)');
+}
+
 const poolConfig: mysql.PoolOptions = process.env.DATABASE_URL 
   ? { uri: process.env.DATABASE_URL }
   : {
-      host: process.env.DATABASE_HOST ?? 'localhost',
+      host: process.env.DATABASE_HOST || (isProd ? '' : 'localhost'),
       port: Number(process.env.DATABASE_PORT) || 3306,
-      user: process.env.DATABASE_USER ?? 'root',
+      user: process.env.DATABASE_USER || (isProd ? '' : 'root'),
       password: process.env.DATABASE_PASSWORD ?? '',
-      database: process.env.DATABASE_NAME ?? 'raceweekend',
+      database: process.env.DATABASE_NAME || 'raceweekend',
       waitForConnections: true,
       connectionLimit: 10,
       enableKeepAlive: true,
