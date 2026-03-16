@@ -174,14 +174,14 @@ const HomepageHero = () => {
         className="relative z-30 max-w-5xl mx-auto px-6 text-center"
       >
         {/* Letter Stagger Headline */}
-        <h1 className="flex justify-center mb-6">
+        <h1 className="flex justify-center mb-4 md:mb-6">
           {titleLetters.map((letter, i) => (
             <motion.span
               key={i}
               initial={{ y: -80, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.08 + 0.6, type: 'spring', damping: 20 }}
-              className="font-display font-black text-6xl md:text-9xl text-white tracking-tighter inline-block"
+              className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-9xl text-white tracking-tighter inline-block"
             >
               {letter}
             </motion.span>
@@ -189,7 +189,7 @@ const HomepageHero = () => {
         </h1>
         
         {/* Typewriter Line */}
-        <div className="font-mono text-[10px] md:text-xs text-[var(--accent-teal)] uppercase tracking-[0.4em] mb-12 h-4 overflow-hidden">
+        <div className="font-mono text-[8px] sm:text-[10px] md:text-xs text-[var(--accent-teal)] uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] mb-8 md:mb-12 h-4 overflow-hidden px-2">
           <AnimatePresence mode="wait">
             <motion.p
               key={displayText}
@@ -198,25 +198,25 @@ const HomepageHero = () => {
               exit={{ opacity: 0 }}
               className="typewriter-cursor inline-block"
             >
-              SZN_2026 // 24 ROUNDS // F1 + MOTOGP // {displayText}
+              SZN_2026 // 24 ROUNDS // {displayText}
             </motion.p>
           </AnimatePresence>
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+        <div className="flex flex-row items-center justify-center gap-3 sm:gap-4 md:gap-6 px-4">
           <Link 
             href="/f1"
-            className="group relative overflow-hidden px-10 py-5 bg-[var(--accent-f1)] text-white font-black uppercase tracking-[0.2em] text-xs rounded-sm transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-[var(--accent-f1)]/40"
+            className="group relative overflow-hidden px-4 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 bg-[var(--accent-f1)] text-white font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded-sm transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-[var(--accent-f1)]/40 flex-1 md:flex-none"
           >
-            <span className="relative z-10">Explore F1 Series [S1]</span>
+            <span className="relative z-10">F1 Series [S1]</span>
             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
           </Link>
           <Link 
             href="/motogp"
-            className="group relative overflow-hidden px-10 py-5 bg-[var(--accent-motogp)] text-white font-black uppercase tracking-[0.2em] text-xs rounded-sm transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-[var(--accent-motogp)]/40"
+            className="group relative overflow-hidden px-4 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 bg-[var(--accent-motogp)] text-white font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded-sm transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-[var(--accent-motogp)]/40 flex-1 md:flex-none"
           >
-            <span className="relative z-10">Explore MotoGP [S2]</span>
+            <span className="relative z-10">MotoGP [S2]</span>
             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
           </Link>
         </div>
