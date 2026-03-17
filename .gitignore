@@ -3,6 +3,7 @@ node_modules/
 
 # Next.js
 .next/
+.next
 out/
 
 # environment variables
@@ -20,10 +21,13 @@ dist/
 
 # drizzle
 drizzle/meta/
+drizzle/meta
 
 # pipeline output
 pipeline/output/
+pipeline/output
 pipeline/__pycache__/
+pipeline/__pycache__
 pipeline/**/__pycache__/
 pipeline/**/*.pyc
 
