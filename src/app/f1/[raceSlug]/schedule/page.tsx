@@ -129,12 +129,20 @@ export default async function F1SchedulePage({ params }: Props) {
           </div>
         )}
 
+        {race.isCancelled && (
+          <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-center">
+            <p className="text-red-400 font-black uppercase tracking-widest text-sm">⚠️ This race has been called off</p>
+            <p className="text-[var(--text-tertiary)] text-xs mt-1">All sessions listed below are cancelled</p>
+          </div>
+        )}
+
         {sessions.length > 0 ? (
           <RaceSchedule
             sessions={sessions}
             timezone={race.timezone}
             accentColor={theme.accent}
             raceDate={race.raceDate}
+            isCancelled={race.isCancelled}
           />
         ) : (
           <p className="text-[var(--text-secondary)]">Schedule not yet available.</p>

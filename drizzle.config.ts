@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+import path from 'path';
+config({ path: path.join(process.env.HOME!, 'Desktop/.secrets/raceweekend.env') });
 import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({

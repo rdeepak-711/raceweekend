@@ -64,6 +64,8 @@ export default async function ItineraryViewPage({ params }: Props) {
     raceDate: raceRow.race_date instanceof Date ? raceRow.race_date.toISOString().slice(0, 10) : (raceRow.race_date ?? ''),
     flagEmoji: raceRow.flag_emoji ?? null,
     isActive: raceRow.is_active ?? true,
+    isCancelled: raceRow.is_cancelled ?? false,
+    officialTicketsUrl: raceRow.official_tickets_url ?? null,
     hasExperiences: true,
     themeAccent: raceRow.theme_accent ?? null,
     themeAccentAlt: raceRow.theme_accent_alt ?? null,

@@ -7,59 +7,126 @@ from typing import Any
 
 DAY_ORDER = {"Thursday": 0, "Friday": 1, "Saturday": 2, "Sunday": 3}
 
+SERIES_LABEL_RE = re.compile(r"(MotoGP™:|Moto2™:|Moto3™:)", re.IGNORECASE)
+
 SESSION_RE = re.compile(
-    r"(Sprint\s+Qualifying|Practice\s*[123]|FP[123]|Qualifying|Sprint|Race|Warmup)\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})",
+    r"(Sprint\s+Qualifying|Free\s+Practice(?:\s+Nr\.\s*[123])?|Practice(?:\s*[123])?|FP[123]|Qualifying(?:\s+Nr\.\s*[12])?|Qualifying\s*[12]?|Sprint|Race|Warm\s*up|Tissot\s+Sprint|Grand\s+Prix|Gear\s*Up|Pre-Event\s+Press\s+Conference|After\s+the\s+Flag|Sunday\s+Press\s+Conference|Press\s+Conference)\s+(\d{1,2}:\d{2})(?:\s*-\s*(\d{1,2}:\d{2}))?",
     re.IGNORECASE,
 )
 
 NAME_MAP = {
-    "FP1": ("Free Practice 1", "FP1", "fp1"),
-    "FP2": ("Free Practice 2", "FP2", "fp2"),
-    "FP3": ("Free Practice 3", "FP3", "fp3"),
-    "PRACTICE1": ("Free Practice 1", "FP1", "fp1"),
-    "PRACTICE2": ("Free Practice 2", "FP2", "fp2"),
-    "PRACTICE3": ("Free Practice 3", "FP3", "fp3"),
-    "QUALIFYING": ("Qualifying", "Q", "qualifying"),
-    "SPRINTQUALIFYING": ("Sprint Qualifying", "SQ", "qualifying"),
-    "SPRINT": ("Sprint", "SPR", "sprint"),
-    "RACE": ("Race", "R", "race"),
-    "WARMUP": ("Warm Up", "WU", "warmup"),
+    # Series Labels (Trigger state change)
+    "MOTOGP™:": ("MotoGP", "GP", "race", "motogp", "MotoGP"),
+    "MOTO2™:": ("Moto2", "M2", "race", "moto2", "Moto2"),
+    "MOTO3™:": ("Moto3", "M3", "race", "moto3", "Moto3"),
+    
+    # MotoGP Sessions
+    "FP1": ("Free Practice 1", "FP1", "fp1", "motogp", "MotoGP"),
+    "FP2": ("Free Practice 2", "FP2", "fp2", "motogp", "MotoGP"),
+    "FP3": ("Free Practice 3", "FP3", "fp3", "motogp", "MotoGP"),
+    "FREEPRACTICENR.1": ("Free Practice 1", "FP1", "fp1", "motogp", "MotoGP"),
+    "FREEPRACTICENR.2": ("Free Practice 2", "FP2", "fp2", "motogp", "MotoGP"),
+    "FREEPRACTICENR.3": ("Free Practice 3", "FP3", "fp3", "motogp", "MotoGP"),
+    "PRACTICE": ("Practice", "P", "fp2", "motogp", "MotoGP"),
+    "PRACTICE1": ("Free Practice 1", "FP1", "fp1", "motogp", "MotoGP"),
+    "PRACTICE2": ("Free Practice 2", "FP2", "fp2", "motogp", "MotoGP"),
+    "PRACTICE3": ("Free Practice 3", "FP3", "fp3", "motogp", "MotoGP"),
+    "QUALIFYING": ("Qualifying", "Q", "qualifying", "motogp", "MotoGP"),
+    "QUALIFYING1": ("Qualifying 1", "Q1", "qualifying", "motogp", "MotoGP"),
+    "QUALIFYING2": ("Qualifying 2", "Q2", "qualifying", "motogp", "MotoGP"),
+    "QUALIFYINGNR.1": ("Qualifying 1", "Q1", "qualifying", "motogp", "MotoGP"),
+    "QUALIFYINGNR.2": ("Qualifying 2", "Q2", "qualifying", "motogp", "MotoGP"),
+    "SPRINTQUALIFYING": ("Sprint Qualifying", "SQ", "qualifying", "motogp", "MotoGP"),
+    "SPRINT": ("Sprint", "SPR", "sprint", "motogp", "MotoGP"),
+    "TISSOTSPRINT": ("Sprint", "SPR", "sprint", "motogp", "MotoGP"),
+    "RACE": ("Race", "R", "race", "motogp", "MotoGP"),
+    "GRANDPRIX": ("Race", "R", "race", "motogp", "MotoGP"),
+    "WARMUP": ("Warm Up", "WU", "warmup", "motogp", "MotoGP"),
+    "GEARUP": ("GearUp", "GU", "event", "motogp", "MotoGP"),
+    "PRE-EVENTPRESSCONFERENCE": ("Pre-Event Press Conference", "PC", "event", "motogp", "MotoGP"),
+    "PRESSCONFERENCE": ("Press Conference", "PC", "event", "motogp", "MotoGP"),
+    "AFTERTHEFLAG": ("After the Flag", "ATF", "event", "motogp", "MotoGP"),
+    "SUNDAYPRESSCONFERENCE": ("Sunday Press Conference", "SPC", "event", "motogp", "MotoGP"),
+
+    # Moto2
+    "MOTO2™": ("Moto2", "M2", "race", "moto2", "Moto2"),
+    
+    # Moto3
+    "MOTO3™": ("Moto3", "M3", "race", "moto3", "Moto3"),
 }
 
 
 def parse_sessions(schedule_string: str, race_id: int) -> list[dict[str, Any]]:
     sessions: list[dict[str, Any]] = []
 
+    # State tracking to catch the series label that precedes the session
+    current_series_key = "motogp"
+    current_series_label = "MotoGP"
+
     for raw_line in schedule_string.splitlines():
         line = raw_line.strip()
         if not line:
             continue
+        
+        # Reset state for each new day line - force a series match to occur
+        current_series_key = None
+        current_series_label = None
 
         day_match = re.match(r"^(Thursday|Friday|Saturday|Sunday)\s+\d{1,2}\s+\w{3}\s*:\s*(.+)$", line, re.IGNORECASE)
-        if not day_match:
-            continue
+        if day_match:
+            day = day_match.group(1).capitalize()
+            payload = day_match.group(2)
 
-        day = day_match.group(1).capitalize()
-        payload = day_match.group(2)
+            # Merge series label matches and session matches sorted by position
+            # so series labels always update state before the sessions that follow them.
+            events = []
+            for m in SERIES_LABEL_RE.finditer(payload):
+                events.append((m.start(), "label", m))
+            for m in SESSION_RE.finditer(payload):
+                events.append((m.start(), "session", m))
+            events.sort(key=lambda x: x[0])
 
-        for m in SESSION_RE.finditer(payload):
-            raw_name, start_hm, end_hm = m.groups()
-            key = re.sub(r"\s+", "", raw_name).upper()
-            if key not in NAME_MAP:
-                continue
+            for _, kind, m in events:
+                if kind == "label":
+                    key = re.sub(r"\s+", "", m.group(1)).upper()
+                    _, _, _, current_series_key, current_series_label = NAME_MAP[key]
+                    continue
 
-            full_name, short_name, session_type = NAME_MAP[key]
-            sessions.append(
-                {
-                    "race_id": race_id,
-                    "name": full_name,
-                    "short_name": short_name,
-                    "session_type": session_type,
-                    "day_of_week": day,
-                    "start_time": _to_hms(start_hm),
-                    "end_time": _to_hms(end_hm),
-                }
-            )
+                # Session match
+                raw_name, start_hm, end_hm = m.groups()
+                key = re.sub(r"\s+", "", raw_name).upper()
+
+                if key not in NAME_MAP:
+                    continue
+
+                if not current_series_label:
+                    continue
+
+                if not end_hm:
+                    # Default to 45 mins if no end time provided (e.g. Race start time only)
+                    h, m_val = map(int, start_hm.split(':'))
+                    dt = datetime(2000, 1, 1, h, m_val) + timedelta(minutes=45)
+                    end_hm = dt.strftime("%H:%M")
+
+                full_name, short_name, session_type, _, _ = NAME_MAP[key]
+
+                # Prefix short_name with series to avoid unique constraint conflicts
+                # e.g. "Moto3 FP1" vs "MotoGP FP1"
+                prefixed_short_name = f"{current_series_label} {short_name}"
+
+                sessions.append(
+                    {
+                        "race_id": race_id,
+                        "name": f"{current_series_label} {full_name}",
+                        "short_name": prefixed_short_name,
+                        "session_type": session_type,
+                        "day_of_week": day,
+                        "start_time": _to_hms(start_hm),
+                        "end_time": _to_hms(end_hm),
+                        "series_key": current_series_key,
+                        "series_label": current_series_label,
+                    }
+                )
 
     sessions.sort(
         key=lambda s: (

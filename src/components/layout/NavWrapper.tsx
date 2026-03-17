@@ -12,11 +12,11 @@ export default async function NavWrapper() {
 
   // Just take the next 4 for each to keep nav clean
   const upcomingF1 = f1Races
-    .filter(r => new Date(r.raceDate) >= new Date())
+    .filter(r => r.isActive && new Date(r.raceDate) >= new Date())
     .slice(0, 4);
-    
+
   const upcomingMotogp = motogpRaces
-    .filter(r => new Date(r.raceDate) >= new Date())
+    .filter(r => r.isActive && new Date(r.raceDate) >= new Date())
     .slice(0, 4);
 
   return <Nav upcomingF1={upcomingF1} upcomingMotogp={upcomingMotogp} />;

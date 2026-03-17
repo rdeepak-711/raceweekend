@@ -10,6 +10,7 @@ import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
+import OfficialTicketsBanner from '@/components/tickets/OfficialTicketsBanner';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -91,9 +92,19 @@ export default async function F1TicketsPage({ params }: Props) {
           </div>
         </div>
 
+        {race.officialTicketsUrl && (
+          <div className="mb-8">
+            <OfficialTicketsBanner
+              url={race.officialTicketsUrl}
+              raceName={race.name}
+              accentColor={theme.accent}
+            />
+          </div>
+        )}
+
         {tickets.length > 0 && !isPast ? (
           <TicketsClient tickets={tickets} raceAccent={theme.accent} />
-        ) : (
+        ) : !race.officialTicketsUrl ? (
           <div className="text-center py-24 bg-[var(--bg-secondary)] rounded-3xl border border-white/5 shadow-2xl overflow-hidden relative">
             <div
               className="absolute top-0 right-0 w-64 h-64 blur-[100px] rounded-full opacity-10 pointer-events-none"
@@ -105,7 +116,7 @@ export default async function F1TicketsPage({ params }: Props) {
                 {isPast ? 'Race Weekend Completed' : 'Tickets Coming Soon'}
               </h2>
               <p className="text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
-                {isPast 
+                {isPast
                   ? `The ${race.name} has concluded. Check back later for details on the next season's events.`
                   : `Listings for the ${race.name} typically appear approximately 4-8 weeks before the event. Check back soon for the best available prices.`
                 }
@@ -121,7 +132,7 @@ export default async function F1TicketsPage({ params }: Props) {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
 
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col items-center gap-4">
           <p className="text-[var(--text-tertiary)] text-xs font-bold uppercase tracking-widest flex items-center gap-2">

@@ -18,9 +18,42 @@ export default function RaceCard({ race, href }: Props) {
   const today = new Date().toISOString().slice(0, 10);
   const isPast = race.raceDate < today;
   const hasExperiences = race.hasExperiences ?? true;
+  const isCancelled = race.isCancelled;
 
   const raceDate = new Date(race.raceDate);
   const dateLabel = raceDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  // Cancelled — dimmed card with "CALLED OFF" watermark, no CTAs
+  if (isCancelled) {
+    return (
+      <div className="relative overflow-hidden rounded-2xl bg-[var(--bg-secondary)] border border-red-500/20 opacity-60 select-none">
+        <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl" style={{ backgroundColor: '#ef444466' }} />
+        {/* Diagonal "CALLED OFF" watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <span className="font-display font-black text-3xl text-red-500/60 uppercase tracking-widest border-4 border-red-500/50 px-4 py-1 rotate-[-20deg] select-none">
+            CALLED OFF
+          </span>
+        </div>
+        <div className="pl-6 pr-5 py-5">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border" style={{ color: meta.color, borderColor: `${meta.color}40` }}>
+              R{race.round} · {dateLabel}
+            </span>
+            <span className="text-[10px] font-bold text-red-400/70 uppercase tracking-widest border border-red-500/30 px-2 py-0.5 rounded-full">
+              Called off
+            </span>
+          </div>
+          <div className="flex items-center gap-3 mb-1">
+            <span className="text-3xl grayscale">{race.flagEmoji ?? '🏁'}</span>
+            <h3 className="font-display font-black text-xl text-white/50 uppercase italic tracking-tighter">
+              {race.city}
+            </h3>
+          </div>
+          <p className="text-xs text-[var(--text-tertiary)] pl-12">{race.circuitName}</p>
+        </div>
+      </div>
+    );
+  }
 
   // Coming soon — dimmed, no CTAs
   if (!hasExperiences && !isPast) {

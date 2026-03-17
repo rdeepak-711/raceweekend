@@ -24,6 +24,7 @@ def main():
     parser.add_argument("--track-image", help="Override track image path")
     parser.add_argument("--start-over", action="store_true", help="Wipe existing data for this race")
     parser.add_argument("--skip-gyg", action="store_true", help="Skip GYG fetch/score")
+    parser.add_argument("--skip-sessions", action="store_true", help="Skip session/window seeding (preserve manually-set sessions)")
     
     args = parser.parse_args()
     
@@ -62,12 +63,15 @@ def main():
             db.clear_race_data(race_id)
             
         # 3. Parse schedule
-        print(f"\n📅 Step 3/8: Parsing schedule and seeding sessions/windows...")
-        sessions = parse_sessions(config.schedule_string, race_id)
-        windows = derive_experience_windows(sessions, race_id)
-        db.upsert_sessions(race_id, sessions)
-        db.upsert_experience_windows(race_id, windows)
-        print(f"✅ Seeded {len(sessions)} sessions and {len(windows)} windows.")
+        if args.skip_sessions:
+            print(f"\n📅 Step 3/8: Skipping session/window seeding (--skip-sessions).")
+        else:
+            print(f"\n📅 Step 3/8: Parsing schedule and seeding sessions/windows...")
+            sessions = parse_sessions(config.schedule_string, race_id)
+            windows = derive_experience_windows(sessions, race_id)
+            db.upsert_sessions(race_id, sessions)
+            db.upsert_experience_windows(race_id, windows)
+            print(f"✅ Seeded {len(sessions)} sessions and {len(windows)} windows.")
         
         experiences = []
         if not args.skip_gyg:

@@ -23,6 +23,8 @@ function mapRace(r: typeof races.$inferSelect, expCount = 0): Race {
     raceDate: r.race_date instanceof Date ? r.race_date.toISOString().slice(0, 10) : (r.race_date ?? ''),
     flagEmoji: r.flag_emoji ?? null,
     isActive: r.is_active ?? true,
+    isCancelled: r.is_cancelled ?? false,
+    officialTicketsUrl: r.official_tickets_url ?? null,
     hasExperiences: expCount > 0,
     themeAccent: r.theme_accent ?? null,
     themeAccentAlt: r.theme_accent_alt ?? null,
@@ -90,7 +92,7 @@ export const getActiveRaceBySeries = cache(async (series: RaceSeries): Promise<R
   const [row] = await db
     .select()
     .from(races)
-    .where(and(eq(races.series, series), gte(races.race_date, sql`CURDATE()`)))
+    .where(and(eq(races.series, series), eq(races.is_active, true), gte(races.race_date, sql`CURDATE()`)))
     .orderBy(asc(races.race_date))
     .limit(1);
   return row ? mapRace(row) : null;

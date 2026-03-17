@@ -21,6 +21,8 @@ export const races = mysqlTable("races", {
   race_date:     date("race_date"),
   flag_emoji:    varchar("flag_emoji", { length: 10 }),
   is_active:     boolean("is_active").default(true),
+  is_cancelled:  boolean("is_cancelled").default(false),
+  official_tickets_url: varchar("official_tickets_url", { length: 500 }),
   theme_accent:     varchar("theme_accent", { length: 30 }),
   theme_accent_alt: varchar("theme_accent_alt", { length: 30 }),
   theme_glow:       varchar("theme_glow", { length: 60 }),

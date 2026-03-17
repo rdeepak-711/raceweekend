@@ -12,7 +12,9 @@ const envSchema = z.object({
   DATABASE_NAME: z.string().default('raceweekend'),
 
   // API KEYS
-  TICKETMASTER_API_KEY: z.string().min(1, 'TICKETMASTER_API_KEY is required'),
+  TICKETMASTER_API_KEY: process.env.NODE_ENV === 'production'
+    ? z.string().min(1, 'TICKETMASTER_API_KEY is required')
+    : z.string().optional(),
   OPENF1_BASE_URL: z.string().url().default('https://api.openf1.org/v1'),
   
   // EMAILS

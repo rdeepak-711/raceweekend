@@ -99,12 +99,15 @@ class DBSeeder:
     def upsert_sessions(self, race_id: int, sessions: list[dict[str, Any]]) -> None:
         if not sessions:
             return
+        
+        cur = self.conn.cursor(buffered=True)
+        # Clear existing sessions for this race to avoid conflicts on unique keys (race_id, short_name)
+        # since MotoGP has multiple races (Moto3, Moto2, MotoGP) on the same day.
+        cur.execute("DELETE FROM sessions WHERE race_id = %s", (race_id,))
+        
         sql = (
-            "INSERT INTO sessions (race_id, name, short_name, session_type, day_of_week, start_time, end_time) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s) "
-            "ON DUPLICATE KEY UPDATE "
-            "name=VALUES(name), session_type=VALUES(session_type), day_of_week=VALUES(day_of_week), "
-            "start_time=VALUES(start_time), end_time=VALUES(end_time)"
+            "INSERT INTO sessions (race_id, name, short_name, session_type, day_of_week, start_time, end_time, series_key, series_label) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
         params = [
             (
@@ -115,10 +118,11 @@ class DBSeeder:
                 s.get("day_of_week"),
                 s.get("start_time"),
                 s.get("end_time"),
+                s.get("series_key"),
+                s.get("series_label"),
             )
             for s in sessions
         ]
-        cur = self.conn.cursor(buffered=True)
         cur.executemany(sql, params)
         self.conn.commit()
         cur.close()

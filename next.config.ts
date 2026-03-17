@@ -1,3 +1,7 @@
+import { config } from 'dotenv';
+import path from 'path';
+config({ path: path.join(process.env.HOME!, 'Desktop/.secrets/raceweekend.env') });
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -5,7 +9,8 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   compress: true,
   images: {
-    qualities: [75, 80, 90],
+    qualities: [75],
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.getyourguide.com' },
       { protocol: 'https', hostname: 'img.getyourguide.com' },

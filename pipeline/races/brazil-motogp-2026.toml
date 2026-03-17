@@ -27,7 +27,8 @@ top_n = 45
 
 [schedule]
 string = """
-Friday 20 Mar: Practice 1 09:00-09:45, Qualifying 13:50-14:30
-Saturday 21 Mar: Sprint 15:00-15:25
-Sunday 22 Mar: Warmup 09:40-10:00, Race 15:00-16:00
+Thursday 19 Mar: MotoGP™: GearUp 11:40-12:00, Pre-Event Press Conference 12:00-12:45
+Friday 20 Mar: Moto3™: Free Practice Nr. 1 09:00-09:45, Practice 13:15-14:00. Moto2™: Free Practice Nr. 1 10:00-10:50, Practice 14:15-15:05. MotoGP™: Free Practice Nr. 1 11:05-12:05, Practice 15:20-16:35
+Saturday 21 Mar: Moto3™: Free Practice Nr. 2 08:40-09:10, Qualifying Nr. 1 12:45-13:00, Qualifying Nr. 2 13:10-13:25. Moto2™: Free Practice Nr. 2 09:25-09:55, Qualifying Nr. 1 13:40-13:55, Qualifying Nr. 2 14:05-14:20. MotoGP™: Free Practice Nr. 2 10:10-10:40, Qualifying Nr. 1 10:50-11:05, Qualifying Nr. 2 11:15-11:30, Tissot Sprint 15:00
+Sunday 22 Mar: Moto3™: Race 12:00. Moto2™: Race 13:15. MotoGP™: Warm Up 10:40-10:50, Grand Prix 15:00, After the Flag 16:15-16:40, Sunday Press Conference 16:40-17:00
 """

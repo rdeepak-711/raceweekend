@@ -10,6 +10,7 @@ interface Props {
   timezone?: string;
   accentColor?: string;
   raceDate?: string;
+  isCancelled?: boolean;
 }
 
 const DAY_ORDER = ['Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
@@ -81,7 +82,7 @@ function getSessionStatus(
   }
 }
 
-export default function RaceSchedule({ sessions, accentColor, raceDate, timezone }: Props) {
+export default function RaceSchedule({ sessions, accentColor, raceDate, timezone, isCancelled }: Props) {
   const accent = accentColor ?? 'var(--accent-f1)';
 
   // Add re-render interval for "Live Now" status
@@ -200,7 +201,7 @@ export default function RaceSchedule({ sessions, accentColor, raceDate, timezone
                           </span>
                           <div className="flex flex-col">
                             <div className="flex items-center gap-2">
-                              <span className={`text-sm font-bold ${isDone ? 'text-[var(--text-tertiary)] line-through opacity-50' : 'text-white'}`}>
+                              <span className={`text-sm font-bold ${isCancelled || isDone ? 'text-[var(--text-tertiary)] line-through opacity-50' : 'text-white'}`}>
                                 {s.name}
                               </span>
                               {!showSeriesBadge && (
@@ -221,10 +222,10 @@ export default function RaceSchedule({ sessions, accentColor, raceDate, timezone
                         </div>
 
                         <div className="text-right">
-                          <p className={`text-sm font-black tabular-nums ${isDone ? 'text-[var(--text-tertiary)]' : 'text-white'}`}>
+                          <p className={`text-sm font-black tabular-nums ${isCancelled || isDone ? 'text-[var(--text-tertiary)] line-through opacity-50' : 'text-white'}`}>
                             {formatTime(s.startTime)}
                           </p>
-                          <p className="text-[10px] font-bold text-[var(--text-tertiary)] uppercase">
+                          <p className={`text-[10px] font-bold text-[var(--text-tertiary)] uppercase ${isCancelled ? 'line-through opacity-50' : ''}`}>
                             – {formatTime(s.endTime)}
                           </p>
                         </div>

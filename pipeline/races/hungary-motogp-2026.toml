@@ -1,0 +1,33 @@
+[race]
+slug = "hungary-motogp-2026"
+series = "motogp"
+name = "Hungary Grand Prix 2026"
+season = 2026
+round = 9
+circuit_name = "Balaton Park Circuit"
+city = "Budapest"
+country = "Hungary"
+country_code = "HU"
+circuit_lat = 46.9558
+circuit_lng = 17.9876
+timezone = "Europe/Budapest"
+race_date = "2026-06-07"
+flag_emoji = "🇭🇺"
+track_image_path = "/tracks/Hungary_MotoGP_Circuit.avif"
+
+[gyg]
+search_query = "Budapest things to do"
+location_slug = "budapest-l29"
+pages = 4
+
+[pipeline]
+scoring_agent = "f1-seo"
+content_agent = "seo-aeo-geo-strategist"
+top_n = 45
+
+[schedule]
+string = """
+Friday 5 Jun: Free Practice 1 10:45-11:30, Practice 15:00-16:00
+Saturday 6 Jun: Free Practice 2 10:10-10:40, Qualifying 10:50-11:30, Sprint 15:00-16:00
+Sunday 7 Jun: Warmup 09:40-09:50, Race 14:00-15:30
+"""

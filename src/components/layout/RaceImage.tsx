@@ -20,6 +20,10 @@ export default function RaceImage({
 }: RaceImageProps) {
   const [error, setError] = useState(false);
 
+  const isExternal = typeof src === 'string' && (
+    src.includes('getyourguide.com') || src.includes('ticketm.net') || src.includes('ticketmaster.com')
+  );
+
   if (!src || error) {
     return (
       <div
@@ -43,6 +47,7 @@ export default function RaceImage({
       className={className}
       priority={priority}
       loading={priority ? undefined : loading}
+      unoptimized={isExternal}
       onError={() => setError(true)}
       {...props}
     />

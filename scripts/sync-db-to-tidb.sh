@@ -25,7 +25,7 @@ load_env() {
 }
 
 # ── Load local DB credentials ──────────────────────────────────────────────────
-LOCAL_ENV="$FRONTEND_DIR/.env.local"
+LOCAL_ENV="$HOME/Desktop/.secrets/raceweekend.env"
 if [[ ! -f "$LOCAL_ENV" ]]; then
   echo "ERROR: $LOCAL_ENV not found" >&2
   exit 1
@@ -39,9 +39,9 @@ LOCAL_PASS="${DATABASE_PASSWORD:-}"
 LOCAL_DB="${DATABASE_NAME:-raceweekend}"
 
 # ── Load TiDB credentials ──────────────────────────────────────────────────────
-TIDB_ENV="$FRONTEND_DIR/.env.tidb"
+TIDB_ENV="$HOME/Desktop/.secrets/raceweekend.env"
 if [[ ! -f "$TIDB_ENV" ]]; then
-  echo "ERROR: $TIDB_ENV not found. Create it with TIDB_HOST, TIDB_PORT, TIDB_USER, TIDB_PASSWORD, TIDB_DB" >&2
+  echo "ERROR: $TIDB_ENV not found" >&2
   exit 1
 fi
 load_env "$TIDB_ENV" "TIDB_"
