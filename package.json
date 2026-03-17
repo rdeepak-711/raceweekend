@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db:init": "npx tsx --env-file=$HOME/Desktop/.secrets/raceweekend.env src/lib/db/init.ts --run",
     "db:push": "drizzle-kit push --force",
+    "db:push:tidb": "drizzle-kit push --force --config=drizzle.tidb.config.ts",
     "db:sync": "bash scripts/sync-db-to-tidb.sh",
     "db:generate": "drizzle-kit generate",
     "seed:f1": "npx tsx --env-file=$HOME/Desktop/.secrets/raceweekend.env scripts/seed-races.ts --series=f1",
