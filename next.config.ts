@@ -9,8 +9,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   compress: true,
   images: {
-    qualities: [75],
-    minimumCacheTTL: 2592000,
+    unoptimized: true,
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.getyourguide.com' },
       { protocol: 'https', hostname: 'img.getyourguide.com' },
