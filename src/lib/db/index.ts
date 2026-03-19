@@ -12,7 +12,7 @@ const globalForDb = global as unknown as {
   pool: mysql.Pool | undefined;
 };
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === 'production' && !!process.env.VERCEL;
 
 // Sanitize DATABASE_URL (remove single quotes if they exist)
 const rawUrl = env.DATABASE_URL?.replace(/^'|'$/g, '');

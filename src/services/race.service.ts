@@ -4,6 +4,7 @@ import { eq, gte, asc, and, sql } from 'drizzle-orm';
 import type { Race, Session, RaceContent } from '@/types/race';
 import type { RaceSeries } from '@/lib/constants/series';
 import { cache } from 'react';
+import { connection } from 'next/server';
 
 function parseJsonField<T>(value: unknown): T | null {
   if (value === null || value === undefined) return null;
@@ -74,6 +75,7 @@ export const getRacesBySeries = cache(async (series: RaceSeries): Promise<Race[]
 });
 
 export const getRaceBySlug = cache(async (slug: string, series?: RaceSeries): Promise<Race | null> => {
+  await connection();
   const conditions = series
     ? and(eq(races.slug, slug), eq(races.series, series))
     : eq(races.slug, slug);

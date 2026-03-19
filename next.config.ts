@@ -7,6 +7,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
   cacheComponents: true,
+  turbopack: {
+    root: '/Users/deepak',
+  },
   compress: true,
   poweredByHeader: false,
   images: {
