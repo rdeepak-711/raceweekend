@@ -5,6 +5,14 @@ import type { Race, Session, RaceContent } from '@/types/race';
 import type { RaceSeries } from '@/lib/constants/series';
 import { cache } from 'react';
 
+function parseJsonField<T>(value: unknown): T | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'string') {
+    try { return JSON.parse(value) as T; } catch { return null; }
+  }
+  return value as T;
+}
+
 function mapRace(r: typeof races.$inferSelect, expCount = 0): Race {
   return {
     id: r.id,
@@ -25,6 +33,7 @@ function mapRace(r: typeof races.$inferSelect, expCount = 0): Race {
     isActive: r.is_active ?? true,
     isCancelled: r.is_cancelled ?? false,
     officialTicketsUrl: r.official_tickets_url ?? null,
+    officialEventUrl: r.official_event_url ?? null,
     hasExperiences: expCount > 0,
     themeAccent: r.theme_accent ?? null,
     themeAccentAlt: r.theme_accent_alt ?? null,
@@ -113,11 +122,11 @@ export const getRaceContent = cache(async (raceId: number): Promise<RaceContent 
     pageKeywords: (row.page_keywords as string[] | null) ?? null,
     guideIntro: row.guide_intro ?? null,
     tipsContent: row.tips_content ?? null,
-    faqItems: ((row.faq_items as Array<{ question?: string; answer?: string; q?: string; a?: string }> | null) ?? [])
+    faqItems: (parseJsonField<Array<{ question?: string; answer?: string; q?: string; a?: string }>>(row.faq_items) ?? [])
       .map(item => ({ question: item.question ?? item.q ?? '', answer: item.answer ?? item.a ?? '' }))
       .filter(item => item.question && !item.question.startsWith('What is F1 Weekend')),
     faqLd: row.faq_ld ?? null,
-    circuitFacts: row.circuit_facts ?? null,
+    circuitFacts: parseJsonField(row.circuit_facts) ?? null,
     circuitMapSrc: row.circuit_map_src ?? null,
     gettingThere: row.getting_there ?? null,
 
@@ -125,10 +134,10 @@ export const getRaceContent = cache(async (raceId: number): Promise<RaceContent 
     heroTitle: row.hero_title ?? null,
     heroSubtitle: row.hero_subtitle ?? null,
     whyCityText: row.why_city_text ?? null,
-    highlightsList: (row.highlights_list as string[] | null) ?? null,
+    highlightsList: parseJsonField<string[]>(row.highlights_list) ?? null,
     gettingThereIntro: row.getting_there_intro ?? null,
-    transportOptions: (row.transport_options as Array<{ icon: string; title: string; desc: string }> | null) ?? null,
-    travelTips: (row.travel_tips as Array<{ heading: string; body: string }> | null) ?? null,
+    transportOptions: parseJsonField<Array<{ icon: string; title: string; desc: string }>>(row.transport_options) ?? null,
+    travelTips: parseJsonField<Array<{ heading: string; body: string }>>(row.travel_tips) ?? null,
     cityGuide: row.city_guide ?? null,
     currency: row.currency ?? null,
   };

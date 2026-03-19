@@ -82,13 +82,14 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
             onClick={() => openLightbox(i)}
             className="relative flex-shrink-0 h-full rounded-2xl overflow-hidden border border-white/5 bg-[#0D0D15] snap-start cursor-zoom-in transition-all duration-500 hover:scale-[1.01] hover:border-white/20 active:scale-95 group/item"
           >
-            {/* Using native img for true w-auto h-full proportionality without pixelation */}
-            <img
+              <Image
               src={url}
               alt={`${title} photo ${i + 1}`}
+              width={1024}
+              height={768}
               className="h-full w-auto object-contain block"
               loading={i < 3 ? "eager" : "lazy"}
-              referrerPolicy="no-referrer"
+              priority={i === 0}
             />
             
             {/* Subtle Overlay */}
@@ -158,10 +159,12 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
                   lightboxIndex === i ? 'border-[var(--accent-teal)] scale-110 shadow-lg shadow-[var(--accent-teal)]/20' : 'border-transparent opacity-40 hover:opacity-100'
                 }`}
               >
-                <img 
-                  src={url} 
-                  alt="thumb" 
-                  className="w-full h-full object-cover" 
+                <Image
+                  src={url}
+                  alt="thumb"
+                  fill
+                  sizes="80px"
+                  className="object-cover"
                 />
               </button>
             ))}

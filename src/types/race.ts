@@ -21,6 +21,7 @@ export interface Race {
   isActive: boolean;
   isCancelled: boolean;
   officialTicketsUrl: string | null;
+  officialEventUrl: string | null;
   hasExperiences: boolean;
   themeAccent: string | null;
   themeAccentAlt: string | null;

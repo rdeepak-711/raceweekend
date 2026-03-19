@@ -30,6 +30,7 @@ class RaceConfig:
     gyg_search_query: str
     gyg_location_slug: str
     gyg_pages: int
+    gyg_min_reviews: int
     
     # Pipeline fields
     scoring_agent: str
@@ -67,6 +68,7 @@ def load_race_config(slug: str) -> RaceConfig:
         gyg_search_query=data["gyg"]["search_query"],
         gyg_location_slug=data["gyg"]["location_slug"],
         gyg_pages=data["gyg"]["pages"],
+        gyg_min_reviews=data["gyg"].get("min_reviews", 30),
         
         scoring_agent=data["pipeline"]["scoring_agent"],
         content_agent=data["pipeline"]["content_agent"],

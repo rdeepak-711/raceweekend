@@ -9,7 +9,6 @@ import ExperienceSuggestions from '@/components/experiences/ExperienceSuggestion
 import PhotoSlider from '@/components/experiences/PhotoSlider';
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants/categories';
 import GuideAccordion from '@/components/race/GuideAccordion';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string; slug: string }>; }
 
@@ -34,7 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function F1ExperienceDetailPage({ params }: Props) {
-  await headers();
   const { raceSlug, slug } = await params;
   const [race, experience] = await Promise.all([
     getRaceBySlug(raceSlug, 'f1'),

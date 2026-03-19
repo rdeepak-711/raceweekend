@@ -16,6 +16,7 @@
     "seed:motogp": "npx tsx --env-file=$HOME/Desktop/.secrets/raceweekend.env scripts/seed-races.ts --series=motogp",
     "seed:content": "npx tsx --env-file=$HOME/Desktop/.secrets/raceweekend.env scripts/seed-race-content.ts",
     "patch:miami-schedule": "npx tsx --env-file=$HOME/Desktop/.secrets/raceweekend.env scripts/patch-miami-2026-schedule.ts",
+    "patch:thailand-motogp-sessions": "npx tsx --env-file=$HOME/Desktop/.secrets/raceweekend.env scripts/patch-thailand-motogp-sessions.ts",
     "pipeline:f1:melbourne": "cd ../getyourguideapi && CITY=rw-f1-melbourne node --env-file=scripts/.env --import=tsx/esm scripts/f1pipeline.ts",
     "pipeline:f1:shanghai": "cd ../getyourguideapi && CITY=rw-f1-shanghai node --env-file=scripts/.env --import=tsx/esm scripts/f1pipeline.ts",
     "pipeline:f1:suzuka": "cd ../getyourguideapi && CITY=rw-f1-suzuka node --env-file=scripts/.env --import=tsx/esm scripts/f1pipeline.ts",

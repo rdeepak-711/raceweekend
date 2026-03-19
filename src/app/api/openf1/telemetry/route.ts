@@ -12,7 +12,9 @@ export async function GET(req: NextRequest) {
     const telemetry = await getCarTelemetry(Number(sessionKey), Number(driverNumber));
     // Limit to latest 50 points for the chart
     const latest = telemetry.slice(-50);
-    return NextResponse.json({ data: latest });
+    return NextResponse.json({ data: latest }, {
+      headers: { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=20' },
+    });
   } catch (e) {
     return NextResponse.json({ error: 'Failed to fetch telemetry' }, { status: 500 });
   }

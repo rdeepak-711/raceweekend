@@ -26,7 +26,9 @@ export async function GET(req: NextRequest) {
       };
     }).sort((a, b) => a.position - b.position);
 
-    return NextResponse.json({ data: leaderboard });
+    return NextResponse.json({ data: leaderboard }, {
+      headers: { 'Cache-Control': 'public, s-maxage=15, stale-while-revalidate=30' },
+    });
   } catch (e) {
     console.error('Leaderboard API error:', e);
     return NextResponse.json({ error: 'Failed to fetch leaderboard' }, { status: 500 });

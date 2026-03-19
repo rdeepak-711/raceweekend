@@ -9,7 +9,9 @@ export async function GET(req: NextRequest) {
     const weather = await getSessionWeather(Number(sessionKey));
     // Get the latest reading
     const latest = weather[weather.length - 1] || null;
-    return NextResponse.json({ data: latest });
+    return NextResponse.json({ data: latest }, {
+      headers: { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60' },
+    });
   } catch (e) {
     return NextResponse.json({ error: 'Failed to fetch weather' }, { status: 500 });
   }

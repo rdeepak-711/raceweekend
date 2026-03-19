@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
@@ -58,7 +57,6 @@ async function findLiveSessionKey(cityName: string): Promise<number | null> {
 }
 
 export default async function F1SchedulePage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const result = await getRaceWithSessions(raceSlug);
   if (!result) notFound();

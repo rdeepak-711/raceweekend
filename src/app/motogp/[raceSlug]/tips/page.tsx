@@ -6,7 +6,6 @@ import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -42,7 +41,6 @@ const UNIVERSAL_TIPS = [
 ];
 
 export default async function MotoGPTipsPage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();

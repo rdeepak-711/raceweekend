@@ -9,7 +9,7 @@ import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
-import { headers } from 'next/headers';
+import OfficialTicketsBanner from '@/components/tickets/OfficialTicketsBanner';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -36,7 +36,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MotoGPTicketsPage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();
@@ -91,9 +90,31 @@ export default async function MotoGPTicketsPage({ params }: Props) {
           </div>
         </div>
 
+        {race.officialTicketsUrl && (
+          <div className="mb-8">
+            <OfficialTicketsBanner
+              url={race.officialTicketsUrl}
+              raceName={race.name}
+              accentColor={theme.accent}
+              series="motogp"
+            />
+          </div>
+        )}
+
+        {race.officialEventUrl && (
+          <div className="mb-8">
+            <OfficialTicketsBanner
+              url={race.officialEventUrl}
+              raceName={race.name}
+              accentColor={theme.accent}
+              series="motogp"
+            />
+          </div>
+        )}
+
         {tickets.length > 0 && !isPast ? (
           <TicketsClient tickets={tickets} raceAccent={theme.accent} />
-        ) : (
+        ) : !race.officialTicketsUrl && !race.officialEventUrl ? (
           <div className="text-center py-24 bg-[var(--bg-secondary)] rounded-3xl border border-white/5 shadow-2xl overflow-hidden relative">
             <div
               className="absolute top-0 right-0 w-64 h-64 blur-[100px] rounded-full opacity-10 pointer-events-none"
@@ -105,7 +126,7 @@ export default async function MotoGPTicketsPage({ params }: Props) {
                 {isPast ? 'Race Weekend Completed' : 'Tickets Coming Soon'}
               </h2>
               <p className="text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
-                {isPast 
+                {isPast
                   ? `The ${race.name} has concluded. Check back later for details on the next season's events.`
                   : `Listings for the ${race.name} typically appear approximately 4-8 weeks before the event. Check back soon for the best available prices.`
                 }
@@ -120,6 +141,24 @@ export default async function MotoGPTicketsPage({ params }: Props) {
                 </Link>
               </div>
             </div>
+          </div>
+        ) : null}
+
+        {(race.officialTicketsUrl || race.officialEventUrl) && tickets.length === 0 && !isPast && (
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { icon: '🎫', label: 'VIP Hospitality Packages' },
+              { icon: '🏟️', label: 'Grandstand & General Admission' },
+              { icon: '🏍️', label: 'Paddock Club Access' },
+            ].map(({ icon, label }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center gap-3 py-6 px-4 bg-[var(--bg-secondary)] rounded-2xl border border-white/5 text-center"
+              >
+                <span className="text-3xl">{icon}</span>
+                <span className="text-[var(--text-secondary)] text-sm font-semibold">{label}</span>
+              </div>
+            ))}
           </div>
         )}
 

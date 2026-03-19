@@ -8,7 +8,6 @@ import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import ExperienceCard from '@/components/experiences/ExperienceCard';
 import GuideAccordion from '@/components/race/GuideAccordion';
 import RelatedRaces from '@/components/race/RelatedRaces';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -39,7 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function F1TravelGuidePage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();

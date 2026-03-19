@@ -22,14 +22,17 @@ interface SeriesMeta {
 }
 
 const SERIES_MAP: Record<string, SeriesMeta> = {
-  f1:          { label: 'Formula 1',           color: 'var(--accent-f1)', priority: 1 },
+  f1:          { label: 'Formula 1',           color: 'var(--accent-f1)',   priority: 1 },
   f2:          { label: 'Formula 2',           color: 'var(--accent-teal)', priority: 2 },
-  f3:          { label: 'Formula 3',           color: 'var(--accent-teal-muted)', priority: 3 },
-  porsche:     { label: 'Porsche Supercup',    color: '#94a3b8', priority: 4 },
-  supercars:   { label: 'Supercars',           color: '#94a3b8', priority: 5 },
-  experiences: { label: 'Experiences & Tours', color: '#a855f7', priority: 6 },
-  promoter:    { label: 'Fan Events',          color: '#f97316', priority: 7 },
-  press:       { label: 'Press Events',        color: '#64748b', priority: 8 },
+  f3:          { label: 'Formula 3',           color: '#64748b',            priority: 3 },
+  motogp:      { label: 'MotoGP',              color: '#FF6600',            priority: 1 },
+  moto2:       { label: 'Moto2',               color: '#E63946',            priority: 2 },
+  moto3:       { label: 'Moto3',               color: '#3B82F6',            priority: 3 },
+  porsche:     { label: 'Porsche Supercup',    color: '#94a3b8',            priority: 4 },
+  supercars:   { label: 'Supercars',           color: '#94a3b8',            priority: 5 },
+  experiences: { label: 'Experiences & Tours', color: '#a855f7',            priority: 6 },
+  promoter:    { label: 'Fan Events',          color: '#f97316',            priority: 7 },
+  press:       { label: 'Press Events',        color: '#64748b',            priority: 8 },
 };
 
 function getSeriesMeta(key: string | null): SeriesMeta {

@@ -7,7 +7,6 @@ import ExperiencesClient from '@/components/experiences/ExperiencesClient';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; searchParams: Promise<{ category?: string; sort?: string; }>; }
 
@@ -35,7 +34,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MotoGPExperiencesPage({ params, searchParams }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const { category, sort } = await searchParams;
 

@@ -8,7 +8,6 @@ import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getNeighborhoodIcon } from '@/lib/constants/icons';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -49,7 +48,6 @@ function parseSections(html: string): { heading: string; body: string }[] {
 }
 
 export default async function MotoGPWhereToStayPage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();

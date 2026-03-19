@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug } from '@/services/race.service';
@@ -37,7 +36,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function F1TicketsPage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();
@@ -133,6 +131,24 @@ export default async function F1TicketsPage({ params }: Props) {
             </div>
           </div>
         ) : null}
+
+        {race.officialTicketsUrl && tickets.length === 0 && !isPast && (
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { icon: '🎫', label: 'VIP Hospitality Packages' },
+              { icon: '🏟️', label: 'Grandstand & General Admission' },
+              { icon: '🏎️', label: 'Paddock Club Access' },
+            ].map(({ icon, label }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center gap-3 py-6 px-4 bg-[var(--bg-secondary)] rounded-2xl border border-white/5 text-center"
+              >
+                <span className="text-3xl">{icon}</span>
+                <span className="text-[var(--text-secondary)] text-sm font-semibold">{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col items-center gap-4">
           <p className="text-[var(--text-tertiary)] text-xs font-bold uppercase tracking-widest flex items-center gap-2">

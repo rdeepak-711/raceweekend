@@ -51,7 +51,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     result.sort((a, b) => a.position - b.position);
 
-    return NextResponse.json(result);
+    return NextResponse.json(result, {
+      headers: { 'Cache-Control': 'public, s-maxage=15, stale-while-revalidate=30' },
+    });
   } catch {
     return NextResponse.json([], { status: 200 });
   }

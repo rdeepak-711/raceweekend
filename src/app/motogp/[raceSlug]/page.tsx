@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceContent, getSessionsByRace, getNearbyRaces } from '@/services/race.service';
@@ -41,7 +40,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MotoGPRacePage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();

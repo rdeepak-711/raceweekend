@@ -1,7 +1,7 @@
 [race]
 slug = "brazil-motogp-2026"
 series = "motogp"
-name = "Brazil MotoGP Grand Prix 2026"
+name = "Estrella Galicia 0,0 Grand Prix of Brazil"
 season = 2026
 round = 2
 circuit_name = "Autódromo Internacional Ayrton Senna"
@@ -14,6 +14,7 @@ timezone = "America/Sao_Paulo"
 race_date = "2026-03-22"
 flag_emoji = "🇧🇷"
 track_image_path = "/tracks/Brazil_Circuit.avif"
+official_tickets_url = "https://motogppremier.motogp.com/2026-motogp-brazil"
 
 [gyg]
 search_query = "São Paulo things to do"

@@ -179,6 +179,30 @@ class DBSeeder:
         cur.close()
         return count
 
+    def has_sessions(self, race_id: int) -> bool:
+        """Return True if sessions already exist for this race."""
+        cur = self.conn.cursor(buffered=True)
+        cur.execute("SELECT COUNT(*) FROM sessions WHERE race_id = %s", (race_id,))
+        count = cur.fetchone()[0]
+        cur.close()
+        return count > 0
+
+    def has_experiences(self, race_id: int) -> bool:
+        """Return True if experiences already exist for this race."""
+        cur = self.conn.cursor(buffered=True)
+        cur.execute("SELECT COUNT(*) FROM experiences WHERE race_id = %s", (race_id,))
+        count = cur.fetchone()[0]
+        cur.close()
+        return count > 0
+
+    def has_content(self, race_id: int) -> bool:
+        """Return True if race_content already exists for this race."""
+        cur = self.conn.cursor(buffered=True)
+        cur.execute("SELECT COUNT(*) FROM race_content WHERE race_id = %s", (race_id,))
+        count = cur.fetchone()[0]
+        cur.close()
+        return count > 0
+
     def set_race_active(self, race_id: int, active: bool = True) -> None:
         """Activate the race in the UI."""
         cur = self.conn.cursor(buffered=True)
@@ -224,7 +248,7 @@ class DBSeeder:
                 "price_amount": exp.get("price_amount"),
                 "price_currency": exp.get("price_currency"),
                 "price_label": exp.get("price_label"),
-                "duration_hours": exp.get("duration_hours"),
+                "duration_hours": min(exp.get("duration_hours") or 0, 99.9) or None,
                 "duration_label": exp.get("duration_label"),
                 "rating": exp.get("rating"),
                 "review_count": exp.get("review_count"),

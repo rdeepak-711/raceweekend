@@ -10,7 +10,6 @@ import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getNeighborhoodIcon } from '@/lib/constants/icons';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -50,7 +49,6 @@ function parseSections(html: string): { heading: string; body: string }[] {
 }
 
 export default async function F1WhereToStayPage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();

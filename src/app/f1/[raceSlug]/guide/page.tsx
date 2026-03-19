@@ -12,7 +12,6 @@ import { marked } from 'marked';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getSectionIcon, SECTION_ICONS } from '@/lib/constants/icons';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -57,7 +56,6 @@ const SUB_PAGES = [
 ];
 
 export default async function F1GuidePage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();

@@ -10,7 +10,6 @@ import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { headers } from 'next/headers';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -37,7 +36,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function F1GettingTherePage({ params }: Props) {
-  await headers();
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();

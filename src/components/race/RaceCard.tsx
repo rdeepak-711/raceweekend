@@ -55,32 +55,6 @@ export default function RaceCard({ race, href }: Props) {
     );
   }
 
-  // Coming soon — dimmed, no CTAs
-  if (!hasExperiences && !isPast) {
-    return (
-      <div className="relative overflow-hidden rounded-2xl bg-[var(--bg-secondary)] border border-white/5 opacity-50 select-none">
-        <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl" style={{ backgroundColor: meta.color }} />
-        <div className="pl-6 pr-5 py-5">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border" style={{ color: meta.color, borderColor: `${meta.color}40` }}>
-              R{race.round} · {dateLabel}
-            </span>
-            <span className="text-[10px] font-bold text-amber-500/70 uppercase tracking-widest border border-amber-500/20 px-2 py-0.5 rounded-full">
-              Coming Soon
-            </span>
-          </div>
-          <div className="flex items-center gap-3 mb-1">
-            <span className="text-3xl grayscale">{race.flagEmoji ?? '🏁'}</span>
-            <h3 className="font-display font-black text-xl text-white/50 uppercase italic tracking-tighter">
-              {race.city}
-            </h3>
-          </div>
-          <p className="text-xs text-[var(--text-tertiary)] pl-12">{race.circuitName}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -159,15 +133,17 @@ export default function RaceCard({ race, href }: Props) {
 
         {/* Action buttons */}
         <div className="flex gap-2">
-          <Link
-            href={`/${race.series}/${race.slug}/experiences`}
-            className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold border border-white/8 text-[var(--text-secondary)] hover:border-[var(--accent-teal)]/50 hover:text-white hover:bg-[var(--accent-teal)]/8 transition-all"
-          >
-            Experiences
-          </Link>
+          {hasExperiences && (
+            <Link
+              href={`/${race.series}/${race.slug}/experiences`}
+              className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold border border-white/8 text-[var(--text-secondary)] hover:border-[var(--accent-teal)]/50 hover:text-white hover:bg-[var(--accent-teal)]/8 transition-all"
+            >
+              Experiences
+            </Link>
+          )}
           <Link
             href={to}
-            className="flex-1 text-center py-2.5 rounded-xl text-xs font-black text-white transition-all"
+            className={`${hasExperiences ? 'flex-1' : 'w-full'} text-center py-2.5 rounded-xl text-xs font-black text-white transition-all`}
             style={{
               backgroundColor: `${meta.color}22`,
               border: `1px solid ${meta.color}44`,

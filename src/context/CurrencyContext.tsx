@@ -24,7 +24,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     const saved = localStorage.getItem('rw-currency') as Currency;
     if (saved) setCurrencyState(saved);
 
-    fetch('https://open.er-api.com/v6/latest/USD')
+    fetch('/api/exchange-rates')
       .then(res => res.json())
       .then(data => {
         if (data.rates) setRates(data.rates);

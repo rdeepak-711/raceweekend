@@ -1,9 +1,9 @@
 [race]
 slug = "italy-motogp-2026"
 series = "motogp"
-name = "Italian Grand Prix 2026"
+name = "Brembo Grand Prix of Italy"
 season = 2026
-round = 8
+round = 7
 circuit_name = "Autodromo Internazionale del Mugello"
 city = "Mugello"
 country = "Italy"
@@ -27,7 +27,7 @@ top_n = 40
 
 [schedule]
 string = """
-Friday 29 May: Free Practice 1 10:45-11:30, Practice 15:00-16:00
-Saturday 30 May: Free Practice 2 10:10-10:40, Qualifying 10:50-11:30, Sprint 15:00-15:45
-Sunday 31 May: Warmup 09:40-10:00, Race 14:00-15:00
+Friday 29 May: Moto3™: Free Practice Nr. 1 09:00-09:35, Moto2™: Free Practice Nr. 1 09:50-10:30, MotoGP™: Free Practice Nr. 1 10:45-11:30, Moto3™: Practice 13:15-13:50, Moto2™: Practice 14:05-14:45, MotoGP™: Practice 15:00-16:00
+Saturday 30 May: Moto3™: Free Practice Nr. 2 08:40-09:10, Moto2™: Free Practice Nr. 2 09:25-09:55, MotoGP™: Free Practice Nr. 2 10:10-10:40, MotoGP™: Qualifying Nr. 1 10:50-11:05, MotoGP™: Qualifying Nr. 2 11:15-11:30, Moto3™: Qualifying Nr. 1 12:45-13:00, Moto3™: Qualifying Nr. 2 13:10-13:25, Moto2™: Qualifying Nr. 1 13:40-13:55, Moto2™: Qualifying Nr. 2 14:05-14:20, MotoGP™: Tissot Sprint 15:00
+Sunday 31 May: MotoGP™: Warm Up 09:40-09:50, Moto3™: Race 11:00, Moto2™: Race 12:15, MotoGP™: Grand Prix 14:00
 """

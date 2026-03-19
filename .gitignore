@@ -48,6 +48,9 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 
+# claude session notes
+CLAUDE-*.md
+
 # misc
 .vercel
 node_modules
