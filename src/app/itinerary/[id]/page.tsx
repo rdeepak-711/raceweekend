@@ -66,6 +66,7 @@ export default async function ItineraryViewPage({ params }: Props) {
     isActive: raceRow.is_active ?? true,
     isCancelled: raceRow.is_cancelled ?? false,
     officialTicketsUrl: raceRow.official_tickets_url ?? null,
+    officialEventUrl: raceRow.official_event_url ?? null,
     hasExperiences: true,
     themeAccent: raceRow.theme_accent ?? null,
     themeAccentAlt: raceRow.theme_accent_alt ?? null,
