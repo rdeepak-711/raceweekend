@@ -8,6 +8,8 @@ import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
 
+export const dynamic = 'force-dynamic';
+
 interface Props { params: Promise<{ raceSlug: string }>; searchParams: Promise<{ category?: string; sort?: string; }>; }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

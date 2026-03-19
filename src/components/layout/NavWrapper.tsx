@@ -5,13 +5,13 @@ import { connection } from 'next/server';
 
 export default async function NavWrapper() {
   await connection();
-  const today = new Date().toISOString().slice(0, 10);
   const [f1Races, motogpRaces] = await Promise.all([
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),
   ]);
 
   // Just take the next 4 for each to keep nav clean
+  const today = new Date().toISOString().slice(0, 10);
   const upcomingF1 = f1Races
     .filter(r => r.isActive && r.raceDate >= today)
     .slice(0, 4);
