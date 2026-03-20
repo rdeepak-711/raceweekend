@@ -3,12 +3,12 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Our Story | Race Weekend',
-  description: 'Built for fans, by a fan. Race Weekend is a solo project by Codephilic Studio, designed to simplify F1 and MotoGP travel planning.',
+  title: 'About | Race Weekend',
+  description: 'Race Weekend sits at the intersection of motorsport and travel. We believe a Grand Prix trip should be more than just the race.',
   alternates: { canonical: 'https://raceweekend.co/about' },
   openGraph: {
-    title: 'Our Story — Why We Built Race Weekend',
-    description: 'F1 and MotoGP travel planning made beautifully simple. Built by Codephilic Studio.',
+    title: 'About Race Weekend',
+    description: 'A race weekend is not just a race. Race Weekend helps fans turn a trip to a Grand Prix into a proper travel experience.',
     images: [{ url: 'https://raceweekend.co/og/about.jpg', width: 1200, height: 630 }],
   },
   twitter: {
@@ -17,9 +17,22 @@ export const metadata: Metadata = {
   },
 };
 
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Deepak',
+  jobTitle: 'Founder',
+  url: 'https://raceweekend.co/about',
+  worksFor: { '@type': 'Organization', name: 'Race Weekend' },
+  knowsAbout: ['Formula 1', 'MotoGP', 'Race Travel', 'Motorsport', 'Grand Prix Travel', 'Circuit Tourism'],
+  description: 'F1 and MotoGP fan who has attended races across Europe and Asia. Founder of Race Weekend, a travel planning platform for motorsport fans.',
+};
+
 export default async function AboutPage() {
   await headers();
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
     <div className="min-h-screen pt-20 pb-24 px-4 bg-[var(--bg-primary)]">
       <div className="max-w-3xl mx-auto">
 
@@ -36,17 +49,39 @@ export default async function AboutPage() {
 
           <div className="space-y-6 text-[var(--text-secondary)] text-lg leading-relaxed mb-16">
             <p>
-              Race Weekend is a side project born out of a simple frustration: planning a trip to a Grand Prix involves
-              a dozen browser tabs, three booking sites, and too many Reddit threads. There had to be a better way.
+              A race weekend is not just a race. It&apos;s a city you&apos;ve never explored, a culture you haven&apos;t tasted,
+              and three days of stories that have nothing to do with lap times.
             </p>
             <p>
-              So I built one.
+              Race Weekend exists to make sure fans don&apos;t miss that part.
             </p>
             <p>
-              This app pulls together F1 and MotoGP session schedules, curated local experiences from GetYourGuide,
-              and practical travel guides — all in one place, designed for the fan who wants to <em>actually enjoy</em>
-              {' '}the weekend, not just survive the logistics.
+              We sit at the intersection of motorsport and travel — pulling together session schedules, curated local
+              experiences, event tickets, and practical city guides into one place. The goal is simple: turn a trip to
+              a Grand Prix into a proper travel experience, not just a checkbox.
             </p>
+          </div>
+
+          {/* Author expertise */}
+          <div className="p-8 rounded-3xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] mb-16">
+            <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--text-tertiary)] mb-3">The Person Behind It</p>
+            <h2 className="font-display font-black text-2xl text-white uppercase italic mb-4">Why I Built This</h2>
+            <div className="space-y-4 text-[var(--text-secondary)] leading-relaxed">
+              <p>
+                I&apos;m Deepak — a software engineer and long-time F1 and MotoGP fan who has attended races across Europe and Asia.
+                From the chaos of a Monaco weekend to the sensory overload of a MotoGP night race in Qatar, I&apos;ve learned that
+                the race itself is only half the trip.
+              </p>
+              <p>
+                Every time I planned a race trip, I found the same problem: the information was scattered across ten different tabs,
+                half of it was wrong, and nobody was telling you about the neighbourhood restaurant three streets from the circuit
+                that would make the whole weekend. Race Weekend is my answer to that problem.
+              </p>
+              <p>
+                The guides, FAQs, and experience curation on this site come from real research — a combination of first-hand
+                knowledge, fan communities, and on-the-ground reporting. If something is here, it&apos;s because it&apos;s genuinely useful.
+              </p>
+            </div>
           </div>
 
           {/* Divider */}
@@ -114,5 +149,6 @@ export default async function AboutPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

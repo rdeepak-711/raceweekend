@@ -23,11 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
   return {
-    title: `${race.city} F1 Travel Guide 2026 | Race Weekend`,
+    title: `${race.city} F1 2026 Travel Guide: Everything You Need`,
     description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
     alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/guide` },
     openGraph: {
-      title: `${race.city} F1 Travel Guide 2026 | Race Weekend`,
+      title: `${race.city} F1 2026 Travel Guide: Everything You Need`,
       description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
@@ -72,11 +72,23 @@ export default async function F1GuidePage({ params }: Props) {
     ? parseCityGuideSections(marked.parse(content.cityGuide) as string)
     : [];
 
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${race.city} F1 2026 Travel Guide: Everything You Need`,
+    description: content?.whyCityText ?? content?.guideIntro ?? `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
+    author: { '@type': 'Person', name: 'Deepak' },
+    publisher: { '@type': 'Organization', name: 'Race Weekend' },
+    datePublished: new Date().toISOString(),
+    dateModified: new Date().toISOString(),
+    url: `https://raceweekend.co/f1/${raceSlug}/guide`,
+  };
+
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Guide', item: `https://raceweekend.co/f1/${raceSlug}/guide` },
@@ -93,7 +105,7 @@ export default async function F1GuidePage({ params }: Props) {
     })),
   } : null;
 
-  const schemas = [breadcrumbLd, ...(faqLd ? [faqLd] : [])];
+  const schemas = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
 
   return (
     <>

@@ -59,10 +59,14 @@ const globalSchemas = [
     '@type': 'Organization',
     name: 'Race Weekend',
     url: SITE_URL,
-    logo: `${SITE_URL}/icon.svg`,
+    logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.svg` },
+    sameAs: [
+      'https://www.youtube.com/@code_philic',
+      'https://www.instagram.com/codephilic_studio/',
+    ],
     contactPoint: {
       '@type': 'ContactPoint',
-      email: process.env.CONTACT_EMAIL ?? 'onlyforthe20thcentury@gmail.com',
+      email: process.env.CONTACT_EMAIL ?? 'hello@raceweekend.co',
       contactType: 'customer service',
     },
   },
@@ -77,6 +81,13 @@ const globalSchemas = [
       name: 'Race Weekend',
     },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Deepak',
+    url: `${SITE_URL}/about`,
+    worksFor: { '@type': 'Organization', name: 'Race Weekend' },
+  },
 ];
 
 export default function RootLayout({
@@ -87,6 +98,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* RSL 1.0 — allow AI search indexing, disallow training, require attribution */}
+        <meta name="rsl" content="search: allow, training: disallow, attribution: required" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdn.getyourguide.com" />

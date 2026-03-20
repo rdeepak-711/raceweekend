@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
+    keywords: content?.pageKeywords ?? [],
     alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}` },
     openGraph: {
       title,
@@ -53,6 +54,7 @@ export default async function MotoGPRacePage({ params }: Props) {
 
   const meta = SERIES_META.motogp;
   const theme = getThemeFromRace(race);
+  const { ogImageUrl } = getRaceImagePaths(raceSlug);
   const raceDateTime = `${race.raceDate}T14:00:00`;
   
   // Urgency logic
@@ -62,33 +64,86 @@ export default async function MotoGPRacePage({ params }: Props) {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   const isSoon = diffDays > 0 && diffDays <= 14;
 
+  const eventLocation = {
+    '@type': 'Place',
+    name: race.circuitName,
+    address: { '@type': 'PostalAddress', addressLocality: race.city, addressCountry: race.country },
+    ...(race.circuitLat && race.circuitLng ? {
+      geo: { '@type': 'GeoCoordinates', latitude: race.circuitLat, longitude: race.circuitLng },
+    } : {}),
+  };
+
+  const subEvents = sessions.length > 0
+    ? sessions.map(s => ({
+        '@type': 'SportsEvent',
+        name: s.name,
+        startDate: s.startTime,
+        endDate: s.endTime,
+        sport: 'MotoGP',
+        location: eventLocation,
+      }))
+    : undefined;
+
   const sportsEventLd = {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: race.name,
-    startDate: raceDateTime,
-    location: {
-      '@type': 'Place',
-      name: race.circuitName,
-      address: { '@type': 'PostalAddress', addressCountry: race.country },
-    },
-    organizer: { '@type': 'Organization', name: 'MotoGP' },
     url: `https://raceweekend.co/motogp/${race.slug}`,
+    startDate: raceDateTime,
+    endDate: `${race.raceDate}T18:00:00`,
+    description: `The ${race.name} at ${race.circuitName} in ${race.city}, ${race.country}. Book tickets, experiences, and plan your MotoGP race weekend.`,
+    sport: 'MotoGP',
+    eventStatus: race.isCancelled
+      ? 'https://schema.org/EventCancelled'
+      : 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    ...(ogImageUrl ? { image: [ogImageUrl] } : {}),
+    location: eventLocation,
+    organizer: {
+      '@type': 'Organization',
+      name: 'Dorna Sports',
+      url: 'https://www.motogp.com',
+    },
+    performer: {
+      '@type': 'Organization',
+      name: 'MotoGP World Championship',
+      url: 'https://www.motogp.com',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `https://raceweekend.co/motogp/${race.slug}/tickets`,
+      availability: race.isCancelled
+        ? 'https://schema.org/Discontinued'
+        : 'https://schema.org/InStock',
+      validFrom: '2025-01-01',
+      priceCurrency: 'EUR',
+    },
+    ...(subEvents ? { subEvent: subEvents } : {}),
   };
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
     ],
   };
 
+  const faqLd = content?.faqItems?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: content.faqItems.slice(0, 5).map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  } : null;
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([sportsEventLd, breadcrumbLd]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([sportsEventLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])]) }} />
       
       <div className="min-h-screen bg-[var(--bg-primary)]">
         <div className="pt-14">

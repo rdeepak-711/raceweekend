@@ -4,6 +4,7 @@ import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
 import RaceSchedule from '@/components/race/RaceSchedule';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
+import Image from 'next/image';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 
@@ -16,11 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
   return {
-    title: `${race.name} Schedule 2026 | Race Weekend`,
+    title: `${race.name} 2026 Session Schedule & Race Times`,
     description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
     alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/schedule` },
     openGraph: {
-      title: `${race.name} Schedule 2026 | Race Weekend`,
+      title: `${race.name} 2026 Session Schedule & Race Times`,
       description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
@@ -44,7 +45,7 @@ export default async function MotoGPSchedulePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Schedule', item: `https://raceweekend.co/motogp/${raceSlug}/schedule` },
@@ -101,7 +102,7 @@ export default async function MotoGPSchedulePage({ params }: Props) {
           {/* Circuit Image */}
           {circuitExists && (
             <div className="relative rounded-xl mb-6 shadow-lg border border-white/5 bg-[var(--bg-secondary)] flex items-center justify-center p-4">
-              <img src={circuitUrl} alt={race.circuitName} className="w-full max-h-56 object-contain opacity-80" />
+              <Image src={circuitUrl} alt={`${race.circuitName} circuit layout`} width={800} height={450} className="w-full max-h-56 object-contain opacity-80" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-30 pointer-events-none" />
             </div>
           )}

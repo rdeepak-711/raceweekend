@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import Image from 'next/image';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import SeriesBadge from '@/components/race/SeriesBadge';
 import GuideAccordion from '@/components/race/GuideAccordion';
@@ -20,11 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
   return {
-    title: `Getting to ${race.city} for the ${race.name} | Race Weekend`,
+    title: `Getting to ${race.city} for the ${race.name}`,
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
     alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/getting-there` },
     openGraph: {
-      title: `Getting to ${race.city} for the ${race.name} | Race Weekend`,
+      title: `Getting to ${race.city} for the ${race.name}`,
       description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
@@ -61,14 +62,25 @@ export default async function F1GettingTherePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Getting There', item: `https://raceweekend.co/f1/${raceSlug}/getting-there` },
     ],
   };
 
-  const schemas = [breadcrumbLd, ...(faqLd ? [faqLd] : [])];
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `Getting to ${race.city} for the ${race.name}`,
+    description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
+    author: { '@type': 'Person', name: 'Deepak' },
+    publisher: { '@type': 'Organization', name: 'Race Weekend' },
+    dateModified: new Date().toISOString(),
+    url: `https://raceweekend.co/f1/${raceSlug}/getting-there`,
+  };
+
+  const schemas = [breadcrumbLd, articleLd, ...(faqLd ? [faqLd] : [])];
 
   return (
     <>
@@ -87,10 +99,13 @@ export default async function F1GettingTherePage({ params }: Props) {
           {/* Circuit Image */}
           {circuitExists && (
             <div className="relative rounded-2xl mb-6 overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-subtle)] shadow-2xl flex items-center justify-center p-4 sm:p-8">
-              <img
+              <Image
                 src={circuitUrl}
-                alt={`${race.circuitName} layout`}
+                alt={`${race.circuitName} circuit layout`}
+                width={800}
+                height={450}
                 className="w-full max-h-72 object-contain"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--bg-primary)] opacity-40 pointer-events-none" />
             </div>

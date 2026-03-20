@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.raceweekend.co" }],
+      "destination": "https://raceweekend.co/:path*",
+      "permanent": true
+    }
+  ]
+}

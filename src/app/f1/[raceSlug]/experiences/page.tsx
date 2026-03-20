@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) return {};
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
-  const title = `Things to Do in ${race.city} During the ${race.name} | Race Weekend`;
+  const title = `Things to Do in ${race.city} During the ${race.name}`;
   const description = `Curated experiences for the ${race.name}. Things to do between sessions in ${race.city}.`;
   return {
     title,
@@ -49,7 +49,7 @@ export default async function F1ExperiencesPage({ params, searchParams }: Props)
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Experiences', item: `https://raceweekend.co/f1/${raceSlug}/experiences` },

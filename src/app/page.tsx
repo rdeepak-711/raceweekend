@@ -13,7 +13,7 @@ import LoadingScreen from '@/components/layout/LoadingScreen';
 import TelemetryVisualizer from '@/components/layout/TelemetryVisualizer';
 
 export const metadata: Metadata = {
-  title: 'Race Weekend | F1 & MotoGP 2026 Travel Guide',
+  title: { absolute: 'Race Weekend | F1 & MotoGP 2026 Travel Guide' },
   description: 'Plan your F1 & MotoGP 2026 race weekend. Live telemetry, curated local experiences, session schedules, tickets, and shareable itineraries for all 46 races.',
   alternates: { canonical: 'https://raceweekend.co' },
   openGraph: {
@@ -53,6 +53,7 @@ export default async function HomePage() {
       </div>
 
       <HomepageHero />
+      <h1 className="sr-only">F1 & MotoGP 2026 Race Weekend Travel Guides</h1>
 
       <UpcomingRacesStrip races={allUpcoming} />
 

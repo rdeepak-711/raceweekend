@@ -86,7 +86,7 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Experiences', item: `https://raceweekend.co/motogp/${raceSlug}/experiences` },

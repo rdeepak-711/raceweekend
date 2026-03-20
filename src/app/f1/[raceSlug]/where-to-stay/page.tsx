@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) return {};
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
-  const title = `Where to Stay for the ${race.name} — Hotels & Neighborhoods | Race Weekend`;
+  const title = `${race.city} ${race.name} 2026: Best Hotels & Accommodation`;
   const description = `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`;
   return {
     title,
@@ -90,7 +90,7 @@ export default async function F1WhereToStayPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Where to Stay', item: `https://raceweekend.co/f1/${raceSlug}/where-to-stay` },
@@ -107,9 +107,20 @@ export default async function F1WhereToStayPage({ params }: Props) {
     })),
   } : null;
 
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${race.city} ${race.name} 2026: Best Hotels & Accommodation`,
+    description: `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`,
+    author: { '@type': 'Person', name: 'Deepak' },
+    publisher: { '@type': 'Organization', name: 'Race Weekend' },
+    dateModified: new Date().toISOString(),
+    url: `https://raceweekend.co/f1/${raceSlug}/where-to-stay`,
+  };
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd ? [breadcrumbLd, faqLd] : breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbLd, articleLd, ...(faqLd ? [faqLd] : [])]) }} />
 
       <div className="min-h-screen pt-24 pb-24 px-4">
         <div className="max-w-4xl mx-auto">

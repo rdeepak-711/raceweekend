@@ -101,8 +101,9 @@ export default function Nav({ upcomingF1, upcomingMotogp }: NavProps) {
     { href: '/f1', label: 'F1', id: 'S2' },
     { href: '/motogp', label: 'MOTOGP', id: 'S3' },
     { href: '/itinerary', label: 'ITINERARY', id: 'S4' },
-    { href: '/about', label: 'ABOUT', id: 'S5' },
-    { href: '/contact', label: 'CONTACT', id: 'S6' },
+    { href: '/blog', label: 'BLOG', id: 'S5' },
+    { href: '/about', label: 'ABOUT', id: 'S6' },
+    { href: '/contact', label: 'CONTACT', id: 'S7' },
   ];
 
   return (

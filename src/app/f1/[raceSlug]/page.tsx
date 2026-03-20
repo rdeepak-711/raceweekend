@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
+    keywords: content?.pageKeywords ?? [],
     alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}` },
     openGraph: {
       title,
@@ -55,7 +56,7 @@ export default async function F1RacePage({ params }: Props) {
   ]);
 
   const theme = getThemeFromRace(race);
-  const { circuitExists, circuitUrl, galleryImages } = getRaceImagePaths(raceSlug);
+  const { circuitExists, circuitUrl, galleryImages, ogImageUrl } = getRaceImagePaths(raceSlug);
   const raceDateTime = `${race.raceDate}T14:00:00`;
 
   // Live session check
@@ -78,33 +79,86 @@ export default async function F1RacePage({ params }: Props) {
   
   const { soon, daysRemaining } = isSoon(race.raceDate);
 
+  const eventLocation = {
+    '@type': 'Place',
+    name: race.circuitName,
+    address: { '@type': 'PostalAddress', addressLocality: race.city, addressCountry: race.country },
+    ...(race.circuitLat && race.circuitLng ? {
+      geo: { '@type': 'GeoCoordinates', latitude: race.circuitLat, longitude: race.circuitLng },
+    } : {}),
+  };
+
+  const subEvents = sessions.length > 0
+    ? sessions.map(s => ({
+        '@type': 'SportsEvent',
+        name: s.name,
+        startDate: s.startTime,
+        endDate: s.endTime,
+        sport: 'Formula 1',
+        location: eventLocation,
+      }))
+    : undefined;
+
   const sportsEventLd = {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: race.name,
-    startDate: raceDateTime,
-    location: {
-      '@type': 'Place',
-      name: race.circuitName,
-      address: { '@type': 'PostalAddress', addressCountry: race.country },
-    },
-    organizer: { '@type': 'Organization', name: 'Formula 1' },
     url: `https://raceweekend.co/f1/${race.slug}`,
+    startDate: raceDateTime,
+    endDate: `${race.raceDate}T18:00:00`,
+    description: `The ${race.name} at ${race.circuitName} in ${race.city}, ${race.country}. Book tickets, experiences, and plan your F1 race weekend.`,
+    sport: 'Formula 1',
+    eventStatus: race.isCancelled
+      ? 'https://schema.org/EventCancelled'
+      : 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    ...(ogImageUrl ? { image: [ogImageUrl] } : {}),
+    location: eventLocation,
+    organizer: {
+      '@type': 'Organization',
+      name: 'Formula 1',
+      url: 'https://www.formula1.com',
+    },
+    performer: {
+      '@type': 'Organization',
+      name: 'FIA Formula One World Championship',
+      url: 'https://www.formula1.com',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `https://raceweekend.co/f1/${race.slug}/tickets`,
+      availability: race.isCancelled
+        ? 'https://schema.org/Discontinued'
+        : 'https://schema.org/InStock',
+      validFrom: '2025-01-01',
+      priceCurrency: 'EUR',
+    },
+    ...(subEvents ? { subEvent: subEvents } : {}),
   };
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${race.slug}` },
     ],
   };
 
+  const faqLd = content?.faqItems?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: content.faqItems.slice(0, 5).map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  } : null;
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([sportsEventLd, breadcrumbLd]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([sportsEventLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])]) }} />
       
       <div className="min-h-screen bg-[var(--bg-primary)]">
         <div className="pt-14">
@@ -142,21 +196,32 @@ export default async function F1RacePage({ params }: Props) {
             />
 
             {/* Gallery strip */}
-            {galleryImages.length > 0 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 mb-20 scrollbar-none">
-                {galleryImages.map((src, i) => (
-                  <div key={i} className="relative h-48 w-72 flex-shrink-0">
-                    <Image 
-                      src={src} 
-                      alt={`${race.city} race weekend photo ${i + 1}`} 
-                      fill
-                      sizes="288px"
-                      className="object-cover rounded-2xl shadow-lg opacity-90 hover:opacity-100 transition-opacity" 
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+            {galleryImages.length > 0 && (() => {
+              const galleryAlts = [
+                `F1 cars racing at ${race.circuitName} during the ${race.name}`,
+                `${race.name} fans watching from the grandstands at ${race.city}`,
+                `Pit lane activity during the ${race.name} weekend`,
+                `${race.circuitName} aerial view during the ${race.name}`,
+                `${race.name} podium celebration at ${race.city}`,
+                `Fan atmosphere at the ${race.name} in ${race.city}`,
+              ];
+              return (
+                <div className="flex gap-3 overflow-x-auto pb-2 mb-20 scrollbar-none">
+                  {galleryImages.map((src, i) => (
+                    <div key={i} className="relative h-48 w-72 flex-shrink-0">
+                      <Image
+                        src={src}
+                        alt={galleryAlts[i] ?? `${race.name} race weekend photo ${i + 1}`}
+                        fill
+                        loading="lazy"
+                        sizes="288px"
+                        className="object-cover rounded-2xl shadow-lg opacity-90 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
 
             {/* Featured experiences */}
             {featured.length > 0 && (

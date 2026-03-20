@@ -4,11 +4,11 @@ import { getRacesBySeries } from '@/services/race.service';
 import SeriesLandingClient from '@/components/race/SeriesLandingClient';
 
 export const metadata: Metadata = {
-  title: 'MotoGP 2026 Season Calendar — Grand Prix Travel | Race Weekend',
+  title: 'MotoGP 2026 Grand Prix Calendar & Travel Guides',
   description: 'Complete MotoGP 2026 season calendar. All Grand Prix races with sessions, circuits, and local travel guides for bike fans.',
   alternates: { canonical: 'https://raceweekend.co/motogp' },
   openGraph: {
-    title: 'MotoGP 2026 Race Calendar | Race Weekend',
+    title: 'MotoGP 2026 Grand Prix Calendar & Travel Guides',
     description: 'Complete MotoGP 2026 season calendar. All Grand Prix races with dates, circuits, and travel guides.',
     images: [{ url: 'https://raceweekend.co/og/motogp.jpg', width: 1200, height: 630 }],
   },

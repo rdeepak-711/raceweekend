@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getRacesBySeries } from '@/services/race.service';
 import { db } from '@/lib/db';
 import { experiences } from '@/lib/db/schema';
+import { getAllPublishedBlogPosts } from '@/services/blog.service';
 import { SITE_URL } from '@/lib/constants/site';
 
 const BASE = SITE_URL;
@@ -54,6 +55,18 @@ export async function GET() {
   // Static pages
   for (const p of STATIC_PAGES) {
     entries.push(urlEntry(`${BASE}${p.path}`, p.dynamic ? now : SITE_LAUNCH, p.changefreq, p.priority));
+  }
+
+  // Blog pages
+  try {
+    const blogPostList = await getAllPublishedBlogPosts();
+    entries.push(urlEntry(`${BASE}/blog`, now, 'weekly', 0.7));
+    for (const post of blogPostList) {
+      const lastmod = post.updatedAt ? new Date(post.updatedAt).toISOString() : now;
+      entries.push(urlEntry(`${BASE}/blog/${post.slug}`, lastmod, 'weekly', 0.6));
+    }
+  } catch {
+    // DB not available during build — blog pages omitted
   }
 
   // Race pages — lastmod = race date

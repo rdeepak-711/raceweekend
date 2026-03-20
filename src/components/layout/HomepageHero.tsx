@@ -174,7 +174,7 @@ const HomepageHero = () => {
         className="relative z-30 max-w-5xl mx-auto px-6 text-center"
       >
         {/* Letter Stagger Headline */}
-        <h1 className="flex justify-center mb-4 md:mb-6">
+        <div className="flex justify-center mb-4 md:mb-6">
           {titleLetters.map((letter, i) => (
             <motion.span
               key={i}
@@ -186,7 +186,7 @@ const HomepageHero = () => {
               {letter}
             </motion.span>
           ))}
-        </h1>
+        </div>
         
         {/* Typewriter Line */}
         <div className="font-mono text-[8px] sm:text-[10px] md:text-xs text-[var(--accent-teal)] uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] mb-8 md:mb-12 h-4 overflow-hidden px-2">

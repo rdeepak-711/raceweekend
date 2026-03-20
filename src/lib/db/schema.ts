@@ -201,6 +201,30 @@ export const tickets = mysqlTable("tickets", {
   tickets_race_id_idx: index("tickets_race_id_idx").on(table.race_id),
 }));
 
+export const blogPosts = mysqlTable("blog_posts", {
+  id:             int("id").primaryKey().autoincrement(),
+  slug:           varchar("slug", { length: 255 }).unique().notNull(),
+  title:          varchar("title", { length: 255 }).notNull(),
+  excerpt:        text("excerpt"),
+  content:        longtext("content"),
+  category:       varchar("category", { length: 50 }).notNull().default("general"),
+  // categories: race-preview | experience-review | city-guide | f1 | motogp | tips | general
+  author:         varchar("author", { length: 100 }).default("Deepak"),
+  tags:           json("tags").$type<string[]>(),
+  related_race_ids: json("related_race_ids").$type<number[]>(),
+  featured_image: varchar("featured_image", { length: 500 }),
+  seo_title:      varchar("seo_title", { length: 255 }),
+  seo_description: text("seo_description"),
+  is_published:   boolean("is_published").default(false),
+  published_at:   timestamp("published_at"),
+  created_at:     timestamp("created_at").defaultNow(),
+  updated_at:     timestamp("updated_at").defaultNow().onUpdateNow(),
+}, (table) => ({
+  blog_slug_idx: index("blog_slug_idx").on(table.slug),
+  blog_published_idx: index("blog_published_idx").on(table.is_published, table.published_at),
+  blog_category_idx: index("blog_category_idx").on(table.category),
+}));
+
 export const contacts = mysqlTable("contacts", {
   id:         int("id").primaryKey().autoincrement(),
   name:       varchar("name", { length: 255 }).notNull(),

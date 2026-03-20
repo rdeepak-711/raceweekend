@@ -54,3 +54,7 @@ CLAUDE-*.md
 # misc
 .vercel
 node_modules
+
+
+#documents
+docs/

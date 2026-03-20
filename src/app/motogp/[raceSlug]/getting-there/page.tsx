@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import GuideAccordion from '@/components/race/GuideAccordion';
+import Image from 'next/image';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
@@ -16,11 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
   return {
-    title: `Getting to ${race.city} for the ${race.name} | Race Weekend`,
+    title: `Getting to ${race.city} for the ${race.name}`,
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
     alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/getting-there` },
     openGraph: {
-      title: `Getting to ${race.city} for the ${race.name} | Race Weekend`,
+      title: `Getting to ${race.city} for the ${race.name}`,
       description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
@@ -37,7 +38,7 @@ const buildBreadcrumbLd = (race: { name: string; slug: string }) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
     { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
     { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
     { '@type': 'ListItem', position: 4, name: 'Getting There', item: `https://raceweekend.co/motogp/${race.slug}/getting-there` },
@@ -66,7 +67,18 @@ export default async function MotoGPGettingTherePage({ params }: Props) {
     })),
   } : null;
 
-  const schemas = [buildBreadcrumbLd(race), ...(faqLd ? [faqLd] : [])];
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `Getting to ${race.city} for the ${race.name}`,
+    description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
+    author: { '@type': 'Person', name: 'Deepak' },
+    publisher: { '@type': 'Organization', name: 'Race Weekend' },
+    dateModified: new Date().toISOString(),
+    url: `https://raceweekend.co/motogp/${raceSlug}/getting-there`,
+  };
+
+  const schemas = [buildBreadcrumbLd(race), articleLd, ...(faqLd ? [faqLd] : [])];
 
   return (
     <>
@@ -86,7 +98,7 @@ export default async function MotoGPGettingTherePage({ params }: Props) {
             {/* Circuit Image */}
             {circuitExists && (
               <div className="relative rounded-xl mb-6 shadow-lg border border-white/5 bg-[var(--bg-secondary)] flex items-center justify-center p-4">
-                <img src={circuitUrl} alt={`${race.circuitName} - ${race.name}`} className="w-full max-h-56 object-contain opacity-80" />
+                <Image src={circuitUrl} alt={`${race.circuitName} circuit layout`} width={800} height={450} className="w-full max-h-56 object-contain opacity-80" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-30 pointer-events-none" />
               </div>
             )}

@@ -57,14 +57,15 @@ export default async function F1TravelGuidePage({ params }: Props) {
         headline: `${race.city} Formula 1 2026 Travel Guide`,
         description: content?.pageDescription,
         image: `https://raceweekend.co/og/${race.slug}.jpg`,
-        author: { '@type': 'Organization', name: 'Race Weekend' },
+        author: { '@type': 'Person', name: 'Deepak' },
         publisher: { '@type': 'Organization', name: 'Race Weekend' },
         datePublished: new Date().toISOString(),
+        dateModified: new Date().toISOString(),
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
           { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
           { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${race.slug}` },
           { '@type': 'ListItem', position: 4, name: 'Travel Guide', item: `https://raceweekend.co/f1/${race.slug}/travel-guide` },

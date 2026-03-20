@@ -18,11 +18,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
   return {
-    title: `${race.city} Race Weekend Tips — ${race.name} | Race Weekend`,
+    title: `${race.city} F1 2026 Insider Tips`,
     description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
     alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/tips` },
     openGraph: {
-      title: `${race.city} Race Weekend Tips — ${race.name} | Race Weekend`,
+      title: `${race.city} F1 2026 Insider Tips`,
       description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
@@ -67,14 +67,37 @@ export default async function F1TipsPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Tips', item: `https://raceweekend.co/f1/${raceSlug}/tips` },
     ],
   };
 
-  const schemas = [breadcrumbLd, ...(faqLd ? [faqLd] : [])];
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${race.city} F1 2026 Insider Tips`,
+    description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
+    author: { '@type': 'Person', name: 'Deepak' },
+    publisher: { '@type': 'Organization', name: 'Race Weekend' },
+    dateModified: new Date().toISOString(),
+    url: `https://raceweekend.co/f1/${raceSlug}/tips`,
+  };
+
+  const howToLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Attend the ${race.name}`,
+    description: `Step-by-step tips for attending the ${race.name} in ${race.city}.`,
+    step: travelTips.map((tip, i) => {
+      const name = typeof tip === 'string' ? `Tip #${i + 1}` : tip.heading;
+      const text = typeof tip === 'string' ? tip : tip.body;
+      return { '@type': 'HowToStep', position: i + 1, name, text };
+    }),
+  };
+
+  const schemas = [breadcrumbLd, articleLd, howToLd, ...(faqLd ? [faqLd] : [])];
 
   return (
     <>

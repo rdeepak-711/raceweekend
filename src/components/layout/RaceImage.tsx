@@ -46,7 +46,7 @@ export default function RaceImage({
       alt={alt}
       className={className}
       priority={priority}
-      loading={priority ? undefined : loading}
+      loading={priority ? undefined : (loading ?? 'lazy')}
       unoptimized={isExternal}
       onError={() => setError(true)}
       {...props}

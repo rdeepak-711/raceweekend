@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getRaceBySlug } from '@/services/race.service';
+import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import { getTicketsByRace } from '@/services/ticket.service';
 import TicketsClient from '@/components/tickets/TicketsClient';
 import RaceCountdown from '@/components/race/RaceCountdown';
@@ -20,11 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
   return {
-    title: `${race.name} MotoGP Tickets 2026 | Race Weekend`,
+    title: `${race.name} 2026 Tickets: How to Buy & Prices`,
     description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
     alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/tickets` },
     openGraph: {
-      title: `${race.name} MotoGP Tickets 2026 | Race Weekend`,
+      title: `${race.name} 2026 Tickets: How to Buy & Prices`,
       description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
@@ -40,18 +40,33 @@ export default async function MotoGPTicketsPage({ params }: Props) {
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();
 
-  const tickets = await getTicketsByRace(race.id);
+  const [tickets, content] = await Promise.all([
+    getTicketsByRace(race.id),
+    getRaceContent(race.id),
+  ]);
   const theme = getThemeFromRace(race);
   const raceDateTime = `${race.raceDate}T14:00:00`;
 
   const today = new Date().toISOString().slice(0, 10);
   const isPast = race.raceDate < today;
 
+  const ticketKeywords = /ticket|price|cost|buy|purchase|resale/i;
+  const ticketFaqs = content?.faqItems?.filter(item => ticketKeywords.test(item.question)) ?? [];
+  const faqLd = ticketFaqs.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: ticketFaqs.map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  } : null;
+
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
       { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
       { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
       { '@type': 'ListItem', position: 4, name: 'Tickets', item: `https://raceweekend.co/motogp/${raceSlug}/tickets` },
@@ -60,7 +75,7 @@ export default async function MotoGPTicketsPage({ params }: Props) {
 
   return (
     <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbLd]) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbLd, ...(faqLd ? [faqLd] : [])]) }} />
     <div className="min-h-screen bg-[var(--bg-primary)] pt-20 pb-24 px-4">
       <div className="max-w-6xl mx-auto">
         <PageBreadcrumb crumbs={[
