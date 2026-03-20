@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { getRacesBySeries } from '@/services/race.service';
 import { SITE_URL } from '@/lib/constants/site';
 
@@ -37,13 +38,13 @@ interface UrlEntry {
 }
 
 export default async function SiteDirectoryPage() {
+  await connection();
+  const TODAY = new Date().toISOString().slice(0, 10);
+
   const [f1Races, motogpRaces] = await Promise.all([
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),
   ]);
-
-  // Safe to call new Date() here — getRacesBySeries calls connection() internally
-  const TODAY = new Date().toISOString().slice(0, 10);
 
   const STATIC_PAGES = [
     { path: '/',               label: 'Home',             lastMod: TODAY },
