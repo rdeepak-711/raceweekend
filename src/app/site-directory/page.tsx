@@ -9,18 +9,12 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/site-directory` },
 };
 
-const TODAY = new Date().toISOString().slice(0, 10);
-
-const STATIC_PAGES = [
-  { path: '/',               label: 'Home',            lastMod: TODAY },
-  { path: '/f1',             label: 'F1 2026 Calendar', lastMod: TODAY },
-  { path: '/motogp',         label: 'MotoGP 2026 Calendar', lastMod: TODAY },
-  { path: '/itinerary',      label: 'Itinerary Builder', lastMod: TODAY },
-  { path: '/about',          label: 'About',           lastMod: '2025-01-01' },
-  { path: '/contact',        label: 'Contact',         lastMod: '2025-01-01' },
-  { path: '/privacy',        label: 'Privacy Policy',  lastMod: '2025-01-01' },
+// TODAY is computed inside the component (after connection() via getRacesBySeries)
+const STATIC_PAGES_FIXED = [
+  { path: '/about',          label: 'About',            lastMod: '2025-01-01' },
+  { path: '/contact',        label: 'Contact',          lastMod: '2025-01-01' },
+  { path: '/privacy',        label: 'Privacy Policy',   lastMod: '2025-01-01' },
   { path: '/terms',          label: 'Terms of Service', lastMod: '2025-01-01' },
-  { path: '/site-directory', label: 'Site Directory',  lastMod: TODAY },
 ];
 
 const RACE_SUBS: { sub: string; label: string }[] = [
@@ -47,6 +41,18 @@ export default async function SiteDirectoryPage() {
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),
   ]);
+
+  // Safe to call new Date() here — getRacesBySeries calls connection() internally
+  const TODAY = new Date().toISOString().slice(0, 10);
+
+  const STATIC_PAGES = [
+    { path: '/',               label: 'Home',             lastMod: TODAY },
+    { path: '/f1',             label: 'F1 2026 Calendar', lastMod: TODAY },
+    { path: '/motogp',         label: 'MotoGP 2026 Calendar', lastMod: TODAY },
+    { path: '/itinerary',      label: 'Itinerary Builder', lastMod: TODAY },
+    { path: '/site-directory', label: 'Site Directory',   lastMod: TODAY },
+    ...STATIC_PAGES_FIXED,
+  ];
 
   // Build flat list of all URLs with accurate lastModified
   const entries: UrlEntry[] = [];
