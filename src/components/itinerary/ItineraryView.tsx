@@ -17,7 +17,7 @@ interface Props {
 
 export default function ItineraryView({ itinerary, race, sessions, experiences }: Props) {
   const meta = SERIES_META[race.series];
-  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raceweekend.app'}/itinerary/${itinerary.id}`;
+  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raceweekend.co'}/itinerary/${itinerary.id}`;
 
   const handlePrint = () => {
     window.print();

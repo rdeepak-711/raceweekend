@@ -6,15 +6,15 @@ import SeriesLandingClient from '@/components/race/SeriesLandingClient';
 export const metadata: Metadata = {
   title: 'F1 2026 Season Calendar — Rounds & Travel Guides | Race Weekend',
   description: 'Full Formula 1 2026 race calendar. 24 rounds across 5 continents. Plan your weekend with session times, local experiences, and booking tips.',
-  alternates: { canonical: 'https://raceweekend.app/f1' },
+  alternates: { canonical: 'https://raceweekend.co/f1' },
   openGraph: {
     title: 'F1 2026 Season Calendar | Race Weekend',
     description: '24 rounds across 5 continents. Plan your F1 race weekend with session times, local experiences, and tickets.',
-    images: [{ url: 'https://raceweekend.app/og/f1.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://raceweekend.co/og/f1.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.app/og/f1.jpg'],
+    images: ['https://raceweekend.co/og/f1.jpg'],
   },
 };
 

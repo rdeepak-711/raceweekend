@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.city} F1 Travel Guide 2026 | Race Weekend`,
     description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
-    alternates: { canonical: `https://raceweekend.app/f1/${raceSlug}/guide` },
+    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/guide` },
     openGraph: {
       title: `${race.city} F1 Travel Guide 2026 | Race Weekend`,
       description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
@@ -76,10 +76,10 @@ export default async function F1GuidePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.app/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Guide', item: `https://raceweekend.app/f1/${raceSlug}/guide` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Guide', item: `https://raceweekend.co/f1/${raceSlug}/guide` },
     ],
   };
 

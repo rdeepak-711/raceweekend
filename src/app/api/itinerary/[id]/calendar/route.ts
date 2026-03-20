@@ -3,6 +3,7 @@ import { getItinerary } from '@/services/itinerary.service';
 import { getRaceById, getSessionsByRace } from '@/services/race.service';
 import { getExperiencesByIds } from '@/services/experience.service';
 import * as ics from 'ics';
+import { SITE_URL } from '@/lib/constants/site';
 
 export async function GET(
   req: NextRequest,
@@ -42,7 +43,7 @@ export async function GET(
       title: `${race.city} GP: ${s.name}`,
       description: `Formula 1 Session at ${race.circuitName}. Track strategy deployed via Race Weekend.`,
       location: race.circuitName || race.city,
-      url: `https://raceweekend.app/f1/${race.slug}`,
+      url: `${SITE_URL}/f1/${race.slug}`,
       categories: ['Race Session', race.series.toUpperCase()],
       status: 'CONFIRMED',
       busyStatus: 'BUSY'
@@ -58,7 +59,7 @@ export async function GET(
       title: `Experience: ${exp.title}`,
       description: `${exp.shortDescription}\n\nBooked via Race Weekend: ${exp.affiliateUrl}`,
       location: exp.meetingPoint || race.city,
-      url: `https://raceweekend.app/experiences/${exp.slug}`,
+      url: `${SITE_URL}/experiences/${exp.slug}`,
       categories: ['Local Experience'],
     });
   });

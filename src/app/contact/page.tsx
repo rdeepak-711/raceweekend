@@ -5,15 +5,15 @@ import ContactForm from '@/components/contact/ContactForm';
 export const metadata: Metadata = {
   title: 'Get in Touch | Race Weekend',
   description: 'Have a feature request, bug report, or just want to talk racing? Reach out to the Race Weekend team.',
-  alternates: { canonical: 'https://raceweekend.app/contact' },
+  alternates: { canonical: 'https://raceweekend.co/contact' },
   openGraph: {
     title: 'Get in Touch | Race Weekend',
     description: 'Feature requests, bug reports, or talking F1 & MotoGP — let\'s connect.',
-    images: [{ url: 'https://raceweekend.app/og/contact.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://raceweekend.co/og/contact.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.app/og/contact.jpg'],
+    images: ['https://raceweekend.co/og/contact.jpg'],
   },
 };
 

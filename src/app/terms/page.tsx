@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Terms of Service | Race Weekend',
   description: 'The terms and conditions for using the Race Weekend platform.',
-  alternates: { canonical: 'https://raceweekend.app/terms' },
+  alternates: { canonical: 'https://raceweekend.co/terms' },
   openGraph: {
     title: 'Terms of Service | Race Weekend',
     description: 'The terms and conditions for using the Race Weekend platform.',
@@ -29,7 +29,7 @@ export default function TermsPage() {
           <section>
             <h2 className="font-display font-black text-2xl text-white uppercase italic mb-4">1. Acceptance of Terms</h2>
             <p className="text-[var(--text-secondary)] leading-relaxed">
-              By accessing and using raceweekend.app (the "Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.
+              By accessing and using raceweekend.co (the "Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.
             </p>
           </section>
 

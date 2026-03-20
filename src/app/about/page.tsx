@@ -5,15 +5,15 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Our Story | Race Weekend',
   description: 'Built for fans, by a fan. Race Weekend is a solo project by Codephilic Studio, designed to simplify F1 and MotoGP travel planning.',
-  alternates: { canonical: 'https://raceweekend.app/about' },
+  alternates: { canonical: 'https://raceweekend.co/about' },
   openGraph: {
     title: 'Our Story — Why We Built Race Weekend',
     description: 'F1 and MotoGP travel planning made beautifully simple. Built by Codephilic Studio.',
-    images: [{ url: 'https://raceweekend.app/og/about.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://raceweekend.co/og/about.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.app/og/about.jpg'],
+    images: ['https://raceweekend.co/og/about.jpg'],
   },
 };
 

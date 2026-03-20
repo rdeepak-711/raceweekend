@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}/travel-guide` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/travel-guide` },
     openGraph: {
       title,
       description,
@@ -55,7 +55,7 @@ export default async function MotoGPTravelGuidePage({ params }: Props) {
         '@type': 'Article',
         headline: `${race.city} MotoGP 2026 Travel Guide`,
         description: content?.pageDescription,
-        image: `https://raceweekend.app/og/${race.slug}.jpg`,
+        image: `https://raceweekend.co/og/${race.slug}.jpg`,
         author: { '@type': 'Organization', name: 'Race Weekend' },
         publisher: { '@type': 'Organization', name: 'Race Weekend' },
         datePublished: new Date().toISOString(),
@@ -63,10 +63,10 @@ export default async function MotoGPTravelGuidePage({ params }: Props) {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-          { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-          { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${race.slug}` },
-          { '@type': 'ListItem', position: 4, name: 'Travel Guide', item: `https://raceweekend.app/motogp/${race.slug}/travel-guide` },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+          { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+          { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
+          { '@type': 'ListItem', position: 4, name: 'Travel Guide', item: `https://raceweekend.co/motogp/${race.slug}/travel-guide` },
         ],
       },
       content?.faqItems ? {

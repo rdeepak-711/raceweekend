@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${exp.title} | MotoGP ${raceSlug}`,
     description: exp.shortDescription,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}/experiences/${slug}` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/experiences/${slug}` },
     openGraph: {
       title: exp.title,
       description: exp.shortDescription ?? '',
@@ -86,11 +86,11 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Experiences', item: `https://raceweekend.app/motogp/${raceSlug}/experiences` },
-      { '@type': 'ListItem', position: 5, name: experience.title, item: `https://raceweekend.app/motogp/${raceSlug}/experiences/${slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Experiences', item: `https://raceweekend.co/motogp/${raceSlug}/experiences` },
+      { '@type': 'ListItem', position: 5, name: experience.title, item: `https://raceweekend.co/motogp/${raceSlug}/experiences/${slug}` },
     ],
   };
 

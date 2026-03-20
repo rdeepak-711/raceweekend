@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `https://raceweekend.app/f1/${raceSlug}` },
+    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}` },
     openGraph: {
       title,
       description,
@@ -89,16 +89,16 @@ export default async function F1RacePage({ params }: Props) {
       address: { '@type': 'PostalAddress', addressCountry: race.country },
     },
     organizer: { '@type': 'Organization', name: 'Formula 1' },
-    url: `https://raceweekend.app/f1/${race.slug}`,
+    url: `https://raceweekend.co/f1/${race.slug}`,
   };
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.app/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/f1/${race.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${race.slug}` },
     ],
   };
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Titillium_Web, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/constants/site";
 import NavWrapper from "@/components/layout/NavWrapper";
 import Footer from "@/components/layout/Footer";
 import dynamic from "next/dynamic";
@@ -32,7 +33,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://raceweekend.app'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Race Weekend | F1 & MotoGP Travel Guide',
     template: '%s | Race Weekend',
@@ -57,8 +58,8 @@ const globalSchemas = [
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Race Weekend',
-    url: 'https://raceweekend.app',
-    logo: 'https://raceweekend.app/icon.svg',
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon.svg`,
     contactPoint: {
       '@type': 'ContactPoint',
       email: process.env.CONTACT_EMAIL ?? 'onlyforthe20thcentury@gmail.com',
@@ -69,7 +70,7 @@ const globalSchemas = [
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Race Weekend',
-    url: 'https://raceweekend.app',
+    url: SITE_URL,
     description: 'Plan your F1 and MotoGP race weekend with curated local experiences, session schedules, ticket listings, and shareable itineraries.',
     publisher: {
       '@type': 'Organization',

@@ -15,16 +15,16 @@ import TelemetryVisualizer from '@/components/layout/TelemetryVisualizer';
 export const metadata: Metadata = {
   title: 'Race Weekend | F1 & MotoGP 2026 Travel Guide',
   description: 'Plan your F1 & MotoGP 2026 race weekend. Live telemetry, curated local experiences, session schedules, tickets, and shareable itineraries for all 46 races.',
-  alternates: { canonical: 'https://raceweekend.app' },
+  alternates: { canonical: 'https://raceweekend.co' },
   openGraph: {
     title: 'Race Weekend | F1 & MotoGP 2026 Travel Guide',
     description: 'The ultimate F1 & MotoGP 2026 travel companion. Live telemetry, curated experiences, and shareable itineraries.',
-    url: 'https://raceweekend.app',
-    images: [{ url: 'https://raceweekend.app/og-hero.jpg', width: 1200, height: 630 }],
+    url: 'https://raceweekend.co',
+    images: [{ url: 'https://raceweekend.co/og-hero.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.app/og-hero.jpg'],
+    images: ['https://raceweekend.co/og-hero.jpg'],
   },
 };
 

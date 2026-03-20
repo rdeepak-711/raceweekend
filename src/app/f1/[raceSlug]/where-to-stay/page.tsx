@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `https://raceweekend.app/f1/${raceSlug}/where-to-stay` },
+    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/where-to-stay` },
     openGraph: {
       title,
       description,
@@ -90,16 +90,26 @@ export default async function F1WhereToStayPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.app/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Where to Stay', item: `https://raceweekend.app/f1/${raceSlug}/where-to-stay` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Where to Stay', item: `https://raceweekend.co/f1/${raceSlug}/where-to-stay` },
     ],
   };
 
+  const faqLd = faqItems.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  } : null;
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd ? [breadcrumbLd, faqLd] : breadcrumbLd) }} />
 
       <div className="min-h-screen pt-24 pb-24 px-4">
         <div className="max-w-4xl mx-auto">

@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.name} MotoGP Tickets 2026 | Race Weekend`,
     description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}/tickets` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/tickets` },
     openGraph: {
       title: `${race.name} MotoGP Tickets 2026 | Race Weekend`,
       description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
@@ -51,10 +51,10 @@ export default async function MotoGPTicketsPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Tickets', item: `https://raceweekend.app/motogp/${raceSlug}/tickets` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Tickets', item: `https://raceweekend.co/motogp/${raceSlug}/tickets` },
     ],
   };
 

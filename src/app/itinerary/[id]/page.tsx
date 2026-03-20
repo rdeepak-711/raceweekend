@@ -20,11 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const race = await getRaceById(itinerary.raceId);
   const raceName = race?.name || 'Race Weekend';
   const city = race?.city || 'Race';
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://raceweekend.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://raceweekend.co';
 
   return {
     title: `${city} GP Strategy Briefing | Race Weekend`,
     description: `Tactical mission plan for the ${raceName}. Track sessions and local intelligence assets deployed.`,
+    alternates: { canonical: `${siteUrl}/itinerary/${id}` },
     openGraph: {
       title: `${city} GP Strategy Briefing | Race Weekend`,
       description: `Tactical mission plan for the ${raceName}. Track sessions and local intelligence assets deployed.`,

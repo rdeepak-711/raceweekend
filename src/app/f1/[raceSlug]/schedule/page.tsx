@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.name} Schedule 2026 | Race Weekend`,
     description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
-    alternates: { canonical: `https://raceweekend.app/f1/${raceSlug}/schedule` },
+    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/schedule` },
     openGraph: {
       title: `${race.name} Schedule 2026 | Race Weekend`,
       description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
@@ -76,16 +76,51 @@ export default async function F1SchedulePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.app/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Schedule', item: `https://raceweekend.app/f1/${raceSlug}/schedule` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Schedule', item: `https://raceweekend.co/f1/${raceSlug}/schedule` },
     ],
   };
 
+  // Build ItemList + Event schema for each session
+  const DAY_OFFSETS: Record<string, number> = { Thursday: -3, Friday: -2, Saturday: -1, Sunday: 0 };
+  const raceDate = new Date(race.raceDate);
+  const scheduleItemListLd = sessions.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${race.name} 2026 Weekend Schedule`,
+    itemListElement: sessions.map((s, i) => {
+      const sessionDate = new Date(raceDate);
+      sessionDate.setDate(sessionDate.getDate() + (DAY_OFFSETS[s.dayOfWeek] ?? 0));
+      const dateStr = sessionDate.toISOString().slice(0, 10);
+      const startDate = s.startTime ? `${dateStr}T${s.startTime}` : dateStr;
+      const endDate = s.endTime ? `${dateStr}T${s.endTime}` : undefined;
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Event',
+          name: s.name,
+          startDate,
+          ...(endDate ? { endDate } : {}),
+          location: {
+            '@type': 'Place',
+            name: race.circuitName,
+            address: { '@type': 'PostalAddress', addressLocality: race.city, addressCountry: race.country },
+          },
+          organizer: { '@type': 'Organization', name: 'Formula 1' },
+          eventStatus: race.isCancelled
+            ? 'https://schema.org/EventCancelled'
+            : 'https://schema.org/EventScheduled',
+        },
+      };
+    }),
+  } : null;
+
   return (
     <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbLd]) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(scheduleItemListLd ? [breadcrumbLd, scheduleItemListLd] : [breadcrumbLd]) }} />
     <div className="min-h-screen pt-20 pb-24 px-4">
       <div className="max-w-4xl mx-auto">
         <PageBreadcrumb crumbs={[

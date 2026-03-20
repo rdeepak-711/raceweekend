@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Privacy Policy | Race Weekend',
   description: 'How we handle your data and privacy at Race Weekend.',
-  alternates: { canonical: 'https://raceweekend.app/privacy' },
+  alternates: { canonical: 'https://raceweekend.co/privacy' },
   openGraph: {
     title: 'Privacy Policy | Race Weekend',
     description: 'How we handle your data and privacy at Race Weekend.',
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-display font-black text-2xl text-white uppercase italic mb-4">1. Overview</h2>
             <p className="text-[var(--text-secondary)] leading-relaxed">
-              Race Weekend ("we", "our", or "us") operates the website raceweekend.app. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
+              Race Weekend ("we", "our", or "us") operates the website raceweekend.co. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
             </p>
           </section>
 

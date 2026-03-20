@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}` },
     openGraph: {
       title,
       description,
@@ -73,16 +73,16 @@ export default async function MotoGPRacePage({ params }: Props) {
       address: { '@type': 'PostalAddress', addressCountry: race.country },
     },
     organizer: { '@type': 'Organization', name: 'MotoGP' },
-    url: `https://raceweekend.app/motogp/${race.slug}`,
+    url: `https://raceweekend.co/motogp/${race.slug}`,
   };
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${race.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
     ],
   };
 

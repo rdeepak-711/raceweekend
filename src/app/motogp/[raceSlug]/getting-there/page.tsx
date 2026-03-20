@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Getting to ${race.city} for the ${race.name} | Race Weekend`,
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}/getting-there` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/getting-there` },
     openGraph: {
       title: `Getting to ${race.city} for the ${race.name} | Race Weekend`,
       description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
@@ -37,10 +37,10 @@ const buildBreadcrumbLd = (race: { name: string; slug: string }) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-    { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-    { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${race.slug}` },
-    { '@type': 'ListItem', position: 4, name: 'Getting There', item: `https://raceweekend.app/motogp/${race.slug}/getting-there` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+    { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+    { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
+    { '@type': 'ListItem', position: 4, name: 'Getting There', item: `https://raceweekend.co/motogp/${race.slug}/getting-there` },
   ],
 });
 

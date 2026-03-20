@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Where to Stay for the ${race.name} — Hotels & Neighborhoods | Race Weekend`,
     description: `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}/where-to-stay` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/where-to-stay` },
     openGraph: {
       title: `Where to Stay for the ${race.name} — Hotels & Neighborhoods | Race Weekend`,
       description: `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`,
@@ -87,16 +87,26 @@ export default async function MotoGPWhereToStayPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Where to Stay', item: `https://raceweekend.app/motogp/${raceSlug}/where-to-stay` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Where to Stay', item: `https://raceweekend.co/motogp/${raceSlug}/where-to-stay` },
     ],
   };
 
+  const faqLd = faqItems.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  } : null;
+
   return (
     <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbLd]) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd ? [breadcrumbLd, faqLd] : [breadcrumbLd]) }} />
     <div className="min-h-screen pt-20 pb-24 px-4">
       <div className="max-w-4xl mx-auto">
         <PageBreadcrumb crumbs={[

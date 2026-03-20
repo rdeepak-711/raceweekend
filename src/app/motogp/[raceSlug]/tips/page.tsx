@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.city} Race Weekend Tips — ${race.name} | Race Weekend`,
     description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
-    alternates: { canonical: `https://raceweekend.app/motogp/${raceSlug}/tips` },
+    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/tips` },
     openGraph: {
       title: `${race.city} Race Weekend Tips — ${race.name} | Race Weekend`,
       description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
@@ -65,10 +65,10 @@ export default async function MotoGPTipsPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.app/' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.app/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.app/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Tips', item: `https://raceweekend.app/motogp/${raceSlug}/tips` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co/' },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Tips', item: `https://raceweekend.co/motogp/${raceSlug}/tips` },
     ],
   };
 
