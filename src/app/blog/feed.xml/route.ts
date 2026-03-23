@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { getBlogPosts } from '@/services/blog.service';
 import { SITE_URL } from '@/lib/constants/site';
 
-export const dynamic = 'force-dynamic';
-
 function escapeXml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
