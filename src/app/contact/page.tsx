@@ -1,19 +1,18 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ContactForm from '@/components/contact/ContactForm';
+import { SITE_URL } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'Get in Touch | Race Weekend',
   description: 'Have a feature request, bug report, or just want to talk racing? Reach out to the Race Weekend team.',
-  alternates: { canonical: 'https://raceweekend.co/contact' },
+  alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
     title: 'Get in Touch | Race Weekend',
     description: 'Feature requests, bug reports, or talking F1 & MotoGP — let\'s connect.',
-    images: [{ url: 'https://raceweekend.co/og/contact.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.co/og/contact.jpg'],
   },
 };
 

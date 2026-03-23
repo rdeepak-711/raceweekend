@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
 import RaceSchedule from '@/components/race/RaceSchedule';
@@ -19,11 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.name} 2026 Session Schedule & Race Times`,
     description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
-    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/schedule` },
+    alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/schedule` },
     openGraph: {
       title: `${race.name} 2026 Session Schedule & Race Times`,
       description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -45,10 +46,10 @@ export default async function MotoGPSchedulePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Schedule', item: `https://raceweekend.co/motogp/${raceSlug}/schedule` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: `${SITE_URL}/motogp` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Schedule', item: `${SITE_URL}/motogp/${raceSlug}/schedule` },
     ],
   };
 

@@ -46,7 +46,7 @@ export default async function Image() {
           </div>
           {/* Domain */}
           <div style={{ marginTop: 20, fontSize: 15, color: 'rgba(255,255,255,0.35)', letterSpacing: 3, textTransform: 'uppercase' }}>
-            RACEWEEKEND.APP
+            RACEWEEKEND.CO
           </div>
         </div>
       </div>

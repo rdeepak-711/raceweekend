@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { SITE_URL } from '@/lib/constants/site';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL;
+const BASE_URL = SITE_URL;
 
 // Maps F1 race slugs to track AVIF filenames in /public/tracks/
 const TRACK_AVIF_MAP: Record<string, string> = {

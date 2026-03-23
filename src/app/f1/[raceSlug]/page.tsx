@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -30,11 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     keywords: content?.pageKeywords ?? [],
-    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}` },
+    alternates: { canonical: `${SITE_URL}/f1/${raceSlug}` },
     openGraph: {
       title,
       description,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -103,7 +104,7 @@ export default async function F1RacePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: race.name,
-    url: `https://raceweekend.co/f1/${race.slug}`,
+    url: `${SITE_URL}/f1/${race.slug}`,
     startDate: raceDateTime,
     endDate: `${race.raceDate}T18:00:00`,
     description: `The ${race.name} at ${race.circuitName} in ${race.city}, ${race.country}. Book tickets, experiences, and plan your F1 race weekend.`,
@@ -126,7 +127,7 @@ export default async function F1RacePage({ params }: Props) {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://raceweekend.co/f1/${race.slug}/tickets`,
+      url: `${SITE_URL}/f1/${race.slug}/tickets`,
       availability: race.isCancelled
         ? 'https://schema.org/Discontinued'
         : 'https://schema.org/InStock',
@@ -140,9 +141,9 @@ export default async function F1RacePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${race.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: `${SITE_URL}/f1` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/f1/${race.slug}` },
     ],
   };
 

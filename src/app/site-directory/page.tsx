@@ -22,9 +22,7 @@ const RACE_SUBS: { sub: string; label: string }[] = [
   { sub: '',               label: 'Race Overview' },
   { sub: '/schedule',      label: 'Weekend Schedule' },
   { sub: '/experiences',   label: 'Local Experiences' },
-  { sub: '/tickets',       label: 'Race Tickets' },
   { sub: '/guide',         label: 'City Guide' },
-  { sub: '/travel-guide',  label: 'Travel Guide' },
   { sub: '/getting-there', label: 'Getting There' },
   { sub: '/where-to-stay', label: 'Where to Stay' },
   { sub: '/tips',          label: 'Race Tips' },
@@ -100,7 +98,23 @@ export default async function SiteDirectoryPage() {
   // Running index across all sections
   let globalIdx = 0;
 
+  const itemListLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Race Weekend — All Pages',
+    description: 'Complete directory of all Formula 1 and MotoGP races, schedules, and travel guides on Race Weekend.',
+    numberOfItems: totalUrls,
+    itemListElement: entries.map((entry, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: entry.label,
+      url: entry.url,
+    })),
+  };
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
     <div className="min-h-screen bg-[var(--bg-primary)] pt-24 pb-32 px-4">
       <div className="max-w-5xl mx-auto">
 
@@ -185,5 +199,6 @@ export default async function SiteDirectoryPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

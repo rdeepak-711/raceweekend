@@ -27,7 +27,7 @@ export default function ExperienceSuggestions({ experiences, basePath }: Props) 
               >
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
                   {exp.imageUrl ? (
-                    <Image src={exp.imageUrl} alt={exp.title} fill sizes="64px" referrerPolicy="no-referrer" className="object-cover" />
+                    <Image src={exp.imageUrl} alt={exp.title} fill sizes="64px" referrerPolicy="no-referrer" unoptimized className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-2xl" style={{ background: `${color}20` }}>
                       {exp.imageEmoji}

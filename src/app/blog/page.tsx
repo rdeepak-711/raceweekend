@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getBlogPosts } from '@/services/blog.service';
 import { SITE_URL } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'Race Weekend Blog — F1 & MotoGP Travel Stories',
   description: 'Race previews, experience reviews, and city guides for F1 and MotoGP fans. Written by Deepak.',
-  alternates: { canonical: `${SITE_URL}/blog` },
+  alternates: {
+    canonical: `${SITE_URL}/blog`,
+    types: { 'application/rss+xml': `${SITE_URL}/blog/feed.xml` },
+  },
   openGraph: {
     title: 'Race Weekend Blog — F1 & MotoGP Travel Stories',
     description: 'Race previews, experience reviews, and city guides for F1 and MotoGP fans.',
@@ -33,7 +37,7 @@ const breadcrumbLd = {
 };
 
 export default async function BlogIndexPage() {
-  const posts = await getBlogPosts({ limit: 12 });
+  const posts = await getBlogPosts({ limit: 50 });
 
   return (
     <>
@@ -69,11 +73,13 @@ export default async function BlogIndexPage() {
                   className="group block rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] overflow-hidden hover:border-white/20 transition-colors"
                 >
                   {post.featuredImage && (
-                    <div className="h-48 overflow-hidden">
-                      <img
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
                         src={post.featuredImage}
                         alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        fill
+                        unoptimized
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   )}

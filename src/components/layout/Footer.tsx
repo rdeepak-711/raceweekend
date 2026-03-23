@@ -34,8 +34,7 @@ export default function Footer() {
               <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-6">Tools</h4>
               <ul className="space-y-4">
                 <li><Link href="/itinerary" className="text-sm text-[var(--text-secondary)] hover:text-white transition-colors">Itinerary Builder</Link></li>
-                <li><Link href="/tickets" className="text-sm text-[var(--text-secondary)] hover:text-white transition-colors">Ticket Finder</Link></li>
-                <li><Link href="/blog" className="text-sm text-[var(--text-secondary)] hover:text-white transition-colors">Blog</Link></li>
+<li><Link href="/blog" className="text-sm text-[var(--text-secondary)] hover:text-white transition-colors">Blog</Link></li>
               </ul>
             </div>
             <div>

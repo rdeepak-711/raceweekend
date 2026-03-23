@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getBlogPostBySlug, getRelatedPosts } from '@/services/blog.service';
 import { SITE_URL } from '@/lib/constants/site';
 
@@ -17,9 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {
+      type: 'article',
       title,
       description,
-      images: post.featuredImage ? [{ url: post.featuredImage, width: 1200, height: 630 }] : [],
+      publishedTime: post.publishedAt?.toISOString() ?? post.createdAt.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
+      authors: [post.author],
+      tags: post.tags ?? [],
+      images: post.featuredImage ? [{ url: post.featuredImage, width: 1200, height: 630, alt: post.title }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -81,8 +87,8 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
 
           {post.featuredImage && (
-            <div className="h-64 md:h-80 overflow-hidden rounded-2xl mb-10 shadow-2xl">
-              <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+            <div className="relative h-64 md:h-80 overflow-hidden rounded-2xl mb-10 shadow-2xl">
+              <Image src={post.featuredImage} alt={post.title} fill priority unoptimized className="object-cover" />
             </div>
           )}
 

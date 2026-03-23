@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${city} GP Strategy Briefing | Race Weekend`,
     description: `Tactical mission plan for the ${raceName}. Track sessions and local intelligence assets deployed.`,
+    robots: { index: false, follow: false },
     alternates: { canonical: `${siteUrl}/itinerary/${id}` },
     openGraph: {
       title: `${city} GP Strategy Briefing | Race Weekend`,

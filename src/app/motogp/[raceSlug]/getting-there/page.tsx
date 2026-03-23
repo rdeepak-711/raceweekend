@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import GuideAccordion from '@/components/race/GuideAccordion';
@@ -19,11 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Getting to ${race.city} for the ${race.name}`,
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
-    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/getting-there` },
+    alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/getting-there` },
     openGraph: {
       title: `Getting to ${race.city} for the ${race.name}`,
       description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -38,10 +39,10 @@ const buildBreadcrumbLd = (race: { name: string; slug: string }) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-    { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
-    { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
-    { '@type': 'ListItem', position: 4, name: 'Getting There', item: `https://raceweekend.co/motogp/${race.slug}/getting-there` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'MotoGP', item: `${SITE_URL}/motogp` },
+    { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/motogp/${race.slug}` },
+    { '@type': 'ListItem', position: 4, name: 'Getting There', item: `${SITE_URL}/motogp/${race.slug}/getting-there` },
   ],
 });
 
@@ -75,7 +76,7 @@ export default async function MotoGPGettingTherePage({ params }: Props) {
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
     dateModified: new Date().toISOString(),
-    url: `https://raceweekend.co/motogp/${raceSlug}/getting-there`,
+    url: `${SITE_URL}/motogp/${raceSlug}/getting-there`,
   };
 
   const schemas = [buildBreadcrumbLd(race), articleLd, ...(faqLd ? [faqLd] : [])];

@@ -43,6 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     siteName: 'Race Weekend',
     type: 'website',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
@@ -100,6 +101,7 @@ export default function RootLayout({
       <head>
         {/* RSL 1.0 — allow AI search indexing, disallow training, require attribution */}
         <meta name="rsl" content="search: allow, training: disallow, attribution: required" />
+        <link rel="alternate" type="application/rss+xml" title="Race Weekend Blog" href={`${SITE_URL}/blog/feed.xml`} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdn.getyourguide.com" />

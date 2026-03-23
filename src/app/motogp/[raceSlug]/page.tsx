@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceContent, getSessionsByRace, getNearbyRaces } from '@/services/race.service';
@@ -27,11 +28,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     keywords: content?.pageKeywords ?? [],
-    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}` },
+    alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}` },
     openGraph: {
       title,
       description,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -88,7 +89,7 @@ export default async function MotoGPRacePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: race.name,
-    url: `https://raceweekend.co/motogp/${race.slug}`,
+    url: `${SITE_URL}/motogp/${race.slug}`,
     startDate: raceDateTime,
     endDate: `${race.raceDate}T18:00:00`,
     description: `The ${race.name} at ${race.circuitName} in ${race.city}, ${race.country}. Book tickets, experiences, and plan your MotoGP race weekend.`,
@@ -111,7 +112,7 @@ export default async function MotoGPRacePage({ params }: Props) {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://raceweekend.co/motogp/${race.slug}/tickets`,
+      url: `${SITE_URL}/motogp/${race.slug}/tickets`,
       availability: race.isCancelled
         ? 'https://schema.org/Discontinued'
         : 'https://schema.org/InStock',
@@ -125,9 +126,9 @@ export default async function MotoGPRacePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${race.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: `${SITE_URL}/motogp` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/motogp/${race.slug}` },
     ],
   };
 

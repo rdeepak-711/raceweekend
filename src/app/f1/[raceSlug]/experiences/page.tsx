@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug } from '@/services/race.service';
@@ -20,11 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/experiences` },
+    alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/experiences` },
     openGraph: {
       title,
       description,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image' as const,
@@ -49,10 +50,10 @@ export default async function F1ExperiencesPage({ params, searchParams }: Props)
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Experiences', item: `https://raceweekend.co/f1/${raceSlug}/experiences` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: `${SITE_URL}/f1` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Experiences', item: `${SITE_URL}/f1/${raceSlug}/experiences` },
     ],
   };
 

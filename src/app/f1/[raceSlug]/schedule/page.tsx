@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
@@ -22,11 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.name} 2026 Session Schedule & Race Times`,
     description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
-    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/schedule` },
+    alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/schedule` },
     openGraph: {
       title: `${race.name} 2026 Session Schedule & Race Times`,
       description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -77,10 +78,10 @@ export default async function F1SchedulePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Schedule', item: `https://raceweekend.co/f1/${raceSlug}/schedule` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: `${SITE_URL}/f1` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Schedule', item: `${SITE_URL}/f1/${raceSlug}/schedule` },
     ],
   };
 

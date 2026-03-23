@@ -132,11 +132,13 @@ export async function getExperiencesByRace(
   return filtered;
 }
 
-export async function getExperienceBySlug(slug: string): Promise<Experience | null> {
+export async function getExperienceBySlug(slug: string, raceId?: number): Promise<Experience | null> {
+  const conditions = [eq(experiences.slug, slug)];
+  if (raceId !== undefined) conditions.push(eq(experiences.race_id, raceId));
   const [row] = await db
     .select()
     .from(experiences)
-    .where(eq(experiences.slug, slug))
+    .where(and(...conditions))
     .limit(1);
   return row ? mapExperience(row) : null;
 }

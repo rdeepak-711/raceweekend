@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getRaceBySlug } from '@/services/race.service';
 import { getExperienceBySlug, getSuggestedExperiences } from '@/services/experience.service';
+import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import ExperienceTOC from '@/components/experiences/ExperienceTOC';
 import ExperienceSuggestions from '@/components/experiences/ExperienceSuggestions';
 import PhotoSlider from '@/components/experiences/PhotoSlider';
@@ -12,45 +15,75 @@ import GuideAccordion from '@/components/race/GuideAccordion';
 
 interface Props { params: Promise<{ raceSlug: string; slug: string }>; }
 
+function truncateTitle(title: string, budget: number): string {
+  if (title.length <= budget) return title;
+  const cut = title.lastIndexOf(' ', budget);
+  return title.slice(0, cut > 0 ? cut : budget) + '…';
+}
+
+function boundDescription(raw: string | null | undefined, raceName: string, city: string): string {
+  let desc = raw?.trim() ?? '';
+  if (desc.length > 160) {
+    const cut = desc.lastIndexOf(' ', 157);
+    desc = desc.slice(0, cut > 0 ? cut : 157) + '…';
+  }
+  if (desc.length < 120) {
+    const suffix = ` Book for the ${raceName} in ${city}.`;
+    desc = (desc + suffix).slice(0, 160);
+  }
+  return desc;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug, slug } = await params;
-  const exp = await getExperienceBySlug(slug);
+  const race = await getRaceBySlug(raceSlug, 'motogp');
+  if (!race) return {};
+  const exp = await getExperienceBySlug(slug, race.id);
   if (!exp) return {};
+  const raceImages = getRaceImagePaths(raceSlug);
+  // Use locally-hosted race image for OG — GYG CDN blocks crawlers without referrer
+  const ogImage = raceImages.ogImageUrl
+    ? { url: raceImages.ogImageUrl, width: 1200, height: 630 }
+    : null;
+  const suffix = ` | MotoGP ${raceSlug}`;
+  const titleBudget = Math.max(20, 60 - suffix.length);
   return {
-    title: `${exp.title} | MotoGP ${raceSlug}`,
-    description: exp.shortDescription,
-    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/experiences/${slug}` },
+    title: `${truncateTitle(exp.title, titleBudget)}${suffix}`,
+    description: boundDescription(exp.shortDescription, race.name, race.city ?? raceSlug),
+    alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/experiences/${slug}` },
     openGraph: {
-      title: exp.title,
-      description: exp.shortDescription ?? '',
-      images: exp.imageUrl ? [{ url: exp.imageUrl, width: 1200, height: 800 }] : [],
+      title: truncateTitle(exp.title, titleBudget),
+      description: boundDescription(exp.shortDescription, race.name, race.city ?? raceSlug),
+      images: ogImage ? [ogImage] : [],
     },
     twitter: {
       card: 'summary_large_image',
-      images: exp.imageUrl ? [exp.imageUrl] : [],
+      images: ogImage ? [ogImage.url] : [],
     },
   };
 }
 
 export default async function MotoGPExperienceDetailPage({ params }: Props) {
   const { raceSlug, slug } = await params;
-  const [race, experience] = await Promise.all([
-    getRaceBySlug(raceSlug, 'motogp'),
-    getExperienceBySlug(slug),
-  ]);
-  if (!race || !experience) notFound();
+  const race = await getRaceBySlug(raceSlug, 'motogp');
+  if (!race) notFound();
+  const experience = await getExperienceBySlug(slug, race.id);
+  if (!experience) notFound();
 
   const suggestions = await getSuggestedExperiences(race.id, slug, 4);
   const color = CATEGORY_COLORS[experience.category] ?? '#6E6E82';
   const categoryLabel = CATEGORY_LABELS[experience.category] ?? experience.category;
   const articleHtml = experience.guideArticle ? marked(experience.guideArticle) : null;
 
+  const raceImagesForSchema = getRaceImagePaths(raceSlug);
+  const schemaImage = experience.imageUrl ?? raceImagesForSchema.ogImageUrl ?? undefined;
+
   const combinedSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': ['TouristAttraction', 'Product'],
     name: experience.title,
     description: experience.shortDescription,
-    image: experience.imageUrl ?? undefined,
+    image: schemaImage,
     offers: {
       '@type': 'Offer',
       price: Number(experience.priceAmount).toFixed(2),
@@ -73,7 +106,7 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
       },
     } : {}),
     ...(experience.reviewsSnapshot && experience.reviewsSnapshot.length > 0 ? {
-      review: experience.reviewsSnapshot.slice(0, 3).map(r => ({
+      review: experience.reviewsSnapshot.slice(0, 2).map(r => ({
         '@type': 'Review',
         author: { '@type': 'Person', name: r.author },
         reviewRating: { '@type': 'Rating', ratingValue: r.rating },
@@ -86,18 +119,18 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Experiences', item: `https://raceweekend.co/motogp/${raceSlug}/experiences` },
-      { '@type': 'ListItem', position: 5, name: experience.title, item: `https://raceweekend.co/motogp/${raceSlug}/experiences/${slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: `${SITE_URL}/motogp` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Experiences', item: `${SITE_URL}/motogp/${raceSlug}/experiences` },
+      { '@type': 'ListItem', position: 5, name: experience.title, item: `${SITE_URL}/motogp/${raceSlug}/experiences/${slug}` },
     ],
   };
 
   const faqLd = experience.faqItems && experience.faqItems.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: experience.faqItems.map(item => ({
+    mainEntity: experience.faqItems.slice(0, 5).map(item => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },
@@ -264,6 +297,26 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
               </div>
             </div>
           </section>
+
+          {suggestions.length > 0 && (
+            <section className="pt-8 mt-4 border-t border-[var(--border-subtle)]">
+              <h2 className="font-display font-bold text-xl text-white mb-4">More Experiences in {race.city}</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {suggestions.map(s => (
+                  <Link
+                    key={s.id}
+                    href={`/motogp/${raceSlug}/experiences/${s.slug}`}
+                    className="flex gap-3 p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)] hover:border-[var(--border-medium)] transition-colors"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-white line-clamp-2">{s.title}</p>
+                      <p className="text-xs text-[var(--text-secondary)] mt-1">{s.priceLabel}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </article>
 
         <ExperienceSuggestions

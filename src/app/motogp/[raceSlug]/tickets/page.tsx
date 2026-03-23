@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
@@ -22,11 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.name} 2026 Tickets: How to Buy & Prices`,
     description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
-    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/tickets` },
+    alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/tickets` },
     openGraph: {
       title: `${race.name} 2026 Tickets: How to Buy & Prices`,
       description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -66,10 +67,10 @@ export default async function MotoGPTicketsPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Tickets', item: `https://raceweekend.co/motogp/${raceSlug}/tickets` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: `${SITE_URL}/motogp` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Tickets', item: `${SITE_URL}/motogp/${raceSlug}/tickets` },
     ],
   };
 

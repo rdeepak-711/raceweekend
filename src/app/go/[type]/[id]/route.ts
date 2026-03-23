@@ -39,7 +39,9 @@ export async function GET(
       referer: referer.slice(0, 1000),
     }).catch(e => console.error('[affiliate] click tracking failed:', e));
 
-    return NextResponse.redirect(targetUrl);
+    const redirect = NextResponse.redirect(targetUrl);
+    redirect.headers.set('X-Robots-Tag', 'noindex');
+    return redirect;
   } catch (e) {
     console.error('[affiliate] redirect error:', e);
     return NextResponse.redirect(new URL('/', req.url));

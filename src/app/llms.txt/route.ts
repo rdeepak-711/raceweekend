@@ -50,7 +50,7 @@ Each race URL has these dedicated sub-pages:
 - \`/tickets\` — Ticket options, prices, and purchasing guide
 - \`/where-to-stay\` — Accommodation recommendations near circuit
 - \`/experiences\` — Curated experiences to book around the race
-- \`/travel-guide\` — Comprehensive city travel guide for the race weekend
+- \`/guide\` — Comprehensive city travel guide for the race weekend
 
 ## Series Calendars
 

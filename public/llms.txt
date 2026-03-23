@@ -1,5 +1,5 @@
 # raceweekend.co
-# Last updated: 2026-03-20
+# Last updated: 2026-03-23
 
 Race Weekend is an F1 and MotoGP 2026 travel guide covering all 46 races (24 F1 + 22 MotoGP).
 
@@ -26,12 +26,12 @@ Comprehensive race weekend travel platform for motorsport fans attending races i
 ### Sub-pages (per race)
 - /[series]/[race-slug]/schedule — Full session timetable (practice, qualifying, race times)
 - /[series]/[race-slug]/experiences — Curated local activities and tours near the circuit
+- /[series]/[race-slug]/experiences/[slug] — Individual experience detail page with booking info
 - /[series]/[race-slug]/guide — Comprehensive city travel guide
 - /[series]/[race-slug]/tickets — Race weekend ticket listings and prices
 - /[series]/[race-slug]/getting-there — Transport options and directions to the circuit
 - /[series]/[race-slug]/where-to-stay — Best hotels and neighborhoods near the circuit
 - /[series]/[race-slug]/tips — Race weekend tips and circuit facts
-- /[series]/[race-slug]/travel-guide — Long-form travel guide with experiences, hotels, tips
 
 ### Tools
 - /itinerary — Build and share custom race weekend itineraries

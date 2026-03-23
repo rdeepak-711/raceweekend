@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Race } from '@/types/race';
 import type { Session } from '@/types/race';
@@ -530,7 +531,7 @@ export default function ItineraryBuilder({ races, f1Races, motoGPRaces, allSessi
                     <div key={e.id} className="group flex flex-col md:flex-row items-center gap-6 p-4 rounded-2xl bg-black/30 border border-white/5 hover:border-white/10 transition-all overflow-hidden">
                       {e.imageUrl ? (
                         <div className="relative w-full md:w-40 h-32 md:h-24 shrink-0 rounded-xl overflow-hidden border border-white/10">
-                          <img src={e.imageUrl} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt={e.title} />
+                          <Image src={e.imageUrl} fill unoptimized className="object-cover transition-transform duration-500 group-hover:scale-110" alt={e.title} />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         </div>
                       ) : (

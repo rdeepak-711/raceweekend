@@ -1,19 +1,18 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
+import { SITE_URL } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'About | Race Weekend',
   description: 'Race Weekend sits at the intersection of motorsport and travel. We believe a Grand Prix trip should be more than just the race.',
-  alternates: { canonical: 'https://raceweekend.co/about' },
+  alternates: { canonical: `${SITE_URL}/about` },
   openGraph: {
     title: 'About Race Weekend',
     description: 'A race weekend is not just a race. Race Weekend helps fans turn a trip to a Grand Prix into a proper travel experience.',
-    images: [{ url: 'https://raceweekend.co/og/about.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.co/og/about.jpg'],
   },
 };
 
@@ -22,7 +21,7 @@ const personSchema = {
   '@type': 'Person',
   name: 'Deepak',
   jobTitle: 'Founder',
-  url: 'https://raceweekend.co/about',
+  url: `${SITE_URL}/about`,
   worksFor: { '@type': 'Organization', name: 'Race Weekend' },
   knowsAbout: ['Formula 1', 'MotoGP', 'Race Travel', 'Motorsport', 'Grand Prix Travel', 'Circuit Tourism'],
   description: 'F1 and MotoGP fan who has attended races across Europe and Asia. Founder of Race Weekend, a travel planning platform for motorsport fans.',
@@ -101,7 +100,7 @@ export default async function AboutPage() {
               <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--text-tertiary)] mb-3">The Stack</p>
               <ul className="space-y-2 text-sm">
                 {[
-                  ['Framework', 'Next.js 15 App Router'],
+                  ['Framework', 'Next.js 16 App Router'],
                   ['Database', 'SQLite via Drizzle ORM'],
                   ['Data', 'GetYourGuide API + OpenF1'],
                   ['Hosting', 'Vercel'],

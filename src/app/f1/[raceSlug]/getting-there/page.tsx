@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { existsSync } from 'fs';
@@ -23,11 +24,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Getting to ${race.city} for the ${race.name}`,
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
-    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/getting-there` },
+    alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/getting-there` },
     openGraph: {
       title: `Getting to ${race.city} for the ${race.name}`,
       description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -62,10 +63,10 @@ export default async function F1GettingTherePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Getting There', item: `https://raceweekend.co/f1/${raceSlug}/getting-there` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: `${SITE_URL}/f1` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Getting There', item: `${SITE_URL}/f1/${raceSlug}/getting-there` },
     ],
   };
 
@@ -77,7 +78,7 @@ export default async function F1GettingTherePage({ params }: Props) {
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
     dateModified: new Date().toISOString(),
-    url: `https://raceweekend.co/f1/${raceSlug}/getting-there`,
+    url: `${SITE_URL}/f1/${raceSlug}/getting-there`,
   };
 
   const schemas = [breadcrumbLd, articleLd, ...(faqLd ? [faqLd] : [])];

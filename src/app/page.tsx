@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { getRacesBySeries, getActiveRaceBySeries } from '@/services/race.service';
@@ -15,16 +16,16 @@ import TelemetryVisualizer from '@/components/layout/TelemetryVisualizer';
 export const metadata: Metadata = {
   title: { absolute: 'Race Weekend | F1 & MotoGP 2026 Travel Guide' },
   description: 'Plan your F1 & MotoGP 2026 race weekend. Live telemetry, curated local experiences, session schedules, tickets, and shareable itineraries for all 46 races.',
-  alternates: { canonical: 'https://raceweekend.co' },
+  alternates: { canonical: SITE_URL },
   openGraph: {
     title: 'Race Weekend | F1 & MotoGP 2026 Travel Guide',
     description: 'The ultimate F1 & MotoGP 2026 travel companion. Live telemetry, curated experiences, and shareable itineraries.',
-    url: 'https://raceweekend.co',
-    images: [{ url: 'https://raceweekend.co/og-hero.jpg', width: 1200, height: 630 }],
+    url: SITE_URL,
+    images: [{ url: `${SITE_URL}/og-hero.jpg`, width: 1200, height: 630, alt: 'Race Weekend — F1 & MotoGP 2026 Travel Guide' }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://raceweekend.co/og-hero.jpg'],
+    images: [`${SITE_URL}/og-hero.jpg`],
   },
 };
 

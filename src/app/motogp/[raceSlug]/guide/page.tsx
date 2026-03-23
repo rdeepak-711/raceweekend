@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
@@ -12,6 +13,7 @@ import { marked } from 'marked';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getSectionIcon, SECTION_ICONS_MOTOGP } from '@/lib/constants/icons';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
+import Image from 'next/image';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -24,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.city} MotoGP 2026 Travel Guide: Everything You Need`,
     description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
-    alternates: { canonical: `https://raceweekend.co/motogp/${raceSlug}/guide` },
+    alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/guide` },
     openGraph: {
       title: `${race.city} MotoGP 2026 Travel Guide: Everything You Need`,
       description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -79,17 +81,17 @@ export default async function MotoGPGuidePage({ params }: Props) {
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
     datePublished: new Date().toISOString(),
     dateModified: new Date().toISOString(),
-    url: `https://raceweekend.co/motogp/${raceSlug}/guide`,
+    url: `${SITE_URL}/motogp/${raceSlug}/guide`,
   };
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: 'https://raceweekend.co/motogp' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/motogp/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Guide', item: `https://raceweekend.co/motogp/${raceSlug}/guide` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'MotoGP', item: `${SITE_URL}/motogp` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/motogp/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Guide', item: `${SITE_URL}/motogp/${raceSlug}/guide` },
     ],
   };
 
@@ -121,10 +123,13 @@ export default async function MotoGPGuidePage({ params }: Props) {
         {/* Hero Image */}
         {heroExists && (
           <div className="relative h-52 sm:h-72 overflow-hidden rounded-2xl mb-8 shadow-2xl">
-            <img
+            <Image
               src={heroUrl}
               alt={`${race.city} - ${race.name}`}
-              className="w-full h-full object-cover"
+              fill
+              priority
+              unoptimized
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-70" />
             <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -146,9 +151,9 @@ export default async function MotoGPGuidePage({ params }: Props) {
               <SeriesBadge series="motogp" />
               <span className="text-sm text-[var(--text-secondary)]">Round {race.round} · {race.season}</span>
             </div>
-            <h1 className="font-display font-black text-3xl sm:text-4xl text-white uppercase mb-1">
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-white uppercase mb-1">
               {heroTitle}
-            </h1>
+            </h2>
             <p className="text-[var(--text-secondary)]">{heroSubtitle}</p>
           </div>
         )}

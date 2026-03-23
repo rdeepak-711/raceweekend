@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
@@ -20,11 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${race.city} F1 2026 Insider Tips`,
     description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
-    alternates: { canonical: `https://raceweekend.co/f1/${raceSlug}/tips` },
+    alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/tips` },
     openGraph: {
       title: `${race.city} F1 2026 Insider Tips`,
       description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -67,10 +68,10 @@ export default async function F1TipsPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://raceweekend.co' },
-      { '@type': 'ListItem', position: 2, name: 'F1', item: 'https://raceweekend.co/f1' },
-      { '@type': 'ListItem', position: 3, name: race.name, item: `https://raceweekend.co/f1/${raceSlug}` },
-      { '@type': 'ListItem', position: 4, name: 'Tips', item: `https://raceweekend.co/f1/${raceSlug}/tips` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'F1', item: `${SITE_URL}/f1` },
+      { '@type': 'ListItem', position: 3, name: race.name, item: `${SITE_URL}/f1/${raceSlug}` },
+      { '@type': 'ListItem', position: 4, name: 'Tips', item: `${SITE_URL}/f1/${raceSlug}/tips` },
     ],
   };
 
@@ -82,7 +83,7 @@ export default async function F1TipsPage({ params }: Props) {
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
     dateModified: new Date().toISOString(),
-    url: `https://raceweekend.co/f1/${raceSlug}/tips`,
+    url: `${SITE_URL}/f1/${raceSlug}/tips`,
   };
 
   const howToLd = {

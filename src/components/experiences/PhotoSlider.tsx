@@ -90,6 +90,8 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
               className="h-full w-auto object-contain block"
               loading={i < 3 ? "eager" : "lazy"}
               priority={i === 0}
+              unoptimized
+              referrerPolicy="no-referrer"
             />
             
             {/* Subtle Overlay */}
@@ -165,6 +167,8 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
                   fill
                   sizes="80px"
                   className="object-cover"
+                  unoptimized
+                  referrerPolicy="no-referrer"
                 />
               </button>
             ))}

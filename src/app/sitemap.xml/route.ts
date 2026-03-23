@@ -12,6 +12,7 @@ const STATIC_PAGES = [
   { path: '/',               changefreq: 'daily',   priority: 1.0,  dynamic: true  },
   { path: '/f1',             changefreq: 'weekly',  priority: 0.9,  dynamic: true  },
   { path: '/motogp',         changefreq: 'weekly',  priority: 0.9,  dynamic: true  },
+  { path: '/itinerary',      changefreq: 'monthly', priority: 0.7,  dynamic: false },
   { path: '/site-directory', changefreq: 'weekly',  priority: 0.4,  dynamic: true  },
   { path: '/about',          changefreq: 'monthly', priority: 0.3,  dynamic: false },
   { path: '/contact',        changefreq: 'monthly', priority: 0.3,  dynamic: false },
@@ -28,7 +29,6 @@ const RACE_SUBS = [
   { sub: '/getting-there', changefreq: 'monthly', priority: 0.7  },
   { sub: '/where-to-stay', changefreq: 'monthly', priority: 0.7  },
   { sub: '/tips',          changefreq: 'monthly', priority: 0.7  },
-  { sub: '/travel-guide',  changefreq: 'weekly',  priority: 0.85 },
 ] as const;
 
 function urlEntry(loc: string, lastmod: string, changefreq: string, priority: number): string {
@@ -51,19 +51,26 @@ export async function GET() {
   ]);
 
   const entries: string[] = [];
+  const seenUrls = new Set<string>();
+
+  function addUrl(loc: string, lastmod: string, changefreq: string, priority: number) {
+    if (seenUrls.has(loc)) return;
+    seenUrls.add(loc);
+    entries.push(urlEntry(loc, lastmod, changefreq, priority));
+  }
 
   // Static pages
   for (const p of STATIC_PAGES) {
-    entries.push(urlEntry(`${BASE}${p.path}`, p.dynamic ? now : SITE_LAUNCH, p.changefreq, p.priority));
+    addUrl(`${BASE}${p.path}`, p.dynamic ? now : SITE_LAUNCH, p.changefreq, p.priority);
   }
 
   // Blog pages
   try {
     const blogPostList = await getAllPublishedBlogPosts();
-    entries.push(urlEntry(`${BASE}/blog`, now, 'weekly', 0.7));
+    addUrl(`${BASE}/blog`, now, 'weekly', 0.7);
     for (const post of blogPostList) {
       const lastmod = post.updatedAt ? new Date(post.updatedAt).toISOString() : now;
-      entries.push(urlEntry(`${BASE}/blog/${post.slug}`, lastmod, 'weekly', 0.6));
+      addUrl(`${BASE}/blog/${post.slug}`, lastmod, 'weekly', 0.6);
     }
   } catch {
     // DB not available during build — blog pages omitted
@@ -77,7 +84,7 @@ export async function GET() {
     for (const race of races) {
       const lastmod = new Date(race.raceDate).toISOString();
       for (const sub of RACE_SUBS) {
-        entries.push(urlEntry(`${BASE}/${series}/${race.slug}${sub.sub}`, lastmod, sub.changefreq, sub.priority));
+        addUrl(`${BASE}/${series}/${race.slug}${sub.sub}`, lastmod, sub.changefreq, sub.priority);
       }
     }
   }
@@ -103,12 +110,12 @@ export async function GET() {
       const lastmod = exp.updatedAt
         ? new Date(exp.updatedAt).toISOString()
         : new Date(raceInfo.raceDate).toISOString();
-      entries.push(urlEntry(
+      addUrl(
         `${BASE}/${raceInfo.series}/${raceInfo.slug}/experiences/${exp.slug}`,
         lastmod,
         'weekly',
         exp.isFeatured ? 0.85 : 0.75,
-      ));
+      );
     }
   } catch {
     // DB not available during build — experience pages omitted

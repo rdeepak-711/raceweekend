@@ -14,9 +14,9 @@ export default async function Image({ params }: Props) {
   const race = await getRaceBySlug(raceSlug, 'f1');
   const theme = getRaceTheme(raceSlug);
 
-  // Load circuit image, fallback to hero
+  // Load hero image, fallback to circuit
   let bgData: string | null = null;
-  for (const file of ['circuit.jpg', 'hero.jpg']) {
+  for (const file of ['hero.jpg', 'circuit.jpg']) {
     const imgPath = join(process.cwd(), 'public/races', raceSlug, file);
     try {
       const buf = await readFile(imgPath);
@@ -61,7 +61,7 @@ export default async function Image({ params }: Props) {
           </div>
           {/* Branding */}
           <div style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.35)', letterSpacing: 3, textTransform: 'uppercase' }}>
-            RACEWEEKEND.APP
+            RACEWEEKEND.CO
           </div>
         </div>
       </div>

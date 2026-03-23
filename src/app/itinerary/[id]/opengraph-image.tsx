@@ -8,8 +8,8 @@ export const alt = 'Race Weekend Strategy Briefing';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default async function Image({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function Image({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const itinerary = await getItinerary(id);
   if (!itinerary) return new ImageResponse(<div>Not Found</div>);
 
@@ -122,7 +122,7 @@ export default async function Image({ params }: { params: { id: string } }) {
         >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <div style={{ fontSize: '10px', fontWeight: 900, color: '#4ADE80', letterSpacing: '0.2em' }}>STATUS: OPTIMIZED</div>
-            <div style={{ fontSize: '20px', fontWeight: 900, color: 'white', fontStyle: 'italic' }}>RACEWEEKEND.APP</div>
+            <div style={{ fontSize: '20px', fontWeight: 900, color: 'white', fontStyle: 'italic' }}>RACEWEEKEND.CO</div>
           </div>
         </div>
       </div>
