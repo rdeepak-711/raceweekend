@@ -15,8 +15,8 @@ import SkeletonTactical from '@/components/layout/SkeletonTactical';
 import { SERIES_META } from '@/lib/constants/series';
 import type { Ticket } from '@/types/ticket';
 
-// Tickets from the JSON API have id as number (not bigint)
-type TicketJSON = Omit<Ticket, 'id'> & { id: number };
+// Tickets from the JSON API use string IDs.
+type TicketJSON = Omit<Ticket, 'id'> & { id: string };
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -604,12 +604,12 @@ export default function ItineraryBuilder({ races, f1Races, motoGPRaces, allSessi
                     ALL_LISTINGS →
                   </Link>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                  {tickets.slice(0, 2).map(t => (
-                    <TicketCard key={t.id} ticket={{ ...t, id: BigInt(t.id) }} raceAccent={SERIES_META[selectedRace.series].color} />
-                  ))}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                    {tickets.slice(0, 2).map(t => (
+                      <TicketCard key={t.id} ticket={t} raceAccent={SERIES_META[selectedRace.series].color} />
+                    ))}
+                  </div>
                 </div>
-              </div>
             )}
           </div>
 

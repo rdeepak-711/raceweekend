@@ -1,5 +1,5 @@
 export interface Ticket {
-  id: bigint;
+  id: string;
   raceId: number;
   ticketmasterEventId: string | null;
   title: string | null;

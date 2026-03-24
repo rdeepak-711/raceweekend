@@ -6,7 +6,7 @@ import * as ics from 'ics';
 import { SITE_URL } from '@/lib/constants/site';
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -24,26 +24,28 @@ export async function GET(
   const selectedSessions = allSessions.filter(s => itinerary.sessionsSelected.includes(s.id));
 
   const events: ics.EventAttributes[] = [];
+  const seriesPath = race.series === 'motogp' ? 'motogp' : 'f1';
+  const sessionSeriesLabel = race.series === 'motogp' ? 'MotoGP' : 'Formula 1';
+  const days = { Thursday: -3, Friday: -2, Saturday: -1, Sunday: 0 } as const;
 
   // Add Sessions
   selectedSessions.forEach(s => {
     const raceDate = new Date(race.raceDate);
-    // Find the correct date based on dayOfWeek
-    const days = { 'Thursday': -3, 'Friday': -2, 'Saturday': -1, 'Sunday': 0 };
-    const dayOffset = (days as any)[s.dayOfWeek || 'Sunday'];
+    const dayOffset = days[s.dayOfWeek] ?? 0;
     const sessionDate = new Date(raceDate);
     sessionDate.setDate(sessionDate.getDate() + dayOffset);
 
     const [startH, startM] = (s.startTime || '00:00:00').split(':').map(Number);
     const [endH, endM] = (s.endTime || '00:00:00').split(':').map(Number);
+    if ([startH, startM, endH, endM].some(Number.isNaN)) return;
 
     events.push({
       start: [sessionDate.getFullYear(), sessionDate.getMonth() + 1, sessionDate.getDate(), startH, startM],
       end: [sessionDate.getFullYear(), sessionDate.getMonth() + 1, sessionDate.getDate(), endH, endM],
       title: `${race.city} GP: ${s.name}`,
-      description: `Formula 1 Session at ${race.circuitName}. Track strategy deployed via Race Weekend.`,
+      description: `${sessionSeriesLabel} session at ${race.circuitName}. Track strategy deployed via Race Weekend.`,
       location: race.circuitName || race.city,
-      url: `${SITE_URL}/f1/${race.slug}`,
+      url: `${SITE_URL}/${seriesPath}/${race.slug}`,
       categories: ['Race Session', race.series.toUpperCase()],
       status: 'CONFIRMED',
       busyStatus: 'BUSY'
@@ -52,14 +54,15 @@ export async function GET(
 
   // Add Experiences as all-day events on race weekend
   allExperiences.forEach(exp => {
+    if (!exp.slug) return;
     const raceDate = new Date(race.raceDate);
     events.push({
       start: [raceDate.getFullYear(), raceDate.getMonth() + 1, raceDate.getDate(), 0, 0],
       duration: { hours: 24 },
       title: `Experience: ${exp.title}`,
-      description: `${exp.shortDescription}\n\nBooked via Race Weekend: ${exp.affiliateUrl}`,
+      description: `${exp.shortDescription ?? 'Curated local experience.'}\n\nBooked via Race Weekend: ${exp.affiliateUrl}`,
       location: exp.meetingPoint || race.city,
-      url: `${SITE_URL}/experiences/${exp.slug}`,
+      url: `${SITE_URL}/${seriesPath}/${race.slug}/experiences/${exp.slug}`,
       categories: ['Local Experience'],
     });
   });

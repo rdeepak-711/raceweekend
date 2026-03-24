@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Image from 'next/image';
@@ -13,6 +13,8 @@ import PhotoSlider from '@/components/experiences/PhotoSlider';
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants/categories';
 import GuideAccordion from '@/components/race/GuideAccordion';
 
+export const revalidate = 3600;
+
 interface Props { params: Promise<{ raceSlug: string; slug: string }>; }
 
 function truncateTitle(title: string, budget: number): string {
@@ -23,13 +25,13 @@ function truncateTitle(title: string, budget: number): string {
 
 function boundDescription(raw: string | null | undefined, raceName: string, city: string): string {
   let desc = raw?.trim() ?? '';
-  if (desc.length > 160) {
-    const cut = desc.lastIndexOf(' ', 157);
-    desc = desc.slice(0, cut > 0 ? cut : 157) + '…';
+  if (desc.length > 155) {
+    const cut = desc.lastIndexOf(' ', 152);
+    desc = desc.slice(0, cut > 0 ? cut : 152) + '…';
   }
-  if (desc.length < 120) {
+  if (desc.length < 130) {
     const suffix = ` Book for the ${raceName} in ${city}.`;
-    desc = (desc + suffix).slice(0, 160);
+    desc = (desc + suffix).slice(0, 155);
   }
   return desc;
 }
@@ -46,13 +48,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? { url: raceImages.ogImageUrl, width: 1200, height: 630 }
     : null;
   const suffix = ` | F1 ${raceSlug}`;
-  const titleBudget = Math.max(20, 60 - suffix.length);
+  const titleBudget = Math.max(20, 55 - suffix.length);
   return {
     title: `${truncateTitle(exp.title, titleBudget)}${suffix}`,
     description: boundDescription(exp.shortDescription, race.name, race.city ?? raceSlug),
     alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/experiences/${slug}` },
-    openGraph: {
-      title: truncateTitle(exp.title, titleBudget),
+    openGraph: { ...BASE_OG,title: truncateTitle(exp.title, titleBudget),
       description: boundDescription(exp.shortDescription, race.name, race.city ?? raceSlug),
       images: ogImage ? [ogImage] : [],
     },
@@ -76,7 +77,7 @@ export default async function F1ExperienceDetailPage({ params }: Props) {
   const articleHtml = experience.guideArticle ? marked(experience.guideArticle) : null;
 
   const raceImagesForSchema = getRaceImagePaths(raceSlug);
-  const schemaImage = experience.imageUrl ?? raceImagesForSchema.ogImageUrl ?? undefined;
+  const schemaImage = raceImagesForSchema.ogImageUrl ?? undefined;
 
   const combinedSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',

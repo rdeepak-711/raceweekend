@@ -15,7 +15,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) return {};
+  const content = await getRaceContent(race.id);
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
+  const hasTransportContent = Boolean(
+    content?.gettingThere ||
+    content?.gettingThereIntro ||
+    (content?.transportOptions && content.transportOptions.length > 0)
+  );
 
   return {
     title: `Getting to ${race.city} for the ${race.name}`,
@@ -30,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       images: ogImageUrl ? [ogImageUrl] : [],
     },
+    ...(hasTransportContent ? {} : { robots: { index: false, follow: true } }),
   };
 }
 

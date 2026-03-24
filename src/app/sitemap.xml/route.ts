@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getRacesBySeries } from '@/services/race.service';
 import { db } from '@/lib/db';
-import { experiences } from '@/lib/db/schema';
+import { experiences, race_content } from '@/lib/db/schema';
 import { getAllPublishedBlogPosts } from '@/services/blog.service';
 import { SITE_URL } from '@/lib/constants/site';
 
@@ -31,6 +31,8 @@ const RACE_SUBS = [
   { sub: '/tips',          changefreq: 'monthly', priority: 0.7  },
 ] as const;
 
+const CONTENT_GATED_SUBS = new Set(['/getting-there', '/where-to-stay', '/tips']);
+
 function urlEntry(loc: string, lastmod: string, changefreq: string, priority: number): string {
   return [
     '  <url>',
@@ -40,6 +42,22 @@ function urlEntry(loc: string, lastmod: string, changefreq: string, priority: nu
     `    <priority>${priority}</priority>`,
     '  </url>',
   ].join('\n');
+}
+
+function hasNonEmptyText(value: unknown): boolean {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function parseJsonField<T>(value: unknown): T | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'string') {
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      return null;
+    }
+  }
+  return value as T;
 }
 
 export async function GET() {
@@ -52,6 +70,13 @@ export async function GET() {
 
   const entries: string[] = [];
   const seenUrls = new Set<string>();
+  let contentAvailability:
+    | {
+        gettingThereRaceIds: Set<number>;
+        whereToStayRaceIds: Set<number>;
+        tipsRaceIds: Set<number>;
+      }
+    | null = null;
 
   function addUrl(loc: string, lastmod: string, changefreq: string, priority: number) {
     if (seenUrls.has(loc)) return;
@@ -76,6 +101,46 @@ export async function GET() {
     // DB not available during build — blog pages omitted
   }
 
+  // Determine which race content sub-pages are indexable per race.
+  try {
+    const contentRows = await db
+      .select({
+        raceId: race_content.race_id,
+        gettingThere: race_content.getting_there,
+        gettingThereIntro: race_content.getting_there_intro,
+        transportOptions: race_content.transport_options,
+        whereToStay: race_content.where_to_stay,
+        travelTips: race_content.travel_tips,
+        tipsContent: race_content.tips_content,
+        faqItems: race_content.faq_items,
+        circuitFacts: race_content.circuit_facts,
+      })
+      .from(race_content);
+
+    const gettingThereRaceIds = new Set<number>();
+    const whereToStayRaceIds = new Set<number>();
+    const tipsRaceIds = new Set<number>();
+
+    for (const row of contentRows) {
+      const travelTips = parseJsonField<Array<unknown>>(row.travelTips) ?? [];
+      const transportOptions = parseJsonField<Array<unknown>>(row.transportOptions) ?? [];
+      const faqItems = parseJsonField<Array<unknown>>(row.faqItems) ?? [];
+      const circuitFacts = parseJsonField<Record<string, unknown>>(row.circuitFacts) ?? {};
+
+      const hasGettingThere = hasNonEmptyText(row.gettingThere) || hasNonEmptyText(row.gettingThereIntro) || transportOptions.length > 0;
+      const hasWhereToStay = hasNonEmptyText(row.whereToStay) || travelTips.length > 0;
+      const hasTips = hasNonEmptyText(row.tipsContent) || travelTips.length > 0 || faqItems.length > 0 || Object.keys(circuitFacts).length > 0;
+
+      if (hasGettingThere) gettingThereRaceIds.add(row.raceId);
+      if (hasWhereToStay) whereToStayRaceIds.add(row.raceId);
+      if (hasTips) tipsRaceIds.add(row.raceId);
+    }
+
+    contentAvailability = { gettingThereRaceIds, whereToStayRaceIds, tipsRaceIds };
+  } catch {
+    // DB not available during build — include full race sub-page set
+  }
+
   // Race pages — lastmod = race date
   for (const { races, series } of [
     { races: f1Races, series: 'f1' },
@@ -84,6 +149,11 @@ export async function GET() {
     for (const race of races) {
       const lastmod = new Date(race.raceDate).toISOString();
       for (const sub of RACE_SUBS) {
+        if (contentAvailability && CONTENT_GATED_SUBS.has(sub.sub)) {
+          if (sub.sub === '/getting-there' && !contentAvailability.gettingThereRaceIds.has(race.id)) continue;
+          if (sub.sub === '/where-to-stay' && !contentAvailability.whereToStayRaceIds.has(race.id)) continue;
+          if (sub.sub === '/tips' && !contentAvailability.tipsRaceIds.has(race.id)) continue;
+        }
         addUrl(`${BASE}/${series}/${race.slug}${sub.sub}`, lastmod, sub.changefreq, sub.priority);
       }
     }

@@ -10,7 +10,7 @@ const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
 function mapTicket(row: typeof tickets.$inferSelect, raceSlug: string): Ticket {
   return {
-    id: row.id,
+    id: String(row.id),
     raceId: row.race_id ?? 0,
     ticketmasterEventId: row.tm_event_id ?? null,
     title: row.title ?? null,

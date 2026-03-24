@@ -18,7 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) return {};
+  const content = await getRaceContent(race.id);
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
+  const hasStayContent = Boolean(
+    content?.whereToStay ||
+    (content?.travelTips && content.travelTips.length > 0)
+  );
   const title = `${race.city} ${race.name} 2026: Best Hotels & Accommodation`;
   const description = `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`;
   return {
@@ -34,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image' as const,
       images: ogImageUrl ? [ogImageUrl] : [],
     },
+    ...(hasStayContent ? {} : { robots: { index: false, follow: true } }),
   };
 }
 

@@ -16,7 +16,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) return {};
+  const content = await getRaceContent(race.id);
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
+  const hasCircuitFacts = Boolean(content?.circuitFacts && Object.keys(content.circuitFacts as Record<string, unknown>).length > 0);
+  const hasTipsContent = Boolean(
+    content?.tipsContent ||
+    (content?.travelTips && content.travelTips.length > 0) ||
+    (content?.faqItems && content.faqItems.length > 0) ||
+    hasCircuitFacts
+  );
 
   return {
     title: `${race.city} F1 2026 Insider Tips`,
@@ -31,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       images: ogImageUrl ? [ogImageUrl] : [],
     },
+    ...(hasTipsContent ? {} : { robots: { index: false, follow: true } }),
   };
 }
 
