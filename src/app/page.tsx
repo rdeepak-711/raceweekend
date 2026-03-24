@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { getRacesBySeries, getActiveRaceBySeries } from '@/services/race.service';
@@ -17,8 +17,7 @@ export const metadata: Metadata = {
   title: { absolute: 'Race Weekend | F1 & MotoGP 2026 Travel Guide' },
   description: 'Plan your F1 & MotoGP 2026 race weekend. Live telemetry, curated local experiences, session schedules, tickets, and shareable itineraries for all 46 races.',
   alternates: { canonical: SITE_URL },
-  openGraph: {
-    title: 'Race Weekend | F1 & MotoGP 2026 Travel Guide',
+  openGraph: { ...BASE_OG,title: 'Race Weekend | F1 & MotoGP 2026 Travel Guide',
     description: 'The ultimate F1 & MotoGP 2026 travel companion. Live telemetry, curated experiences, and shareable itineraries.',
     url: SITE_URL,
     images: [{ url: `${SITE_URL}/og-hero.jpg`, width: 1200, height: 630, alt: 'Race Weekend — F1 & MotoGP 2026 Travel Guide' }],

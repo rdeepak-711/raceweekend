@@ -9,6 +9,7 @@ import { eq } from 'drizzle-orm';
 import ItineraryView from '@/components/itinerary/ItineraryView';
 import { getRaceById } from '@/services/race.service';
 import { headers } from 'next/headers';
+import { BASE_OG, SITE_URL } from '@/lib/constants/site';
 
 interface Props { params: Promise<{ id: string }>; }
 
@@ -20,21 +21,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const race = await getRaceById(itinerary.raceId);
   const raceName = race?.name || 'Race Weekend';
   const city = race?.city || 'Race';
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://raceweekend.co';
-
   return {
     title: `${city} GP Strategy Briefing | Race Weekend`,
     description: `Tactical mission plan for the ${raceName}. Track sessions and local intelligence assets deployed.`,
     robots: { index: false, follow: false },
-    alternates: { canonical: `${siteUrl}/itinerary/${id}` },
-    openGraph: {
-      title: `${city} GP Strategy Briefing | Race Weekend`,
+    alternates: { canonical: `${SITE_URL}/itinerary/${id}` },
+    openGraph: { ...BASE_OG,title: `${city} GP Strategy Briefing | Race Weekend`,
       description: `Tactical mission plan for the ${raceName}. Track sessions and local intelligence assets deployed.`,
-      images: [{ url: `${siteUrl}/itinerary/${id}/opengraph-image`, width: 1200, height: 630 }],
+      images: [{ url: `${SITE_URL}/itinerary/${id}/opengraph-image`, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
-      images: [`${siteUrl}/itinerary/${id}/opengraph-image`],
+      images: [`${SITE_URL}/itinerary/${id}/opengraph-image`],
     },
   };
 }
@@ -84,6 +82,9 @@ export default async function ItineraryViewPage({ params }: Props) {
 
   return (
     <div className="min-h-screen pt-20 pb-24 px-4">
+      <h1 className="sr-only">
+        {race.city} {race.series.toUpperCase()} itinerary
+      </h1>
       <ItineraryView
         itinerary={itinerary}
         race={race}

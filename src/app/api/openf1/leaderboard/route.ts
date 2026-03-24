@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const key = Number(sessionKey);
+    if (isNaN(key)) return NextResponse.json({ error: 'invalid sessionKey' }, { status: 400 });
     const [positions, drivers] = await Promise.all([
       getSessionPositions(key),
       getSessionDrivers(key),

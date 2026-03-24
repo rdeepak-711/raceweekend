@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
@@ -11,6 +11,8 @@ import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import Image from 'next/image';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
+import { SERIES_META } from '@/lib/constants/series';
+
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -24,8 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${race.name} 2026 Session Schedule & Race Times`,
     description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
     alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/schedule` },
-    openGraph: {
-      title: `${race.name} 2026 Session Schedule & Race Times`,
+    openGraph: { ...BASE_OG,title: `${race.name} 2026 Session Schedule & Race Times`,
       description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
@@ -64,6 +65,7 @@ export default async function F1SchedulePage({ params }: Props) {
   if (!result) notFound();
 
   const { race, sessions } = result;
+  const seriesMeta = SERIES_META.f1;
   const theme = getThemeFromRace(race);
   const { circuitExists, circuitUrl } = getRaceImagePaths(raceSlug);
 
@@ -111,7 +113,7 @@ export default async function F1SchedulePage({ params }: Props) {
             name: race.circuitName,
             address: { '@type': 'PostalAddress', addressLocality: race.city, addressCountry: race.country },
           },
-          organizer: { '@type': 'Organization', name: 'Formula 1' },
+          organizer: { '@type': 'Organization', name: seriesMeta.label },
           eventStatus: race.isCancelled
             ? 'https://schema.org/EventCancelled'
             : 'https://schema.org/EventScheduled',

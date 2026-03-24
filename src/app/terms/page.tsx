@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'Terms of Service | Race Weekend',
   description: 'The terms and conditions for using the Race Weekend platform.',
   alternates: { canonical: `${SITE_URL}/terms` },
-  openGraph: {
-    title: 'Terms of Service | Race Weekend',
+  openGraph: { ...BASE_OG,title: 'Terms of Service | Race Weekend',
     description: 'The terms and conditions for using the Race Weekend platform.',
     images: [{ url: `${SITE_URL}/og-hero.jpg`, width: 1200, height: 630, alt: 'Race Weekend — F1 & MotoGP 2026 Travel Guide' }],
   },

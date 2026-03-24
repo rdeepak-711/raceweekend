@@ -7,6 +7,7 @@ import type { Race, Session } from '@/types/race';
 import type { Experience } from '@/types/experience';
 import { CATEGORY_COLORS } from '@/lib/constants/categories';
 import { SERIES_META } from '@/lib/constants/series';
+import { SITE_URL } from '@/lib/constants/site';
 
 interface Props {
   itinerary: Itinerary;
@@ -17,7 +18,7 @@ interface Props {
 
 export default function ItineraryView({ itinerary, race, sessions, experiences }: Props) {
   const meta = SERIES_META[race.series];
-  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raceweekend.co'}/itinerary/${itinerary.id}`;
+  const shareUrl = `${SITE_URL}/itinerary/${itinerary.id}`;
 
   const handlePrint = () => {
     window.print();

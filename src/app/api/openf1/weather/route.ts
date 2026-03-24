@@ -6,7 +6,9 @@ export async function GET(req: NextRequest) {
   if (!sessionKey) return NextResponse.json({ error: 'sessionKey required' }, { status: 400 });
 
   try {
-    const weather = await getSessionWeather(Number(sessionKey));
+    const key = Number(sessionKey);
+    if (isNaN(key)) return NextResponse.json({ error: 'invalid sessionKey' }, { status: 400 });
+    const weather = await getSessionWeather(key);
     // Get the latest reading
     const latest = weather[weather.length - 1] || null;
     return NextResponse.json({ data: latest }, {

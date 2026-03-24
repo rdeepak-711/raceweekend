@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { marked } from 'marked';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import SeriesBadge from '@/components/race/SeriesBadge';
 import GuideAccordion from '@/components/race/GuideAccordion';
@@ -11,6 +10,7 @@ import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getNeighborhoodIcon } from '@/lib/constants/icons';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
+import { parseMarkdown } from '@/lib/utils/markdown';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -30,8 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/where-to-stay` },
-    openGraph: {
-      title,
+    openGraph: { ...BASE_OG,title,
       description,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
@@ -63,7 +62,7 @@ export default async function F1WhereToStayPage({ params }: Props) {
   const theme = getThemeFromRace(race);
 
   const whereToStayHtml = content?.whereToStay
-    ? (marked.parse(content.whereToStay) as string)
+    ? parseMarkdown(content.whereToStay)
     : null;
 
   const sections = whereToStayHtml ? parseSections(whereToStayHtml) : [];

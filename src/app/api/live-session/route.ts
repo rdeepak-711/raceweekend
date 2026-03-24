@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getF1Meetings, getF1Sessions } from '@/lib/api/openf1';
 
 export interface LiveSessionData {
@@ -9,8 +9,14 @@ export interface LiveSessionData {
   sessionKey?: number;
 }
 
-export async function GET(): Promise<NextResponse<LiveSessionData>> {
+export async function GET(req: NextRequest): Promise<NextResponse<LiveSessionData>> {
   try {
+    const series = req.nextUrl.searchParams.get('series') ?? 'f1';
+    if (series !== 'f1') {
+      // MotoGP live timing is not available from OpenF1 and needs a separate provider.
+      return NextResponse.json({ status: 'none' });
+    }
+
     const meetings = await getF1Meetings(2026);
     if (!meetings.length) return NextResponse.json({ status: 'none' });
 

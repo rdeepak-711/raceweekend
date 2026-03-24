@@ -1,10 +1,8 @@
 import React from 'react';
 import { getRacesBySeries } from '@/services/race.service';
 import Nav from './Nav';
-import { connection } from 'next/server';
 
 export default async function NavWrapper() {
-  await connection();
   const [f1Races, motogpRaces] = await Promise.all([
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),

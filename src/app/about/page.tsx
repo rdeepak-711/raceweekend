@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'About | Race Weekend',
   description: 'Race Weekend sits at the intersection of motorsport and travel. We believe a Grand Prix trip should be more than just the race.',
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: {
-    title: 'About Race Weekend',
+  openGraph: { ...BASE_OG,title: 'About Race Weekend',
     description: 'A race weekend is not just a race. Race Weekend helps fans turn a trip to a Grand Prix into a proper travel experience.',
   },
   twitter: {

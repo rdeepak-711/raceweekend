@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { headers } from 'next/headers';
 import { getRacesBySeries } from '@/services/race.service';
 import SeriesLandingClient from '@/components/race/SeriesLandingClient';
@@ -8,8 +8,7 @@ export const metadata: Metadata = {
   title: 'F1 2026 Race Calendar & Travel Guides',
   description: 'Full Formula 1 2026 race calendar. 24 rounds across 5 continents. Plan your weekend with session times, local experiences, and booking tips.',
   alternates: { canonical: `${SITE_URL}/f1` },
-  openGraph: {
-    title: 'F1 2026 Race Calendar & Travel Guides',
+  openGraph: { ...BASE_OG,title: 'F1 2026 Race Calendar & Travel Guides',
     description: '24 rounds across 5 continents. Plan your F1 race weekend with session times, local experiences, and tickets.',
   },
   twitter: {

@@ -23,6 +23,15 @@ export type ContactFormState = {
   success?: boolean;
 };
 
+function escapeHtml(input: string): string {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export async function submitContactForm(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
   const validatedFields = contactSchema.safeParse({
     name: formData.get('name'),
@@ -39,6 +48,10 @@ export async function submitContactForm(prevState: ContactFormState, formData: F
   }
 
   const { name, email, subject, message } = validatedFields.data;
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject || 'No Subject');
+  const safeMessage = escapeHtml(message);
 
   try {
     // 1. Save to Database
@@ -69,11 +82,11 @@ export async function submitContactForm(prevState: ContactFormState, formData: F
         text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
         html: `
           <h3>New Contact Form Submission</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Subject:</strong> ${subject || 'No Subject'}</p>
+          <p><strong>Name:</strong> ${safeName}</p>
+          <p><strong>Email:</strong> ${safeEmail}</p>
+          <p><strong>Subject:</strong> ${safeSubject}</p>
           <p><strong>Message:</strong></p>
-          <p>${message.replace(/\n/g, '<br>')}</p>
+          <p>${safeMessage.replace(/\n/g, '<br>')}</p>
         `,
       };
 

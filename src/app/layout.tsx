@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Titillium_Web, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SITE_URL } from "@/lib/constants/site";
+import { SITE_URL, BASE_OG } from "@/lib/constants/site";
 import NavWrapper from "@/components/layout/NavWrapper";
 import Footer from "@/components/layout/Footer";
 import dynamic from "next/dynamic";
@@ -40,10 +40,7 @@ export const metadata: Metadata = {
   },
   description:
     'Plan your F1 and MotoGP race weekend with curated local experiences, session schedules, ticket listings, and shareable itineraries.',
-  openGraph: {
-    siteName: 'Race Weekend',
-    type: 'website',
-    locale: 'en_US',
+  openGraph: { ...BASE_OG,
   },
   twitter: {
     card: 'summary_large_image',

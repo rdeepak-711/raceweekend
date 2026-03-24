@@ -2,12 +2,20 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { getRacesBySeries } from '@/services/race.service';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
+import { db } from '@/lib/db';
+import { experiences } from '@/lib/db/schema';
 
 export const metadata: Metadata = {
   title: 'Sitemap | Race Weekend',
   description: 'Complete directory of all Formula 1 and MotoGP races, ticket listings, and local experiences on Race Weekend.',
   alternates: { canonical: `${SITE_URL}/site-directory` },
+  openGraph: {
+    ...BASE_OG,
+    title: 'Sitemap | Race Weekend',
+    description: 'Complete directory of all Formula 1 and MotoGP races, ticket listings, and local experiences on Race Weekend.',
+    url: `${SITE_URL}/site-directory`,
+  },
 };
 
 // TODAY is computed inside the component (after connection() via getRacesBySeries)
@@ -43,6 +51,14 @@ export default async function SiteDirectoryPage() {
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),
   ]);
+  const experienceRows = await db
+    .select({
+      slug: experiences.slug,
+      raceId: experiences.race_id,
+      title: experiences.title,
+      updatedAt: experiences.updated_at,
+    })
+    .from(experiences);
 
   const STATIC_PAGES = [
     { path: '/',               label: 'Home',             lastMod: TODAY },
@@ -85,11 +101,27 @@ export default async function SiteDirectoryPage() {
     }
   }
 
+  const raceMap = new Map<number, { slug: string; series: 'f1' | 'motogp'; raceDate: string }>();
+  for (const race of f1Races) raceMap.set(race.id, { slug: race.slug, series: 'f1', raceDate: race.raceDate });
+  for (const race of motogpRaces) raceMap.set(race.id, { slug: race.slug, series: 'motogp', raceDate: race.raceDate });
+
+  for (const exp of experienceRows) {
+    if (!exp.slug || !exp.raceId) continue;
+    const raceInfo = raceMap.get(exp.raceId);
+    if (!raceInfo) continue;
+    entries.push({
+      url: `${SITE_URL}/${raceInfo.series}/${raceInfo.slug}/experiences/${exp.slug}`,
+      label: `${exp.title || exp.slug} — Experience Detail`,
+      lastMod: exp.updatedAt ? new Date(exp.updatedAt).toISOString().slice(0, 10) : raceInfo.raceDate,
+      section: 'Experience Details',
+    });
+  }
+
   const totalUrls = entries.length;
   const lastUpdated = TODAY;
 
   // Group entries by section for display
-  const sections = ['Main Pages', 'F1 2026', 'MotoGP 2026'] as const;
+  const sections = ['Main Pages', 'F1 2026', 'MotoGP 2026', 'Experience Details'] as const;
   const grouped = sections.map(section => ({
     section,
     entries: entries.filter(e => e.section === section),

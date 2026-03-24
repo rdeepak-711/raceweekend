@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
@@ -9,11 +9,12 @@ import GuideNavCards from '@/components/race/GuideNavCards';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import RaceGallery from '@/components/race/RaceGallery';
-import { marked } from 'marked';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getSectionIcon, SECTION_ICONS_MOTOGP } from '@/lib/constants/icons';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import Image from 'next/image';
+import { parseMarkdown } from '@/lib/utils/markdown';
+
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -27,8 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${race.city} MotoGP 2026 Travel Guide: Everything You Need`,
     description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
     alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/guide` },
-    openGraph: {
-      title: `${race.city} MotoGP 2026 Travel Guide: Everything You Need`,
+    openGraph: { ...BASE_OG,title: `${race.city} MotoGP 2026 Travel Guide: Everything You Need`,
       description: `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
@@ -69,7 +69,7 @@ export default async function MotoGPGuidePage({ params }: Props) {
   const intro        = content?.whyCityText  ?? content?.guideIntro ?? null;
 
   const guideSections = content?.cityGuide
-    ? parseCityGuideSections(marked.parse(content.cityGuide) as string)
+    ? parseCityGuideSections(parseMarkdown(content.cityGuide))
     : [];
 
   const articleLd = {
@@ -151,9 +151,9 @@ export default async function MotoGPGuidePage({ params }: Props) {
               <SeriesBadge series="motogp" />
               <span className="text-sm text-[var(--text-secondary)]">Round {race.round} · {race.season}</span>
             </div>
-            <h2 className="font-display font-black text-3xl sm:text-4xl text-white uppercase mb-1">
+            <h1 className="font-display font-black text-3xl sm:text-4xl text-white uppercase mb-1">
               {heroTitle}
-            </h2>
+            </h1>
             <p className="text-[var(--text-secondary)]">{heroSubtitle}</p>
           </div>
         )}

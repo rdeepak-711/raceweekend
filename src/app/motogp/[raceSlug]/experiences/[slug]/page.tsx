@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
-import { marked } from 'marked';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getRaceBySlug } from '@/services/race.service';
@@ -12,8 +11,8 @@ import ExperienceSuggestions from '@/components/experiences/ExperienceSuggestion
 import PhotoSlider from '@/components/experiences/PhotoSlider';
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants/categories';
 import GuideAccordion from '@/components/race/GuideAccordion';
+import { parseMarkdown } from '@/lib/utils/markdown';
 
-export const revalidate = 3600;
 
 interface Props { params: Promise<{ raceSlug: string; slug: string }>; }
 
@@ -74,7 +73,7 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
   const suggestions = await getSuggestedExperiences(race.id, slug, 4);
   const color = CATEGORY_COLORS[experience.category] ?? '#6E6E82';
   const categoryLabel = CATEGORY_LABELS[experience.category] ?? experience.category;
-  const articleHtml = experience.guideArticle ? marked(experience.guideArticle) : null;
+  const articleHtml = experience.guideArticle ? parseMarkdown(experience.guideArticle) : null;
 
   const raceImagesForSchema = getRaceImagePaths(raceSlug);
   const schemaImage = raceImagesForSchema.ogImageUrl ?? undefined;
@@ -233,7 +232,7 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
             </section>
           )}
 
-          {experience.f1Context && (
+          {experience.raceContext && (
             <section id="itinerary" className="mb-8 pt-4">
               <div className="rounded-2xl p-5 bg-[var(--bg-secondary)] border border-[var(--border-subtle)]"
                 style={{ borderLeft: '4px solid var(--accent-teal)' }}>
@@ -241,7 +240,7 @@ export default async function MotoGPExperienceDetailPage({ params }: Props) {
                   <span className="text-xl">🏍️</span>
                   <h2 className="font-display font-bold text-lg text-white">Race Weekend Context</h2>
                 </div>
-                <p className="text-[var(--text-secondary)] leading-relaxed text-sm">{experience.f1Context}</p>
+                <p className="text-[var(--text-secondary)] leading-relaxed text-sm">{experience.raceContext}</p>
               </div>
             </section>
           )}

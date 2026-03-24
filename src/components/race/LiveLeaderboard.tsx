@@ -73,7 +73,16 @@ export default function LiveLeaderboard({ sessionKey }: { sessionKey: number }) 
             
             <div className="relative w-8 h-8 rounded-full overflow-hidden bg-black/40 border border-white/5 shrink-0">
               {d.headshotUrl ? (
-                <img src={d.headshotUrl} alt={d.nameAcronym} className="w-full h-full object-cover" />
+                <img
+                  src={d.headshotUrl}
+                  alt={d.nameAcronym}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    if (img.src.endsWith('/og-hero.jpg')) return;
+                    img.src = '/og-hero.jpg';
+                  }}
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white/20">
                   {d.nameAcronym}

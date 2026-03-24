@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3002 --webpack",
+    "dev": "node scripts/dev-auto-port.mjs --webpack",
     "build": "next build",
     "start": "next start --port 3002",
     "lint": "eslint",
@@ -45,7 +45,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@google/generative-ai": "^0.24.1",
-"@vercel/analytics": "^1.6.1",
+    "@vercel/analytics": "^1.6.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "dotenv": "^17.3.1",
@@ -61,6 +61,7 @@
     "postcss": "^8.5.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "sanitize-html": "^2.17.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -69,6 +70,7 @@
     "@types/nodemailer": "^7.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.1",
     "babel-plugin-react-compiler": "1.0.0",
     "drizzle-kit": "^0.31.9",
     "eslint": "^9",

@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Props {
   photos: string[] | null;
@@ -27,17 +27,16 @@ function upgradeUrl(url: string) {
 
 export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [brokenIndexes, setBrokenIndexes] = useState<Record<number, boolean>>({});
 
   const allPhotos = (photos && photos.length > 0) 
     ? photos.map(upgradeUrl) 
     : (imageUrl ? [upgradeUrl(imageUrl)] : []);
     
   const n = allPhotos.length;
+  const fallbackSrc = '/og-hero.jpg';
+  const getSrc = (index: number) => (brokenIndexes[index] ? fallbackSrc : allPhotos[index]);
+  const markBroken = (index: number) => setBrokenIndexes(prev => ({ ...prev, [index]: true }));
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -83,15 +82,14 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
             className="relative flex-shrink-0 h-full rounded-2xl overflow-hidden border border-white/5 bg-[#0D0D15] snap-start cursor-zoom-in transition-all duration-500 hover:scale-[1.01] hover:border-white/20 active:scale-95 group/item"
           >
               <Image
-              src={url}
+              src={getSrc(i)}
               alt={`${title} photo ${i + 1}`}
               width={1024}
               height={768}
               className="h-full w-auto object-contain block"
               loading={i < 3 ? "eager" : "lazy"}
               priority={i === 0}
-              unoptimized
-              referrerPolicy="no-referrer"
+              onError={() => markBroken(i)}
             />
             
             {/* Subtle Overlay */}
@@ -108,7 +106,7 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
       </div>
 
       {/* Lightbox */}
-      {mounted && lightboxIndex !== null && (
+      {lightboxIndex !== null && (
         <div className="fixed inset-0 z-[100] bg-black/98 flex flex-col items-center justify-center animate-in fade-in duration-300" onClick={closeLightbox}>
           {/* Close */}
           <button 
@@ -125,11 +123,13 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
 
           {/* Main Photo Container */}
           <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-12" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={allPhotos[lightboxIndex]}
+            <Image
+              src={getSrc(lightboxIndex)}
               alt={`${title} lightbox`}
+              width={1600}
+              height={1000}
               className="max-w-full max-h-full object-contain shadow-2xl"
-              referrerPolicy="no-referrer"
+              onError={() => markBroken(lightboxIndex)}
             />
             
             {/* Nav */}
@@ -162,13 +162,12 @@ export default function PhotoSlider({ photos, imageUrl, title, color, imageEmoji
                 }`}
               >
                 <Image
-                  src={url}
+                  src={getSrc(i)}
                   alt="thumb"
                   fill
                   sizes="80px"
                   className="object-cover"
-                  unoptimized
-                  referrerPolicy="no-referrer"
+                  onError={() => markBroken(i)}
                 />
               </button>
             ))}

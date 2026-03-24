@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
-import { marked } from 'marked';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import GuideAccordion from '@/components/race/GuideAccordion';
 import RaceSubNav from '@/components/race/RaceSubNav';
@@ -9,6 +8,7 @@ import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getNeighborhoodIcon } from '@/lib/constants/icons';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
+import { parseMarkdown } from '@/lib/utils/markdown';
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -26,8 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${race.city} ${race.name} 2026: Best Hotels & Accommodation`,
     description: `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`,
     alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/where-to-stay` },
-    openGraph: {
-      title: `${race.city} ${race.name} 2026: Best Hotels & Accommodation`,
+    openGraph: { ...BASE_OG,title: `${race.city} ${race.name} 2026: Best Hotels & Accommodation`,
       description: `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },
@@ -62,7 +61,7 @@ export default async function MotoGPWhereToStayPage({ params }: Props) {
   const theme = getThemeFromRace(race);
 
   const whereToStayHtml = content?.whereToStay
-    ? (marked.parse(content.whereToStay) as string)
+    ? parseMarkdown(content.whereToStay)
     : null;
 
   const neighborhoods = whereToStayHtml ? parseSections(whereToStayHtml) : [];

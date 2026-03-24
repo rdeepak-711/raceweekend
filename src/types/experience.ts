@@ -55,7 +55,7 @@ export interface Experience {
   importantInfo: string | null;
   photos: string[] | null;
   reviewsSnapshot: ReviewSnapshot[] | null;
-  f1Context: string | null;
+  raceContext: string | null;
   meetingPoint: string | null;
   bestseller: boolean | null;
   originalPrice: number | null;

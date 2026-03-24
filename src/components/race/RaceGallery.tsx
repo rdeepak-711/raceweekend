@@ -32,6 +32,11 @@ const RaceGallery = ({ images, city }: RaceGalleryProps) => {
               src={src}
               alt={`${city} gallery image ${i + 1}`}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (img.src.endsWith('/og-hero.jpg')) return;
+                img.src = '/og-hero.jpg';
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>

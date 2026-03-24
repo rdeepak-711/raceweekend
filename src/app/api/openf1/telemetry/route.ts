@@ -9,7 +9,11 @@ export async function GET(req: NextRequest) {
   if (!sessionKey) return NextResponse.json({ error: 'sessionKey required' }, { status: 400 });
 
   try {
-    const telemetry = await getCarTelemetry(Number(sessionKey), Number(driverNumber));
+    const key = Number(sessionKey);
+    const driver = Number(driverNumber);
+    if (isNaN(key)) return NextResponse.json({ error: 'invalid sessionKey' }, { status: 400 });
+    if (isNaN(driver)) return NextResponse.json({ error: 'invalid driverNumber' }, { status: 400 });
+    const telemetry = await getCarTelemetry(key, driver);
     // Limit to latest 50 points for the chart
     const latest = telemetry.slice(-50);
     return NextResponse.json({ data: latest }, {

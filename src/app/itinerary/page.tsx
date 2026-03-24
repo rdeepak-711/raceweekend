@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { getRacesBySeries } from '@/services/race.service';
 import { getExperiencesByRace, getExperiencesByIds } from '@/services/experience.service';
 import { getSessionsByRace } from '@/services/race.service';
@@ -12,8 +12,7 @@ export const metadata: Metadata = {
   title: 'Plan Your Trip | Race Weekend Itinerary Builder',
   description: 'Deploy your custom weekend strategy. Pick sessions, add experiences, and get a shareable link for your race crew.',
   alternates: { canonical: `${SITE_URL}/itinerary` },
-  openGraph: {
-    title: 'Race Weekend Itinerary Builder',
+  openGraph: { ...BASE_OG,title: 'Race Weekend Itinerary Builder',
     description: 'Create and share the perfect F1 or MotoGP weekend plan.',
   },
   twitter: {

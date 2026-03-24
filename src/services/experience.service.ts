@@ -3,6 +3,16 @@ import { experiences, experience_windows, experience_windows_map } from '@/lib/d
 import { eq, and, desc, asc, inArray } from 'drizzle-orm';
 import type { Experience, ExperienceFilter } from '@/types/experience';
 
+const GUIDE_ARTICLE_MAX_CHARS = 50_000;
+
+function clampLongText(value: string | null | undefined, maxChars: number): string | null {
+  if (!value) return null;
+  if (value.length <= maxChars) return value;
+  const cut = value.lastIndexOf('\n', maxChars);
+  const safeCut = cut > Math.floor(maxChars * 0.7) ? cut : maxChars;
+  return `${value.slice(0, safeCut)}\n\n---\n\n*Read more on Race Weekend soon.*`;
+}
+
 function mapExperience(row: typeof experiences.$inferSelect): Experience {
   return {
     id: row.id,
@@ -34,7 +44,7 @@ function mapExperience(row: typeof experiences.$inferSelect): Experience {
     importantInfo: row.important_info ?? null,
     photos: (row.photos as string[] | null) ?? null,
     reviewsSnapshot: (row.reviews_snapshot as Experience['reviewsSnapshot']) ?? null,
-    f1Context: row.f1_context ?? null,
+    raceContext: row.f1_context ?? null,
     meetingPoint: row.meeting_point ?? null,
     bestseller: row.bestseller ?? null,
     originalPrice: row.original_price ? Number(row.original_price) : null,
@@ -52,7 +62,7 @@ function mapExperience(row: typeof experiences.$inferSelect): Experience {
     distanceKm: row.distance_km ? Number(row.distance_km) : null,
     neighborhood: row.neighborhood ?? null,
     travelMins: row.travel_mins ?? null,
-    guideArticle: row.guide_article ?? null,
+    guideArticle: clampLongText(row.guide_article, GUIDE_ARTICLE_MAX_CHARS),
     faqItems: (row.faq_items as Experience['faqItems']) ?? null,
   };
 }

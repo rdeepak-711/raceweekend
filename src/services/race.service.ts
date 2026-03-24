@@ -3,8 +3,6 @@ import { races, sessions, race_content, experiences } from '@/lib/db/schema';
 import { eq, gte, asc, and, sql } from 'drizzle-orm';
 import type { Race, Session, RaceContent } from '@/types/race';
 import type { RaceSeries } from '@/lib/constants/series';
-import { cache } from 'react';
-import { connection } from 'next/server';
 
 function parseJsonField<T>(value: unknown): T | null {
   if (value === null || value === undefined) return null;
@@ -57,7 +55,7 @@ function mapSession(s: typeof sessions.$inferSelect): Session {
   };
 }
 
-export const getRacesBySeries = cache(async (series: RaceSeries): Promise<Race[]> => {
+export async function getRacesBySeries(series: RaceSeries): Promise<Race[]> {
   const { getTableColumns } = await import('drizzle-orm');
   const raceRows = await db
     .select({
@@ -72,23 +70,22 @@ export const getRacesBySeries = cache(async (series: RaceSeries): Promise<Race[]
     const { expCount, ...raceData } = row;
     return mapRace(raceData as typeof races.$inferSelect, expCount);
   });
-});
+}
 
-export const getRaceBySlug = cache(async (slug: string, series?: RaceSeries): Promise<Race | null> => {
-  await connection();
+export async function getRaceBySlug(slug: string, series?: RaceSeries): Promise<Race | null> {
   const conditions = series
     ? and(eq(races.slug, slug), eq(races.series, series))
     : eq(races.slug, slug);
   const [row] = await db.select().from(races).where(conditions).limit(1);
   return row ? mapRace(row) : null;
-});
+}
 
-export const getRaceById = cache(async (id: number): Promise<Race | null> => {
+export async function getRaceById(id: number): Promise<Race | null> {
   const [row] = await db.select().from(races).where(eq(races.id, id)).limit(1);
   return row ? mapRace(row) : null;
-});
+}
 
-export const getRaceWithSessions = cache(async (slug: string): Promise<{ race: Race; sessions: Session[] } | null> => {
+export async function getRaceWithSessions(slug: string): Promise<{ race: Race; sessions: Session[] } | null> {
   const race = await getRaceBySlug(slug);
   if (!race) return null;
   const sessionRows = await db
@@ -97,9 +94,9 @@ export const getRaceWithSessions = cache(async (slug: string): Promise<{ race: R
     .where(eq(sessions.race_id, race.id))
     .orderBy(asc(sessions.day_of_week), asc(sessions.start_time));
   return { race, sessions: sessionRows.map(mapSession) };
-});
+}
 
-export const getActiveRaceBySeries = cache(async (series: RaceSeries): Promise<Race | null> => {
+export async function getActiveRaceBySeries(series: RaceSeries): Promise<Race | null> {
   const [row] = await db
     .select()
     .from(races)
@@ -107,9 +104,9 @@ export const getActiveRaceBySeries = cache(async (series: RaceSeries): Promise<R
     .orderBy(asc(races.race_date))
     .limit(1);
   return row ? mapRace(row) : null;
-});
+}
 
-export const getRaceContent = cache(async (raceId: number): Promise<RaceContent | null> => {
+export async function getRaceContent(raceId: number): Promise<RaceContent | null> {
   const [row] = await db
     .select()
     .from(race_content)
@@ -143,9 +140,9 @@ export const getRaceContent = cache(async (raceId: number): Promise<RaceContent 
     cityGuide: row.city_guide ?? null,
     currency: row.currency ?? null,
   };
-});
+}
 
-export const getNearbyRaces = cache(async (currentRaceId: number, series: RaceSeries, raceDate: string, limit = 4): Promise<Race[]> => {
+export async function getNearbyRaces(currentRaceId: number, series: RaceSeries, raceDate: string, limit = 4): Promise<Race[]> {
   const allRaces = await getRacesBySeries(series);
   // Sort by proximity to current race date, exclude current race
   return allRaces
@@ -156,13 +153,13 @@ export const getNearbyRaces = cache(async (currentRaceId: number, series: RaceSe
       return diffA - diffB;
     })
     .slice(0, limit);
-});
+}
 
-export const getSessionsByRace = cache(async (raceId: number): Promise<Session[]> => {
+export async function getSessionsByRace(raceId: number): Promise<Session[]> {
   const rows = await db
     .select()
     .from(sessions)
     .where(eq(sessions.race_id, raceId))
     .orderBy(asc(sessions.day_of_week), asc(sessions.start_time));
   return rows.map(mapSession);
-});
+}

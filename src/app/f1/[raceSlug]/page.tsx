@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const content = await getRaceContent(race.id);
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
 
-  const title = content?.pageTitle ?? `${race.name} Travel Guide`;
+  const title = content?.pageTitle ?? `${race.city} GP 2026: Schedule, Tickets & Experiences`;
   const description = content?.pageDescription ?? `Plan your ${race.name} race weekend. Schedule, experiences, tickets, and travel guide for ${race.city}.`;
 
   return {
@@ -32,8 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     keywords: content?.pageKeywords ?? [],
     alternates: { canonical: `${SITE_URL}/f1/${raceSlug}` },
-    openGraph: {
-      title,
+    openGraph: { ...BASE_OG,title,
       description,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },

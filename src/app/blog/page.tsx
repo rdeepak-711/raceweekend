@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBlogPosts } from '@/services/blog.service';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'Race Weekend Blog — F1 & MotoGP Travel Stories',
@@ -11,8 +11,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/blog`,
     types: { 'application/rss+xml': `${SITE_URL}/blog/feed.xml` },
   },
-  openGraph: {
-    title: 'Race Weekend Blog — F1 & MotoGP Travel Stories',
+  openGraph: { ...BASE_OG,title: 'Race Weekend Blog — F1 & MotoGP Travel Stories',
     description: 'Race previews, experience reviews, and city guides for F1 and MotoGP fans.',
   },
 };

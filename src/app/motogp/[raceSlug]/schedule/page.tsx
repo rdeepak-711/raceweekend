@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceWithSessions } from '@/services/race.service';
 import RaceSchedule from '@/components/race/RaceSchedule';
@@ -8,6 +8,7 @@ import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import Image from 'next/image';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
+
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -21,8 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${race.name} 2026 Session Schedule & Race Times`,
     description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
     alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/schedule` },
-    openGraph: {
-      title: `${race.name} 2026 Session Schedule & Race Times`,
+    openGraph: { ...BASE_OG,title: `${race.name} 2026 Session Schedule & Race Times`,
       description: `Full race weekend schedule for the ${race.name}. All session times, timetable, and programme.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { existsSync } from 'fs';
@@ -31,8 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Getting to ${race.city} for the ${race.name}`,
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
     alternates: { canonical: `${SITE_URL}/f1/${raceSlug}/getting-there` },
-    openGraph: {
-      title: `Getting to ${race.city} for the ${race.name}`,
+    openGraph: { ...BASE_OG,title: `Getting to ${race.city} for the ${race.name}`,
       description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },

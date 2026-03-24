@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug } from '@/services/race.service';
@@ -8,6 +8,7 @@ import ExperiencesClient from '@/components/experiences/ExperiencesClient';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
+
 
 interface Props { params: Promise<{ raceSlug: string }>; searchParams: Promise<{ category?: string; sort?: string; }>; }
 
@@ -22,8 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/experiences` },
-    openGraph: {
-      title,
+    openGraph: { ...BASE_OG,title,
       description,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },

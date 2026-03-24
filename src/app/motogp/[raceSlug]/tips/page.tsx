@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
 import GuideAccordion from '@/components/race/GuideAccordion';
@@ -28,8 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${race.city} MotoGP 2026 Insider Tips`,
     description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
     alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/tips` },
-    openGraph: {
-      title: `${race.city} MotoGP 2026 Insider Tips`,
+    openGraph: { ...BASE_OG,title: `${race.city} MotoGP 2026 Insider Tips`,
       description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },

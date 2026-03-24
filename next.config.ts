@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   cacheComponents: true,
   turbopack: {
-    root: '/Users/deepak',
+    root: process.cwd(),
   },
   compress: true,
   poweredByHeader: false,

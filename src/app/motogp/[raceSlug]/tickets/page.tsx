@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getRaceBySlug, getRaceContent } from '@/services/race.service';
@@ -11,6 +11,7 @@ import { getRaceImagePaths } from '@/lib/utils/raceImages';
 import RaceSubNav from '@/components/race/RaceSubNav';
 import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import OfficialTicketsBanner from '@/components/tickets/OfficialTicketsBanner';
+
 
 interface Props { params: Promise<{ raceSlug: string }>; }
 
@@ -24,8 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${race.name} 2026 Tickets: How to Buy & Prices`,
     description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
     alternates: { canonical: `${SITE_URL}/motogp/${raceSlug}/tickets` },
-    openGraph: {
-      title: `${race.name} 2026 Tickets: How to Buy & Prices`,
+    openGraph: { ...BASE_OG,title: `${race.name} 2026 Tickets: How to Buy & Prices`,
       description: `Buy ${race.name} MotoGP tickets. Compare race ticket listings via Ticketmaster.`,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: `${race.city} — ${race.name}` }] : [],
     },

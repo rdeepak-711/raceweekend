@@ -3,22 +3,37 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBlogPostBySlug, getRelatedPosts } from '@/services/blog.service';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
 interface Props { params: Promise<{ slug: string }>; }
+
+function clampTitle(input: string, max = 55): string {
+  if (input.length <= max) return input;
+  const cut = input.lastIndexOf(' ', max - 1);
+  return `${input.slice(0, cut > 0 ? cut : max - 1)}…`;
+}
+
+function clampDescription(input: string, min = 130, max = 155): string {
+  let value = input.trim();
+  if (value.length > max) {
+    const cut = value.lastIndexOf(' ', max - 1);
+    value = `${value.slice(0, cut > 0 ? cut : max - 1)}…`;
+  }
+  if (value.length < min) return value;
+  return value;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
   if (!post) return {};
-  const title = post.seoTitle ?? post.title;
-  const description = post.seoDescription ?? post.excerpt ?? '';
+  const title = clampTitle(post.seoTitle ?? post.title);
+  const description = clampDescription(post.seoDescription ?? post.excerpt ?? '');
   return {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/blog/${slug}` },
-    openGraph: {
-      type: 'article',
+    openGraph: { ...BASE_OG,type: 'article',
       title,
       description,
       publishedTime: post.publishedAt?.toISOString() ?? post.createdAt.toISOString(),

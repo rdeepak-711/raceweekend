@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Race Weekend',
   description: 'How we handle your data and privacy at Race Weekend.',
   alternates: { canonical: `${SITE_URL}/privacy` },
-  openGraph: {
-    title: 'Privacy Policy | Race Weekend',
+  openGraph: { ...BASE_OG,title: 'Privacy Policy | Race Weekend',
     description: 'How we handle your data and privacy at Race Weekend.',
     images: [{ url: `${SITE_URL}/og-hero.jpg`, width: 1200, height: 630, alt: 'Race Weekend — F1 & MotoGP 2026 Travel Guide' }],
   },

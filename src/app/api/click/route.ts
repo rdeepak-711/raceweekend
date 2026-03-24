@@ -3,10 +3,24 @@ import { db } from '@/lib/db';
 import { affiliate_clicks, experiences } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { buildGYGAffiliateUrl } from '@/lib/affiliates';
+import { z } from 'zod';
+
+const ClickSchema = z.object({
+  experienceId: z.number().int().positive(),
+  source: z
+    .enum(['feed', 'itinerary', 'featured', 'map', 'guide', 'ticket', 'hero', 'sidebar'])
+    .optional(),
+  sessionId: z.string().max(255).optional(),
+  itineraryId: z.string().max(12).nullable().optional(),
+});
 
 export async function POST(req: NextRequest) {
   try {
-    const { experienceId, source, sessionId, itineraryId } = await req.json();
+    const parsed = ClickSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+    const { experienceId, source, sessionId, itineraryId } = parsed.data;
 
     // Fetch the experience to get affiliate URL
     const [exp] = await db.select().from(experiences).where(eq(experiences.id, experienceId)).limit(1);

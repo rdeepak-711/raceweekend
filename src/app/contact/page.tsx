@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ContactForm from '@/components/contact/ContactForm';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
 export const metadata: Metadata = {
   title: 'Get in Touch | Race Weekend',
   description: 'Have a feature request, bug report, or just want to talk racing? Reach out to the Race Weekend team.',
   alternates: { canonical: `${SITE_URL}/contact` },
-  openGraph: {
-    title: 'Get in Touch | Race Weekend',
+  openGraph: { ...BASE_OG,title: 'Get in Touch | Race Weekend',
     description: 'Feature requests, bug reports, or talking F1 & MotoGP — let\'s connect.',
   },
   twitter: {

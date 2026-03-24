@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/constants/site';
+import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { headers } from 'next/headers';
 import { getRacesBySeries } from '@/services/race.service';
 import SeriesLandingClient from '@/components/race/SeriesLandingClient';
@@ -8,8 +8,7 @@ export const metadata: Metadata = {
   title: 'MotoGP 2026 Grand Prix Calendar & Travel Guides',
   description: 'Complete MotoGP 2026 season calendar. All Grand Prix races with sessions, circuits, and local travel guides for bike fans.',
   alternates: { canonical: `${SITE_URL}/motogp` },
-  openGraph: {
-    title: 'MotoGP 2026 Grand Prix Calendar & Travel Guides',
+  openGraph: { ...BASE_OG,title: 'MotoGP 2026 Grand Prix Calendar & Travel Guides',
     description: 'Complete MotoGP 2026 season calendar. All Grand Prix races with dates, circuits, and travel guides.',
   },
   twitter: {
