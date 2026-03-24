@@ -22,7 +22,7 @@ export default function RaceCountdown({
 
   useEffect(() => {
     function getTimeLeft(): TimeLeft | null {
-      const diff = target.getTime() - Date.now();
+      const diff = target.getTime() - new Date().getTime();
       if (diff <= 0) { setCompleted(true); return null; }
       return {
         d: Math.floor(diff / 86_400_000),

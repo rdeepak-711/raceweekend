@@ -4,7 +4,6 @@ import { eq, and, gte } from 'drizzle-orm';
 import { searchTMEvents } from '@/lib/api/ticketmaster';
 import { buildTicketmasterUrl } from '@/lib/affiliates';
 import type { Ticket } from '@/types/ticket';
-import { connection } from 'next/server';
 
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
@@ -30,12 +29,11 @@ function mapTicket(row: typeof tickets.$inferSelect, raceSlug: string): Ticket {
 }
 
 export async function getTicketsByRace(raceId: number): Promise<Ticket[]> {
-  await connection();
   // Get race info for slug (needed for URL building)
   const [raceRow] = await db.select().from(races).where(eq(races.id, raceId)).limit(1);
   if (!raceRow) return [];
 
-  const cutoff = new Date(Date.now() - CACHE_TTL_MS);
+  const cutoff = new Date(new Date().getTime() - CACHE_TTL_MS);
   const raceSlug = raceRow.slug ?? '';
 
   // Check cache
