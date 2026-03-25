@@ -44,7 +44,7 @@ export default async function Image({ params }: Props) {
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '64px 88px', width: '100%' }}>
           {/* Series + Round badge */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-            <div style={{ background: '#FF6B00', borderRadius: 6, padding: '4px 12px', color: 'white', fontSize: 13, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase' }}>
+            <div style={{ display: 'flex', alignItems: 'center', background: '#FF6B00', borderRadius: 6, padding: '4px 12px', color: 'white', fontSize: 13, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase' }}>
               MotoGP · Round {race?.round ?? ''} · 2026
             </div>
           </div>

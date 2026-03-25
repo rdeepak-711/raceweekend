@@ -31,7 +31,7 @@ export default async function Image() {
               F1 & MOTOGP TRAVEL STORIES
             </div>
           </div>
-          <div style={{ fontSize: 76, fontWeight: 900, color: 'white', lineHeight: 1.0, letterSpacing: -3, textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', fontSize: 76, fontWeight: 900, color: 'white', lineHeight: 1.0, letterSpacing: -3, textTransform: 'uppercase' }}>
             RACE WEEKEND<br />BLOG
           </div>
           <div style={{ fontSize: 26, color: 'rgba(255,255,255,0.6)', marginTop: 14 }}>

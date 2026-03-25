@@ -62,6 +62,8 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           <div style={{ fontSize: '40px' }}>{race.flagEmoji}</div>
           <div 
             style={{ 
+              display: 'flex',
+              alignItems: 'center',
               fontSize: '24px', 
               fontWeight: 900, 
               color: meta.color, 
