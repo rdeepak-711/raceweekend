@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
-import { headers } from 'next/headers';
 import { getRacesBySeries } from '@/services/race.service';
 import SeriesLandingClient from '@/components/race/SeriesLandingClient';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'MotoGP 2026 Grand Prix Calendar & Travel Guides',
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
 };
 
 export default async function MotoGPPage() {
-  await headers();
   const races = await getRacesBySeries('motogp');
 
   return (

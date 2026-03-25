@@ -61,6 +61,7 @@ export default async function F1TipsPage({ params }: Props) {
   const faqItems = content?.faqItems ?? [];
   const circuitFacts = content?.circuitFacts as Record<string, string> | null;
   const travelTips = content?.travelTips && content.travelTips.length > 0 ? content.travelTips : UNIVERSAL_TIPS;
+  const schemaDate = `${race.raceDate}T00:00:00.000Z`;
 
   const faqLd = faqItems.length > 0 ? {
     '@context': 'https://schema.org',
@@ -90,7 +91,7 @@ export default async function F1TipsPage({ params }: Props) {
     description: `Essential tips for attending the ${race.name}. What to bring, circuit facts, and local advice.`,
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
-    dateModified: new Date().toISOString(),
+    dateModified: schemaDate,
     url: `${SITE_URL}/f1/${raceSlug}/tips`,
   };
 

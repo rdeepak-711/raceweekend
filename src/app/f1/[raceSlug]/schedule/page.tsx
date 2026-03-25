@@ -47,13 +47,7 @@ async function findLiveSessionKey(cityName: string): Promise<number | null> {
     if (!meeting) return null;
 
     const sessions = await getF1Sessions(meeting.meeting_key);
-    const now = new Date();
-    const live = sessions.find(s => {
-      const start = new Date(s.date_start);
-      const end = new Date(s.date_end);
-      return start <= now && now <= end;
-    });
-    return live?.session_key ?? null;
+    return sessions[0]?.session_key ?? null;
   } catch {
     return null;
   }
@@ -68,10 +62,6 @@ export default async function F1SchedulePage({ params }: Props) {
   const seriesMeta = SERIES_META.f1;
   const theme = getThemeFromRace(race);
   const { circuitExists, circuitUrl } = getRaceImagePaths(raceSlug);
-
-  // Get current time for live detection (server-side)
-  const now = new Date();
-  const nowTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
   // Try to find a live OpenF1 session key
   const liveSessionKey = await findLiveSessionKey(race.city);

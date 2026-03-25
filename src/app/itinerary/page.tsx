@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 import { getRacesBySeries } from '@/services/race.service';
 import { getExperiencesByRace, getExperiencesByIds } from '@/services/experience.service';
@@ -21,17 +20,15 @@ export const metadata: Metadata = {
 };
 
 export default async function ItineraryPage() {
-  await headers();
   // Fetch upcoming races for both series
   const [f1Races, motoGPRaces] = await Promise.all([
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),
   ]);
 
-  const today = new Date().toISOString().slice(0, 10);
-  // Upcoming races only, sorted ascending by date
-  const upcomingF1 = f1Races.filter(r => r.raceDate >= today).sort((a, b) => a.raceDate.localeCompare(b.raceDate));
-  const upcomingMotoGP = motoGPRaces.filter(r => r.raceDate >= today).sort((a, b) => a.raceDate.localeCompare(b.raceDate));
+  // Upcoming active races only, sorted ascending by date
+  const upcomingF1 = f1Races.filter(r => r.isActive).sort((a, b) => a.raceDate.localeCompare(b.raceDate));
+  const upcomingMotoGP = motoGPRaces.filter(r => r.isActive).sort((a, b) => a.raceDate.localeCompare(b.raceDate));
   const allRaces: Race[] = [...upcomingF1, ...upcomingMotoGP];
 
   // Prefetch sessions + experiences for each race

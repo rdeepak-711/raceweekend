@@ -1,8 +1,6 @@
 import { db } from '@/lib/db';
 import { blogPosts } from '@/lib/db/schema';
 import { eq, desc, and, sql } from 'drizzle-orm';
-import { cache } from 'react';
-import { connection } from 'next/server';
 import type { BlogPost } from '@/types/blog';
 
 function mapPost(row: typeof blogPosts.$inferSelect): BlogPost {
@@ -26,12 +24,11 @@ function mapPost(row: typeof blogPosts.$inferSelect): BlogPost {
   };
 }
 
-export const getBlogPosts = cache(async (opts: {
+export async function getBlogPosts(opts: {
   category?: string;
   limit?: number;
   offset?: number;
-} = {}): Promise<BlogPost[]> => {
-  await connection();
+} = {}): Promise<BlogPost[]> {
   const { category, limit = 12, offset = 0 } = opts;
   const conditions = category
     ? and(eq(blogPosts.is_published, true), eq(blogPosts.category, category))
@@ -44,20 +41,18 @@ export const getBlogPosts = cache(async (opts: {
     .limit(limit)
     .offset(offset);
   return rows.map(mapPost);
-});
+}
 
-export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
-  await connection();
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   const [row] = await db
     .select()
     .from(blogPosts)
     .where(and(eq(blogPosts.slug, slug), eq(blogPosts.is_published, true)))
     .limit(1);
   return row ? mapPost(row) : null;
-});
+}
 
-export const getBlogPostsByTag = cache(async (tag: string): Promise<BlogPost[]> => {
-  await connection();
+export async function getBlogPostsByTag(tag: string): Promise<BlogPost[]> {
   const rows = await db
     .select()
     .from(blogPosts)
@@ -69,10 +64,9 @@ export const getBlogPostsByTag = cache(async (tag: string): Promise<BlogPost[]> 
     )
     .orderBy(desc(blogPosts.published_at));
   return rows.map(mapPost);
-});
+}
 
-export const getRelatedPosts = cache(async (postId: number, category: string, limit = 3): Promise<BlogPost[]> => {
-  await connection();
+export async function getRelatedPosts(postId: number, category: string, limit = 3): Promise<BlogPost[]> {
   const rows = await db
     .select()
     .from(blogPosts)
@@ -86,9 +80,9 @@ export const getRelatedPosts = cache(async (postId: number, category: string, li
     .orderBy(desc(blogPosts.published_at))
     .limit(limit);
   return rows.map(mapPost);
-});
+}
 
-export const getAllPublishedBlogPosts = cache(async (): Promise<Pick<BlogPost, 'slug' | 'publishedAt' | 'updatedAt'>[]> => {
+export async function getAllPublishedBlogPosts(): Promise<Pick<BlogPost, 'slug' | 'publishedAt' | 'updatedAt'>[]> {
   const rows = await db
     .select({
       slug: blogPosts.slug,
@@ -103,4 +97,4 @@ export const getAllPublishedBlogPosts = cache(async (): Promise<Pick<BlogPost, '
     publishedAt: r.publishedAt ?? null,
     updatedAt: r.updatedAt ?? new Date(),
   }));
-});
+}

@@ -56,6 +56,7 @@ export default async function MotoGPGettingTherePage({ params }: Props) {
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'motogp');
   if (!race) notFound();
+  const schemaDate = `${race.raceDate}T00:00:00.000Z`;
   const content = await getRaceContent(race.id);
   const theme = getThemeFromRace(race);
   const { circuitExists, circuitUrl } = getRaceImagePaths(raceSlug);
@@ -81,7 +82,7 @@ export default async function MotoGPGettingTherePage({ params }: Props) {
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
-    dateModified: new Date().toISOString(),
+    dateModified: schemaDate,
     url: `${SITE_URL}/motogp/${raceSlug}/getting-there`,
   };
 

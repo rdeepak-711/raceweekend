@@ -47,9 +47,7 @@ export default async function MotoGPTicketsPage({ params }: Props) {
   ]);
   const theme = getThemeFromRace(race);
   const raceDateTime = `${race.raceDate}T14:00:00`;
-
-  const today = new Date().toISOString().slice(0, 10);
-  const isPast = race.raceDate < today;
+  const isPast = !race.isActive;
 
   const ticketKeywords = /ticket|price|cost|buy|purchase|resale/i;
   const ticketFaqs = content?.faqItems?.filter(item => ticketKeywords.test(item.question)) ?? [];

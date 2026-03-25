@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Race } from '@/types/race';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -89,9 +88,13 @@ const Countdown = ({ targetDate, city }: { targetDate: string; city: string }) =
 };
 
 export default function Nav({ upcomingF1, upcomingMotogp }: NavProps) {
-  const pathname = usePathname();
+  const [pathname, setPathname] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const { activeSeries } = useSeriesContext();
+
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
 
   const currentRaces = activeSeries === 'f1' ? upcomingF1 : upcomingMotogp;
   const nextRace = currentRaces[0];

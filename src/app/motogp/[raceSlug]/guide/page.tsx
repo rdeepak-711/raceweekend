@@ -67,6 +67,7 @@ export default async function MotoGPGuidePage({ params }: Props) {
   const heroTitle    = content?.heroTitle    ?? `${race.city} Travel Guide`;
   const heroSubtitle = content?.heroSubtitle ?? `Everything you need for the ${race.name}`;
   const intro        = content?.whyCityText  ?? content?.guideIntro ?? null;
+  const schemaDate = `${race.raceDate}T00:00:00.000Z`;
 
   const guideSections = content?.cityGuide
     ? parseCityGuideSections(parseMarkdown(content.cityGuide))
@@ -79,8 +80,8 @@ export default async function MotoGPGuidePage({ params }: Props) {
     description: content?.whyCityText ?? content?.guideIntro ?? `Travel guide for the ${race.name}. Local tips, getting there, where to stay, and what to do in ${race.city}.`,
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
-    datePublished: new Date().toISOString(),
-    dateModified: new Date().toISOString(),
+    datePublished: schemaDate,
+    dateModified: schemaDate,
     url: `${SITE_URL}/motogp/${raceSlug}/guide`,
   };
 

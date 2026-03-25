@@ -10,8 +10,6 @@ import RaceNavGrid from '@/components/race/RaceNavGrid';
 import FeaturedExperiences from '@/components/experiences/FeaturedExperiences';
 import { getThemeFromRace } from '@/lib/constants/raceThemes';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
-import { getF1Meetings, getF1Sessions } from '@/lib/api/openf1';
-import LiveTacticalHub from '@/components/race/LiveTacticalHub';
 import RelatedRaces from '@/components/race/RelatedRaces';
 import { isSoon, getUrgencyMessage } from '@/lib/utils';
 
@@ -59,24 +57,6 @@ export default async function F1RacePage({ params }: Props) {
   const { circuitExists, circuitUrl, galleryImages, ogImageUrl } = getRaceImagePaths(raceSlug);
   const raceDateTime = `${race.raceDate}T14:00:00`;
 
-  // Live session check
-  let activeSession = null;
-  try {
-    const meetings = await getF1Meetings(race.season);
-    const meeting = meetings.find(m => m.location.toLowerCase() === race.city.toLowerCase() || m.meeting_name.toLowerCase().includes(race.city.toLowerCase()));
-    if (meeting) {
-      const allF1Sessions = await getF1Sessions(meeting.meeting_key);
-      const now = new Date();
-      activeSession = allF1Sessions.find(s => {
-        const start = new Date(s.date_start);
-        const end = new Date(s.date_end);
-        return start <= now && now <= end;
-      });
-    }
-  } catch (e) {
-    console.warn('[live-check] OpenF1 session sync unavailable');
-  }
-  
   const { soon, daysRemaining } = isSoon(race.raceDate);
 
   const eventLocation = {
@@ -177,16 +157,6 @@ export default async function F1RacePage({ params }: Props) {
           />
 
           <div className="max-w-6xl mx-auto px-4 py-16">
-            {/* Live Tactical Hub — High Contrast Intervention */}
-            {activeSession && (
-              <section className="mb-20">
-                <LiveTacticalHub 
-                  sessionKey={activeSession.session_key} 
-                  sessionName={activeSession.session_name} 
-                />
-              </section>
-            )}
-
             {/* Navigation grid */}
             <RaceNavGrid
               raceSlug={raceSlug}

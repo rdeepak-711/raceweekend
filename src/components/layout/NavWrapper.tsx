@@ -8,14 +8,13 @@ export default async function NavWrapper() {
     getRacesBySeries('motogp'),
   ]);
 
-  // Just take the next 4 for each to keep nav clean
-  const today = new Date().toISOString().slice(0, 10);
+  // Keep this deterministic for static prerender paths (e.g. _not-found).
   const upcomingF1 = f1Races
-    .filter(r => r.isActive && r.raceDate >= today)
+    .filter(r => r.isActive)
     .slice(0, 4);
 
   const upcomingMotogp = motogpRaces
-    .filter(r => r.isActive && r.raceDate >= today)
+    .filter(r => r.isActive)
     .slice(0, 4);
 
   return <Nav upcomingF1={upcomingF1} upcomingMotogp={upcomingMotogp} />;

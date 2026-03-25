@@ -58,6 +58,7 @@ export default async function F1WhereToStayPage({ params }: Props) {
   const { raceSlug } = await params;
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();
+  const schemaDate = `${race.raceDate}T00:00:00.000Z`;
   const content = await getRaceContent(race.id);
   const theme = getThemeFromRace(race);
 
@@ -120,7 +121,7 @@ export default async function F1WhereToStayPage({ params }: Props) {
     description: `Best areas to stay near ${race.circuitName} for race weekend. Neighborhoods, prices and booking tips.`,
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
-    dateModified: new Date().toISOString(),
+    dateModified: schemaDate,
     url: `${SITE_URL}/f1/${raceSlug}/where-to-stay`,
   };
 

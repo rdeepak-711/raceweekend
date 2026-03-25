@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { getBlogPostBySlug, getRelatedPosts } from '@/services/blog.service';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
+export const dynamic = 'force-dynamic';
+
 interface Props { params: Promise<{ slug: string }>; }
 
 function clampTitle(input: string, max = 55): string {

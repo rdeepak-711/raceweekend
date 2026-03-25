@@ -45,12 +45,15 @@ interface UrlEntry {
 
 export default async function SiteDirectoryPage() {
   await connection();
-  const TODAY = new Date().toISOString().slice(0, 10);
 
   const [f1Races, motogpRaces] = await Promise.all([
     getRacesBySeries('f1'),
     getRacesBySeries('motogp'),
   ]);
+  const TODAY =
+    f1Races[f1Races.length - 1]?.raceDate ??
+    motogpRaces[motogpRaces.length - 1]?.raceDate ??
+    '2026-01-01';
   const experienceRows = await db
     .select({
       slug: experiences.slug,

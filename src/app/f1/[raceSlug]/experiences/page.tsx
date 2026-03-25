@@ -10,7 +10,7 @@ import PageBreadcrumb from '@/components/race/PageBreadcrumb';
 import { getRaceImagePaths } from '@/lib/utils/raceImages';
 
 
-interface Props { params: Promise<{ raceSlug: string }>; searchParams: Promise<{ category?: string; sort?: string; }>; }
+interface Props { params: Promise<{ raceSlug: string }>; }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { raceSlug } = await params;
@@ -34,17 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function F1ExperiencesPage({ params, searchParams }: Props) {
+export default async function F1ExperiencesPage({ params }: Props) {
   const { raceSlug } = await params;
-  const { category, sort } = await searchParams;
 
   const race = await getRaceBySlug(raceSlug, 'f1');
   if (!race) notFound();
 
-  const experiences = await getExperiencesByRace(race.id, {
-    category: category as 'food' | 'culture' | 'adventure' | 'daytrip' | 'nightlife' | undefined,
-    sort: sort as 'popular' | 'price-low' | 'price-high' | 'duration-short' | 'rating' | undefined,
-  });
+  const experiences = await getExperiencesByRace(race.id);
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',

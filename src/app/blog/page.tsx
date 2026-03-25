@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { getBlogPosts } from '@/services/blog.service';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Race Weekend Blog — F1 & MotoGP Travel Stories',
   description: 'Race previews, experience reviews, and city guides for F1 and MotoGP fans. Written by Deepak.',

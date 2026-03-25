@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import Link from 'next/link';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
@@ -27,7 +26,6 @@ const personSchema = {
 };
 
 export default async function AboutPage() {
-  await headers();
   return (
     <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />

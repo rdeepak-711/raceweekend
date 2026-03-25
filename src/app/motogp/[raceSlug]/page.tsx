@@ -56,13 +56,7 @@ export default async function MotoGPRacePage({ params }: Props) {
   const theme = getThemeFromRace(race);
   const { ogImageUrl } = getRaceImagePaths(raceSlug);
   const raceDateTime = `${race.raceDate}T14:00:00`;
-  
-  // Urgency logic
-  const now = new Date();
-  const raceDate = new Date(raceDateTime);
-  const diffTime = raceDate.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  const isSoon = diffDays > 0 && diffDays <= 14;
+  const isSoon = race.isActive;
 
   const eventLocation = {
     '@type': 'Place',
@@ -150,7 +144,7 @@ export default async function MotoGPRacePage({ params }: Props) {
           {/* Urgency Banner */}
           {isSoon && (
             <div className="bg-[var(--accent-teal)] text-[var(--bg-primary)] font-bold text-center py-2 text-sm uppercase tracking-wider animate-pulse">
-              Race is in {diffDays} days. Book experiences and tickets before they sell out!
+              Race weekend is approaching. Book experiences and tickets before they sell out!
             </div>
           )}
 

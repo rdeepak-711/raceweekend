@@ -4,12 +4,13 @@ import "./globals.css";
 import { SITE_URL, BASE_OG } from "@/lib/constants/site";
 import NavWrapper from "@/components/layout/NavWrapper";
 import Footer from "@/components/layout/Footer";
-import dynamic from "next/dynamic";
 import CustomCursor from "@/components/layout/CustomCursor";
 import Script from "next/script";
 import { SeriesProvider } from "@/context/SeriesContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
 import { Suspense } from "react";
+
+export const dynamic = 'force-dynamic';
 
 const titilliumWeb = Titillium_Web({
   variable: "--font-titillium-web",

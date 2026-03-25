@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
-import { headers } from 'next/headers';
 import { getRacesBySeries } from '@/services/race.service';
 import SeriesLandingClient from '@/components/race/SeriesLandingClient';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'F1 2026 Race Calendar & Travel Guides',
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
 };
 
 export default async function F1LandingPage() {
-  await headers();
   const races = await getRacesBySeries('f1');
 
   return (

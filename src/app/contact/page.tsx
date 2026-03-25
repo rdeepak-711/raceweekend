@@ -3,6 +3,8 @@ import Link from 'next/link';
 import ContactForm from '@/components/contact/ContactForm';
 import { SITE_URL, BASE_OG } from '@/lib/constants/site';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Get in Touch | Race Weekend',
   description: 'Have a feature request, bug report, or just want to talk racing? Reach out to the Race Weekend team.',

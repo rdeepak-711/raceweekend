@@ -50,6 +50,7 @@ export default async function F1GettingTherePage({ params }: Props) {
   const content = await getRaceContent(race.id);
   const theme = getThemeFromRace(race);
   const { circuitExists, circuitUrl } = getRaceImagePaths(raceSlug);
+  const schemaDate = `${race.raceDate}T00:00:00.000Z`;
 
   const TRANSPORT_FAQ_KEYWORDS = ['get to', 'airport', 'transport', 'train', 'taxi', 'uber', 'drive', 'bus', 'metro', 'travel to'];
   const faqItems = (content?.faqItems ?? []).filter(item =>
@@ -83,7 +84,7 @@ export default async function F1GettingTherePage({ params }: Props) {
     description: `Flights, transport and transfers to ${race.circuitName} for the ${race.name}.`,
     author: { '@type': 'Person', name: 'Deepak' },
     publisher: { '@type': 'Organization', name: 'Race Weekend' },
-    dateModified: new Date().toISOString(),
+    dateModified: schemaDate,
     url: `${SITE_URL}/f1/${raceSlug}/getting-there`,
   };
 
